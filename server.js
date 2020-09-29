@@ -1,6 +1,8 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const process = require('process')
+require('dotenv').config()
 
 const app = express();
 
@@ -15,6 +17,21 @@ app.use(bodyParser.json());
 
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
+
+if(process.env.PRODUCTION){
+  app.use(express.static(__dirname + '/dist/BCEdAccess-Website'));
+
+  app.get('/*', function(req,res) {
+
+    res.sendFile(path.join(__dirname+'/dist/BCEdAccess-Website/index.html'));
+  });
+} else{
+  app.use(express.static('./src/'))
+  app.get('./*', function(req,res) {
+    res.sendFile(path.join('src/index.html'));
+  });
+
+}
 
 // simple route
 app.get("/", (req, res) => {
