@@ -22,4 +22,8 @@ describe('HeaderComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+  it('should contain the logo image', () => {
+    const img = fixture.debugElement.nativeElement.querySelector('#logo');
+    expect(img.src).toContain('bcedaccess_logo.png');
+  });
 });
