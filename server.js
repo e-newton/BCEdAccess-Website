@@ -17,12 +17,12 @@ app.use(bodyParser.json());
 
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
-
-if(process.env.PRODUCTION){
+console.log("PRODUCTION ", process.env.PRODUCTION)
+if(process.env.PRODUCTION === '1'){
+  console.log("BOOTY")
   app.use(express.static(__dirname + '/dist/BCEdAccess-Website'));
 
   app.get('/*', function(req,res) {
-
     res.sendFile(path.join(__dirname+'/dist/BCEdAccess-Website/index.html'));
   });
 } else{
@@ -34,9 +34,9 @@ if(process.env.PRODUCTION){
 }
 
 // simple route
-app.get("/", (req, res) => {
-  res.json({ message: "Welcome to bezkoder application." });
-});
+// app.get("/", (req, res) => {
+//   res.json({ message: "Welcome to bezkoder application." });
+// });
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
