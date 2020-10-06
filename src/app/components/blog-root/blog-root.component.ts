@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {Blog} from '../../model/blog';
+import {BlogService} from '../../services/blog.service';
 
 @Component({
   selector: 'app-blog-root',
@@ -7,10 +9,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BlogRootComponent implements OnInit {
 
+  blogs: Blog[] = [];
 
-  constructor() { }
+  constructor(private blogService: BlogService) { }
 
   ngOnInit(): void {
+    this.blogService.getAllBlogs().then((res) => {
+      res.forEach(blog => {
+        console.log('BLOG', blog);
+        this.blogs.push(blog);
+      });
+    });
+
   }
 
 }
