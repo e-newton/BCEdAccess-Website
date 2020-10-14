@@ -11,11 +11,8 @@ export class BlogService {
 
   async getAllBlogs(): Promise<any>{
     const data = {type: 'ALL'};
-    const response =  await this.http.get('/api/blogs');
-
+    const response =  await this.http.get('/api/blogs').toPromise();
     return response;
-
-
 
   }
 

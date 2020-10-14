@@ -55,6 +55,7 @@ const client = new Client();
 client.connect( err => {
   if (err) {
     console.error('connection error', err.stack)
+    console.error('Eric did you remember to turn the stupid thing on?')
   } else {
     console.log('connected to database')
   }
