@@ -6,12 +6,14 @@ import { AppComponent } from './app.component';
 import { BlogRootComponent } from './components/blog-root/blog-root.component';
 import { BlogPreviewComponent } from './components/blog-preview/blog-preview.component';
 import {HttpClientModule} from '@angular/common/http';
+import { BlogViewComponent } from './components/blog-view/blog-view.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     BlogRootComponent,
-    BlogPreviewComponent
+    BlogPreviewComponent,
+    BlogViewComponent
   ],
   imports: [
     BrowserModule,

@@ -1,9 +1,14 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import {BlogRootComponent} from './components/blog-root/blog-root.component';
+import {BlogViewComponent} from './components/blog-view/blog-view.component';
 
 const routes: Routes = [
-  {path: 'blogs', component: BlogRootComponent}
+
+  {path: 'blog/:id', component: BlogViewComponent},
+  {path: 'blog', component: BlogRootComponent},
+
+
 
 ];
 
