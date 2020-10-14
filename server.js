@@ -13,6 +13,16 @@ var corsOptions = {
   origin: "http://localhost:8080"
 };
 
+const client = new Client({database:'bcedaccess'});
+client.connect( err => {
+  if (err) {
+    console.error('connection error', err.stack)
+    console.error('Eric did you remember to turn the stupid thing on?')
+  } else {
+    console.log('connected to database')
+  }
+});
+
 app.use(cors(corsOptions));
 
 // parse requests of content-type - application/json
@@ -44,22 +54,19 @@ app.get("/", (req, res) => {
   res.json({ message: "Welcome to bezkoder application." });
 });
 
-app.get("/blogs", (req,res) => {
+app.get("/blogs", async (req,res) => {
   const b1 = {title: 'I AM BUILT IN', author: 'ERIC NEWTON', body: 'holla'}
-  const data = [b1];
+  let d = await client.query('SELECT * FROM website.blogs')
+  console.log(d)
+  const data = [];
+  d.rows.forEach(row => {
+    data.push({title:row.title, author:row.author, body:row.body})
+  })
   res.json(data)
 })
 
 
-const client = new Client();
-client.connect( err => {
-  if (err) {
-    console.error('connection error', err.stack)
-    console.error('Eric did you remember to turn the stupid thing on?')
-  } else {
-    console.log('connected to database')
-  }
-});
+
 
 
 
