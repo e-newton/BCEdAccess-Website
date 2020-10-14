@@ -54,6 +54,12 @@ app.get("/", (req, res) => {
   res.json({ message: "Welcome to bezkoder application." });
 });
 
+app.get('blogs/:id', async(req,res) => {
+  let id = req.params.id;
+  let d = await client.query(`SELECT * FROM website.blogs WHERE id=${id}`)
+
+})
+
 app.get("/blogs", async (req,res) => {
   const b1 = {title: 'I AM BUILT IN', author: 'ERIC NEWTON', body: 'holla'}
   let d = await client.query('SELECT * FROM website.blogs')
