@@ -63,6 +63,10 @@ app.get("/blogs", async (req,res) => {
   const data = [];
   if(req.query.id){
     let d = await client.query(`SELECT * FROM website.blogs WHERE id=${req.query.id}`)
+    if(d.length === 0) {
+      res.status(404);
+      return;
+    }
     d.rows.forEach(row => {
       data.push({id: row.id, title:row.title, author:row.author, body:row.body})
     })

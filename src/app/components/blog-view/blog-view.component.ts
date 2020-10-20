@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute, NavigationExtras} from '@angular/router';
+import {ActivatedRoute, NavigationExtras, Router} from '@angular/router';
 import {BlogService} from '../../services/blog.service';
 
 @Component({
@@ -11,7 +11,7 @@ export class BlogViewComponent implements OnInit {
 
   id: number;
   html: string;
-  constructor(private route: ActivatedRoute, private blogService: BlogService) {
+  constructor(private route: ActivatedRoute, private blogService: BlogService, private router: Router) {
     this.route.params.subscribe( async params => {
       this.id = params.id;
     });
@@ -23,6 +23,8 @@ export class BlogViewComponent implements OnInit {
     this.blogService.getSingleBlog(String(this.id)).then((res) => {
       if (res.length > 0) {
         this.html = res[0].body;
+      } else{
+        this.router.navigate(['../'] , { relativeTo: this.route });
       }
     });
   }
