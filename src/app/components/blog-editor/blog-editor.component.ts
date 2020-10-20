@@ -15,16 +15,16 @@ export class BlogEditorComponent implements OnInit {
   author = '';
   body = '';
 
-  constructor(private blogSerivce: BlogService) {
+  constructor(private blogService: BlogService) {
     this.generateID().then((n) => this.id = n);
   }
 
   async generateID(): Promise<number> {
     let n = this.random(3, 100);
-    let valid = await this.blogSerivce.isBlogIDValid(String(n));
+    let valid = await this.blogService.isBlogIDValid(String(n));
     while (!valid) {
       n = this.random(3, 100);
-      valid = await this.blogSerivce.isBlogIDValid(String(n));
+      valid = await this.blogService.isBlogIDValid(String(n));
     }
     return n;
   }
@@ -40,7 +40,11 @@ export class BlogEditorComponent implements OnInit {
       console.log(f.value);
       this.title = f.value.title;
       this.author = f.value.author;
-      this.body = f.value.author;
+      this.body = f.value.html;
+      this.blogService.postBlog(this.createBlog()).then((res) => {
+        console.log('Post Response', res);
+      });
+
   }
 
   createBlog(): Blog {

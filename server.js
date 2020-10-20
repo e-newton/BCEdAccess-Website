@@ -54,6 +54,11 @@ app.get("/", (req, res) => {
   res.json({ message: "Welcome to bezkoder application." });
 });
 
+
+app.post("/blogs", async (req,res) => {
+  res.json({success:true});
+})
+
 app.get('blogs/:id', async(req,res) => {
   let id = req.params.id;
   let d = await client.query(`SELECT * FROM website.blogs WHERE id=${id}`)
