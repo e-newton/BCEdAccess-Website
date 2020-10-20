@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, NavigationExtras} from '@angular/router';
+import {BlogService} from '../../services/blog.service';
 
 @Component({
   selector: 'app-blog-view',
@@ -9,8 +10,14 @@ import {ActivatedRoute, NavigationExtras} from '@angular/router';
 export class BlogViewComponent implements OnInit {
 
   id: number;
-  constructor(private route: ActivatedRoute) {
-    this.route.params.subscribe( params => this.id = params.id);
+  html: string;
+  constructor(private route: ActivatedRoute, private blogService: BlogService) {
+    this.route.params.subscribe( params => {
+      this.id = params.id;
+      blogService.getSingleBlog(String(this.id));
+    });
+
+
   }
 
   ngOnInit(): void {
