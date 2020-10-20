@@ -16,7 +16,17 @@ export class BlogEditorComponent implements OnInit {
   body = '';
 
   constructor(private blogSerivce: BlogService) {
-    this.id = this.random(3, 100);
+    this.generateID().then((n) => this.id = n);
+  }
+
+  async generateID(): Promise<number> {
+    let n = this.random(3, 100);
+    let valid = await this.blogSerivce.isBlogIDValid(String(n));
+    while (!valid) {
+      n = this.random(3, 100);
+      valid = await this.blogSerivce.isBlogIDValid(String(n));
+    }
+    return n;
   }
 
   ngOnInit(): void {

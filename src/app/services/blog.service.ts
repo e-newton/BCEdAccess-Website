@@ -23,5 +23,13 @@ export class BlogService {
     return response;
   }
 
+  async isBlogIDValid(id: string): Promise<boolean> {
+    const headers = new HttpHeaders();
+    headers.append('Content-Type', 'application/json');
+    const params = new HttpParams().set('id', id);
+    const response: Blog[] =  await this.http.get('/api/blogs/', {headers, params}).toPromise() as Blog[];
+    return response.length === 0;
+  }
+
 
 }
