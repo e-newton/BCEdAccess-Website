@@ -12,15 +12,19 @@ export class BlogViewComponent implements OnInit {
   id: number;
   html: string;
   constructor(private route: ActivatedRoute, private blogService: BlogService) {
-    this.route.params.subscribe( params => {
+    this.route.params.subscribe( async params => {
       this.id = params.id;
-      blogService.getSingleBlog(String(this.id));
     });
 
 
   }
 
   ngOnInit(): void {
+    this.blogService.getSingleBlog(String(this.id)).then((res) => {
+      if (res.length > 0) {
+        this.html = res[0].body;
+      }
+    });
   }
 
 

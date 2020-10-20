@@ -58,18 +58,17 @@ app.get('blogs/:id', async(req,res) => {
   let id = req.params.id;
   let d = await client.query(`SELECT * FROM website.blogs WHERE id=${id}`)
 })
-
+ //TODO: Get both endpoints working separately.
 app.get("/blogs", async (req,res) => {
+  const data = [];
   if(req.query.id){
-    let d = await client.query(`SELECT * FROM website.blogs WHERE id=${id}`)
+    let d = await client.query(`SELECT * FROM website.blogs WHERE id=${req.query.id}`)
     d.rows.forEach(row => {
       data.push({title:row.title, author:row.author, body:row.body})
     })
     res.json(data);
-    return;
   } else{
     let d = await client.query('SELECT * FROM website.blogs')
-    const data = [];
     d.rows.forEach(row => {
       data.push({title:row.title, author:row.author, body:row.body})
     })

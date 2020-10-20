@@ -13,7 +13,7 @@ export class BlogRootComponent implements OnInit {
   blogs: Blog[] = [];
 
   constructor(private blogService: BlogService, private route: ActivatedRoute) {
-    this.route.params.subscribe( params => console.log("ROOT", params) );
+    this.route.params.subscribe( params => console.log('ROOT', params) );
 
   }
 
