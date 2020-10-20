@@ -1,8 +1,6 @@
 <p>blog-root works!</p>
-<a [routerLink]="['/blog', 1 ]"><p>Test Blog Link</p></a>
-<!--<a routerLink="./1" ><p>Test Blog Link</p></a>-->
 <div *ngFor="let blog of blogs">
-  <p>{{blog.title}}</p>
+  <a [routerLink]="['/blog', blog.id]">{{blog.title}}</a>
 </div>
 
 

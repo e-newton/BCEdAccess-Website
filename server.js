@@ -64,13 +64,13 @@ app.get("/blogs", async (req,res) => {
   if(req.query.id){
     let d = await client.query(`SELECT * FROM website.blogs WHERE id=${req.query.id}`)
     d.rows.forEach(row => {
-      data.push({title:row.title, author:row.author, body:row.body})
+      data.push({id: row.id, title:row.title, author:row.author, body:row.body})
     })
     res.json(data);
   } else{
     let d = await client.query('SELECT * FROM website.blogs')
     d.rows.forEach(row => {
-      data.push({title:row.title, author:row.author, body:row.body})
+      data.push({id: row.id, title:row.title, author:row.author, body:row.body})
     })
     res.json(data)
   }
