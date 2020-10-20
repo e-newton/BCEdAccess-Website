@@ -8,8 +8,9 @@ import {ActivatedRoute, NavigationExtras} from '@angular/router';
 })
 export class BlogViewComponent implements OnInit {
 
+  id: number;
   constructor(private route: ActivatedRoute) {
-    this.route.params.subscribe( params => console.log("ASS", params) );
+    this.route.params.subscribe( params => this.id = params.id);
   }
 
   ngOnInit(): void {
