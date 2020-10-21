@@ -10,9 +10,14 @@ import {BlogService} from '../../services/blog.service';
 export class BlogViewComponent implements OnInit {
 
   id: number;
+  title: string;
+  author: string;
   html: string;
   constructor(private route: ActivatedRoute, private blogService: BlogService, private router: Router) {
     this.route.params.subscribe( async params => {
+      if (String(params.id).match(/[^0-9]/)){
+        this.router.navigate(['../'] , { relativeTo: this.route });
+      }
       this.id = params.id;
     });
 
@@ -23,6 +28,8 @@ export class BlogViewComponent implements OnInit {
     this.blogService.getSingleBlog(String(this.id)).then((res) => {
       if (res.length > 0) {
         this.html = res[0].body;
+        this.title = res[0].title;
+        this.author = res[0].author;
       } else{
         this.router.navigate(['../'] , { relativeTo: this.route });
       }

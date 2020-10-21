@@ -56,7 +56,7 @@ app.get("/", (req, res) => {
 
 
 app.post("/blogs", async (req,res) => {
-  let query = `INSERT INTO website.blogs(id, author, body, title) VALUES ($1, $2, $3, $4) RETURNING *${}`;
+  let query = 'INSERT INTO website.blogs(id, author, body, title) VALUES ($1, $2, $3, $4)';
   let values = [req.body.id, req.body.author, req.body.body, req.body.title];
   let d = await client.query(query ,values);
   res.json({success:d.rowCount>0});
@@ -72,6 +72,10 @@ app.post("/blogs", async (req,res) => {
 app.get("/blogs", async (req,res) => {
   const data = [];
   if(req.query.id){
+    if (String(req.query.id).match(/[^0-9]/)) {
+      res.status(404);
+      return;
+      }
     let d = await client.query(`SELECT * FROM website.blogs WHERE id=${req.query.id}`)
     if(d.length === 0) {
       res.status(404);
