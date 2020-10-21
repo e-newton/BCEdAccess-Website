@@ -1,6 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { BlogViewComponent } from './blog-view.component';
+import {RouterModule} from '@angular/router';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {BlogService} from '../../services/blog.service';
+import {BlogRootComponent} from '../blog-root/blog-root.component';
 
 describe('BlogViewComponent', () => {
   let component: BlogViewComponent;
@@ -8,7 +12,10 @@ describe('BlogViewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ BlogViewComponent ]
+      imports: [HttpClientTestingModule,
+        RouterModule.forRoot([])],
+      providers: [BlogService],
+      declarations: [ BlogRootComponent ]
     })
     .compileComponents();
   });

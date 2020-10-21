@@ -1,7 +1,7 @@
 <p>blog-editor works!</p>
 <p>Current id for new blog: {{id}}</p>
 <div style="display: flex; flex-direction: column">
-  <form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate>
+  <form ngForm #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate>
     <div>
       <label>
         Blog Title<br>
