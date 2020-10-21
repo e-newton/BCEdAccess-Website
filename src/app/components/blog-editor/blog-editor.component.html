@@ -1,0 +1,28 @@
+<p>blog-editor works!</p>
+<p>Current id for new blog: {{id}}</p>
+<div style="display: flex; flex-direction: column">
+  <form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate>
+    <div>
+      <label>
+        Blog Title
+        <input name="title" ngModel required #first="ngModel">
+      </label>
+    </div>
+    <div>
+      <label>
+        Blog Author
+        <input name="author" ngModel>
+      </label>
+    </div>
+    <div>
+      <label>
+        Blog Body
+        <textarea name = "html" ngModel></textarea>
+      </label>
+    </div>
+    <button>Submit</button>
+  </form>
+</div>
+<h3>{{backendResponse}}</h3>
+
+
