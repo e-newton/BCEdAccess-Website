@@ -14,6 +14,7 @@ export class BlogEditorComponent implements OnInit {
   title = '';
   author = '';
   body = '';
+  backendResponse = '';
 
   constructor(private blogService: BlogService) {
     this.generateID().then((n) => this.id = n);
@@ -42,7 +43,11 @@ export class BlogEditorComponent implements OnInit {
       this.author = f.value.author;
       this.body = f.value.html;
       this.blogService.postBlog(this.createBlog()).then((res) => {
-        console.log('Post Response', res);
+        if (res) {
+          this.backendResponse = 'Blog successfully posted!';
+        } else {
+          this.backendResponse = 'An error has occured';
+        }
       });
 
   }

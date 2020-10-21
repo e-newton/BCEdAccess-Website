@@ -64,10 +64,10 @@ app.post("/blogs", async (req,res) => {
 
 
 
-app.get('blogs/:id', async(req,res) => {
-  let id = req.params.id;
-  let d = await client.query(`SELECT * FROM website.blogs WHERE id=${id}`)
-});
+// app.get('blogs/:id', async(req, res) => {
+//   let id = req.params.id;
+//   let d = await client.query(`SELECT * FROM website.blogs WHERE id=${id}`)
+// });
  //TODO: Get both endpoints working separately.
 app.get("/blogs", async (req,res) => {
   const data = [];

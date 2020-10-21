@@ -3,16 +3,26 @@
 <div style="display: flex; flex-direction: column">
   <form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate>
     <div>
-      <input name="title" ngModel required #first="ngModel">
+      <label>
+        Blog Title
+        <input name="title" ngModel required #first="ngModel">
+      </label>
     </div>
     <div>
-      <input name="author" ngModel>
+      <label>
+        Blog Author
+        <input name="author" ngModel>
+      </label>
     </div>
     <div>
-      <textarea name = "html" ngModel></textarea>
+      <label>
+        Blog Body
+        <textarea name = "html" ngModel></textarea>
+      </label>
     </div>
     <button>Submit</button>
   </form>
 </div>
+<h3>{{backendResponse}}</h3>
 
 
