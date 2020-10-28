@@ -10,7 +10,7 @@ export class BlogService {
   constructor(private http: HttpClient) { }
 
   async getAllBlogs(): Promise<any>{
-    const response =  await this.http.get('/api/blogs').toPromise();
+    const response =  await this.http.get('/api/blogs/').toPromise();
     return response;
 
   }
@@ -27,7 +27,7 @@ export class BlogService {
     const headers = new HttpHeaders();
     headers.append('Content-Type', 'application/json');
     const params = new HttpParams().set('id', String(blog.id));
-    const response: any = await this.http.post('api/blogs/', blog, {headers, params}).toPromise();
+    const response: any = await this.http.post('/api/blogs/', blog, {headers, params}).toPromise();
     return response.success as boolean;
 
     // const response =  await this.http.get('/api/blogs/', {headers, params}).toPromise();
