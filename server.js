@@ -13,6 +13,7 @@ var corsOptions = {
   origin: "http://localhost:8080"
 };
 
+
 const client = new Client({database:'bcedaccess'});
 client.connect( err => {
   if (err) {
