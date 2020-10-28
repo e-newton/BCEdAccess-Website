@@ -14,7 +14,6 @@ export class BlogRootComponent implements OnInit {
 
   constructor(private blogService: BlogService, private route: ActivatedRoute) {
     this.route.params.subscribe( params => console.log('ROOT', params) );
-
   }
 
   ngOnInit(): void {

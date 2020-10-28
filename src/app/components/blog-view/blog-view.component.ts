@@ -16,7 +16,7 @@ export class BlogViewComponent implements OnInit {
   constructor(private route: ActivatedRoute, private blogService: BlogService, private router: Router) {
     this.route.params.subscribe( async params => {
       if (String(params.id).match(/[^0-9]/)){
-        this.router.navigate(['../'] , { relativeTo: this.route });
+        await this.router.navigate(['../'], {relativeTo: this.route});
       }
       this.id = params.id;
     });
@@ -31,8 +31,8 @@ export class BlogViewComponent implements OnInit {
         this.title = res[0].title;
         this.author = res[0].author;
       } else{
-        this.router.navigate(['../'] , { relativeTo: this.route });
-      }
+        this.router.navigate(['../'], {relativeTo: this.route});
+       }
     });
   }
 
