@@ -19,7 +19,6 @@ export class BlogRootComponent implements OnInit {
   ngOnInit(): void {
     this.blogService.getAllBlogs().then((res) => {
       res.forEach(blog => {
-        console.log('BLOG', blog);
         this.blogs.push(blog);
       });
     });
