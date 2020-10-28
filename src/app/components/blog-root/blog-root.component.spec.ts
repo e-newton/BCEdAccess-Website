@@ -46,7 +46,6 @@ describe('BlogRootComponent', () => {
   it('should have the correct data for no blogs', fakeAsync(() => {
 
     spyOn(component, 'ngOnInit').and.callThrough();
-    tick();
     component.ngOnInit();
     fixture.detectChanges();
     const req = httpTestingController.expectOne('/api/blogs/');
@@ -59,7 +58,6 @@ describe('BlogRootComponent', () => {
   it('should have the correct data for single blogs', fakeAsync(async () => {
     const b1: Blog = new Blog(1, 'title1', 'author1', 'body1');
     spyOn(component, 'ngOnInit').and.callThrough();
-    tick();
     component.ngOnInit();
     fixture.detectChanges();
     const req = httpTestingController.expectOne('/api/blogs/');
@@ -75,7 +73,6 @@ describe('BlogRootComponent', () => {
     const b2: Blog = new Blog(2, 'title2', 'author2', 'body2');
     const b3: Blog = new Blog(3, 'title3', 'author3', 'body3');
     spyOn(component, 'ngOnInit').and.callThrough();
-    tick();
     component.ngOnInit();
     fixture.detectChanges();
     const req = httpTestingController.expectOne('/api/blogs/');
