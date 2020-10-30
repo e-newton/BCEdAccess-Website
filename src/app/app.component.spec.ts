@@ -23,6 +23,7 @@ describe('AppComponent', () => {
     const app = fixture.componentInstance;
     console.log('Wow a change!');
     expect(app).toBeTruthy();
+    console.log('oh wow a change but better');
   });
 
   it(`should have as title 'BCEdAccess-Website'`, () => {
