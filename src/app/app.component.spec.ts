@@ -36,6 +36,6 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('span').textContent).toContain('BCEdAccess-Website app is running!');
+    expect(compiled.querySelector('#title').textContent).toContain('BCEdAccess-Website app is running!');
   });
 });
