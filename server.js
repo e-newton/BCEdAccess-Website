@@ -55,6 +55,13 @@ app.get("/", (req, res) => {
   res.json({ message: "Welcome to bezkoder application." });
 });
 
+app.delete('/blogs', async (req, res) => {
+  let query = 'DELETE FROM website.blogs where id = $1';
+  let values = [req.body.id];
+  let d = await client.query(query ,values);
+  res.json({success:d.rowCount>0});
+})
+
 
 app.post("/blogs", async (req,res) => {
   let query = 'INSERT INTO website.blogs(id, author, body, title) VALUES ($1, $2, $3, $4)';
