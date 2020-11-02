@@ -62,6 +62,13 @@ app.post("/blogs", async (req,res) => {
   let d = await client.query(query ,values);
   res.json({success:d.rowCount>0});
 });
+//TODO FINISH
+app.put('/blogs', async (req,res) => {
+  let query = 'UPDATE website.blogs SET author = $1, body = $2, title = $3 WHERE id = $4';
+  let values = [req.body.author, req.body.body, req.body.title, req.body.id];
+  let d = await client.query(query ,values);
+  res.json({success:d.rowCount>0});
+});
 
 
 
@@ -87,7 +94,7 @@ app.get("/blogs", async (req,res) => {
     })
     res.json(data);
   } else{
-    let d = await client.query('SELECT * FROM website.blogs')
+    let d = await client.query('SELECT * FROM website.blogs ORDER BY id ASC')
     d.rows.forEach(row => {
       data.push({id: row.id, title:row.title, author:row.author, body:row.body})
     })

@@ -58,17 +58,27 @@ export class BlogEditorComponent implements OnInit {
   }
 
   onSubmit(f: NgForm): void {
-      console.log(f.value);
-      this.title = f.value.title;
-      this.author = f.value.author;
-      this.body = f.value.html;
-      this.blogService.postBlog(this.createBlog()).then((res) => {
-        if (res) {
-          this.backendResponse = 'Blog successfully posted!';
-        } else {
-          this.backendResponse = 'An error has occurred';
-        }
-      });
+      this.title = this.titleFC.value;
+      this.author = this.authorFC.value;
+      this.body = this.bodyFC.value;
+      if (this.editing){
+        this.blogService.updateBlog(this.createBlog()).then((res) => {
+          if (res) {
+            this.backendResponse = 'Blog successfully posted!';
+          } else {
+            this.backendResponse = 'An error has occurred';
+          }
+        });
+      } else{
+        this.blogService.postBlog(this.createBlog()).then((res) => {
+          if (res) {
+            this.backendResponse = 'Blog successfully posted!';
+          } else {
+            this.backendResponse = 'An error has occurred';
+          }
+        });
+      }
+
 
   }
 
