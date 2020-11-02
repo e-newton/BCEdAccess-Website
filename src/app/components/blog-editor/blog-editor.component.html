@@ -20,7 +20,8 @@
         <textarea name = "html" [formControl]="bodyFC"></textarea>
       </label>
     </div>
-    <button>Publish</button>
+    <button *ngIf="!editing">Publish</button>
+    <button *ngIf="editing">Update</button>
   </form>
 </div>
 <h3>{{backendResponse}}</h3>

@@ -20,6 +20,7 @@ export class BlogEditorComponent implements OnInit {
   titleFC = new FormControl('');
   authorFC = new FormControl('');
   bodyFC = new FormControl('');
+  editing = false;
 
   constructor(private blogService: BlogService, public activatedRouter: ActivatedRoute, public route: Router) {
     if (this.activatedRouter.snapshot.paramMap.get('id')){
@@ -32,6 +33,7 @@ export class BlogEditorComponent implements OnInit {
         this.titleFC.setValue(this.title);
         this.authorFC.setValue(this.author);
         this.bodyFC.setValue(this.body);
+        this.editing = true;
       });
     } else {
       this.generateID().then((n) => this.id = n);
