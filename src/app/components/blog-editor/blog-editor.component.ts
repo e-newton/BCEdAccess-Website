@@ -47,7 +47,7 @@ export class BlogEditorComponent implements OnInit {
         if (res) {
           this.backendResponse = 'Blog successfully posted!';
         } else {
-          this.backendResponse = 'An error has occured';
+          this.backendResponse = 'An error has occurred';
         }
       });
 
