@@ -21,7 +21,12 @@ export class BlogEditorComponent implements OnInit {
   constructor(private blogService: BlogService, public activatedRouter: ActivatedRoute, public route: Router) {
     if (this.activatedRouter.snapshot.paramMap.get('id')){
       this.id = Number(this.activatedRouter.snapshot.paramMap.get('id'));
-      // Get the data and place it in the editor
+      blogService.getSingleBlog(String(this.id)).then((rows) => {
+        const blog: Blog = rows[0];
+        this.title = blog.title;
+        this.author = blog.author;
+        this.body = blog.body;
+      });
     } else {
       this.generateID().then((n) => this.id = n);
     }

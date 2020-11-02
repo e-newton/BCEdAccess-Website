@@ -123,6 +123,23 @@ describe('BlogEditorComponent', () => {
     expect(component.id).toEqual(123);
   }));
 
+  it('should get an existing blog from the db', fakeAsync(() => {
+    const spyRoute = spyOn(route.snapshot.paramMap, 'get').and.returnValues('123', '123');
+    const blogSpy = spyOn(blogService, 'getSingleBlog')
+      .and.returnValues(Promise.resolve([new Blog(123, 'title', 'author', 'body')]));
+    component = new BlogEditorComponent(blogService, route, router);
+    tick(100);
+    expect(component).toBeTruthy();
+    expect(component.id).toEqual(123);
+    expect(component.title).toEqual('title');
+    expect(component.body).toEqual('body');
+    expect(component.author).toEqual('author');
+    expect(spyRoute).toHaveBeenCalledWith('id');
+    expect(spyRoute).toHaveBeenCalledTimes(2);
+    expect(blogSpy).toHaveBeenCalledWith('123');
+    expect(blogSpy).toHaveBeenCalledTimes(1);
+  }));
+
 
 
 });
