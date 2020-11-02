@@ -5,19 +5,19 @@
     <div>
       <label>
         Blog Title<br>
-        <input name="title" ngModel required #first="ngModel">
+        <input name="title" ngModel required [formControl]="titleFC">
       </label>
     </div>
     <div>
       <label>
         Blog Author<br>
-        <input name="author" ngModel>
+        <input name="author" ngModel [formControl]="authorFC">
       </label>
     </div>
     <div>
       <label>
         Blog Body<br>
-        <textarea name = "html" ngModel></textarea>
+        <textarea name = "html" ngModel [formControl]="bodyFC"></textarea>
       </label>
     </div>
     <button>Submit</button>

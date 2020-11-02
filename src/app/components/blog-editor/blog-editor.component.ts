@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {BlogService} from '../../services/blog.service';
-import {NgForm} from '@angular/forms';
+import {FormControl, NgForm} from '@angular/forms';
 import {Blog} from '../../model/blog';
 import {ActivatedRoute, Router} from '@angular/router';
 
@@ -17,6 +17,9 @@ export class BlogEditorComponent implements OnInit {
   author = '';
   body = '';
   backendResponse = '';
+  titleFC = new FormControl('');
+  authorFC = new FormControl('');
+  bodyFC = new FormControl('');
 
   constructor(private blogService: BlogService, public activatedRouter: ActivatedRoute, public route: Router) {
     if (this.activatedRouter.snapshot.paramMap.get('id')){
@@ -26,6 +29,9 @@ export class BlogEditorComponent implements OnInit {
         this.title = blog.title;
         this.author = blog.author;
         this.body = blog.body;
+        this.titleFC.setValue(this.title);
+        this.authorFC.setValue(this.author);
+        this.bodyFC.setValue(this.body);
       });
     } else {
       this.generateID().then((n) => this.id = n);

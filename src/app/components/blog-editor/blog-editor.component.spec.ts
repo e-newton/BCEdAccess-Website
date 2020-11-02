@@ -5,7 +5,7 @@ import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {ActivatedRoute, Router, RouterModule} from '@angular/router';
 import {BlogService} from '../../services/blog.service';
 import {BlogRootComponent} from '../blog-root/blog-root.component';
-import {FormsModule, NgForm} from '@angular/forms';
+import {FormControl, FormsModule, NgControl, NgForm, ReactiveFormsModule} from '@angular/forms';
 import {Blog} from '../../model/blog';
 import {Test} from 'tslint';
 import {of} from 'rxjs';
@@ -25,7 +25,8 @@ describe('BlogEditorComponent', () => {
       imports: [HttpClientTestingModule,
         RouterModule.forRoot([]),
       FormsModule,
-      RouterTestingModule.withRoutes(routes)],
+      RouterTestingModule.withRoutes(routes),
+      ReactiveFormsModule, FormsModule],
       providers: [BlogService],
       declarations: [ BlogEditorComponent]
     })
@@ -138,6 +139,21 @@ describe('BlogEditorComponent', () => {
     expect(spyRoute).toHaveBeenCalledTimes(2);
     expect(blogSpy).toHaveBeenCalledWith('123');
     expect(blogSpy).toHaveBeenCalledTimes(1);
+  }));
+
+  it('should load forms with the value from the given blog', fakeAsync(() => {
+    const spyRoute = spyOn(route.snapshot.paramMap, 'get').and.returnValues('123', '123');
+    const blogSpy = spyOn(blogService, 'getSingleBlog')
+      .and.returnValues(Promise.resolve([new Blog(123, 'title', 'author', 'body')]));
+    component = new BlogEditorComponent(blogService, route, router);
+    tick(100);
+    expect(spyRoute).toHaveBeenCalledWith('id');
+    expect(spyRoute).toHaveBeenCalledTimes(2);
+    expect(blogSpy).toHaveBeenCalledWith('123');
+    expect(blogSpy).toHaveBeenCalledTimes(1);
+    expect(component.titleFC.value).toEqual('title');
+    expect(component.authorFC.value).toEqual('author');
+    expect(component.bodyFC.value).toEqual('body');
   }));
 
 
