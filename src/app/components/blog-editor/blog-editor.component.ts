@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {BlogService} from '../../services/blog.service';
 import {NgForm} from '@angular/forms';
 import {Blog} from '../../model/blog';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 
 
 @Component({
@@ -18,15 +18,13 @@ export class BlogEditorComponent implements OnInit {
   body = '';
   backendResponse = '';
 
-  constructor(private blogService: BlogService, public activatedRouter: ActivatedRoute) {
-    this.activatedRouter.params.toPromise().then((params) => {
-      if (params.id) {
-        // Get the data and place it in the editor
-      } else {
-        this.generateID().then((n) => this.id = n);
-      }
-    });
-
+  constructor(private blogService: BlogService, public activatedRouter: ActivatedRoute, public route: Router) {
+    if (this.activatedRouter.snapshot.paramMap.get('id')){
+      this.id = Number(this.activatedRouter.snapshot.paramMap.get('id'));
+      // Get the data and place it in the editor
+    } else {
+      this.generateID().then((n) => this.id = n);
+    }
   }
 
   async generateID(): Promise<number> {
