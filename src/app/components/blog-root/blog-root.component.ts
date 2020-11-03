@@ -32,14 +32,14 @@ export class BlogRootComponent implements OnInit {
         return;
       }
     });
-    this.blogs.splice(this.blogs.indexOf(b), 1);
-    this.blogService.deleteBlog(String(id)).then(() => {
-    });
+    if (b) {
+      this.blogs.splice(this.blogs.indexOf(b), 1);
+      this.blogService.deleteBlog(String(id)).then(() => {
+      });
+    }
+
   }
 
-  String(id: number): string {
-    return String(id);
-  }
 
 
 }

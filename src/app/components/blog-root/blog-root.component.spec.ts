@@ -82,5 +82,20 @@ describe('BlogRootComponent', () => {
     expect(component.blogs.length).toEqual(3);
   }));
 
+  it('should delete a blog', fakeAsync(() => {
+    const b1: Blog = new Blog(1, 'title1', 'author1', 'body1');
+    const b2: Blog = new Blog(2, 'title2', 'author2', 'body2');
+    const b3: Blog = new Blog(3, 'title3', 'author3', 'body3');
+    component.blogs.push(b1, b2, b3);
+    const blogSpy = spyOn(blogService, 'deleteBlog').and.returnValue(Promise.resolve(true));
+    component.deleteBlog(1);
+    tick(100);
+    expect(blogSpy).toHaveBeenCalledTimes(1);
+    expect(blogSpy).toHaveBeenCalledWith('1');
+    expect(component.blogs).toContain(b2);
+    expect(component.blogs).toContain(b3);
+    expect(component.blogs).not.toContain(b1);
+  }));
+
 
 });

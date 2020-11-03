@@ -49,22 +49,19 @@ describe('BlogViewComponent', () => {
     await fixture.whenStable();
   });
 
-  afterEach(() => {
-    httpTestingController.verify();
-  });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
   it('should load when going to regular blog', fakeAsync(() => {
-    fixture.ngZone.run(() => {
-      router.navigate(['/blog/', 123], {relativeTo: activedRouter});
-    });
-    const req = httpTestingController.expectOne('/api/blogs/?id=123');
-    req.flush([new Blog(123, 'title', 'author', 'body')]);
-    tick(100);
+    const blogSpy = spyOn(blogService, 'getSingleBlog')
+      .and.returnValue(Promise.resolve([new Blog(123, 'title', 'author', 'body')]));
     fixture.detectChanges();
+    component = new BlogViewComponent(activedRouter, blogService, router);
+    component.ngOnInit();
+    tick(100);
+    expect(blogSpy).toHaveBeenCalledTimes(1);
     expect(component.id).toEqual(123);
     expect(component.author).toEqual('author');
     expect(component.title).toEqual('title');
