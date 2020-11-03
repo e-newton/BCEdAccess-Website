@@ -55,9 +55,9 @@ app.get("/", (req, res) => {
   res.json({ message: "Welcome to bezkoder application." });
 });
 
-app.delete('/blogs', async (req, res) => {
+app.delete('/blogs/', async (req, res) => {
   let query = 'DELETE FROM website.blogs where id = $1';
-  let values = [req.body.id];
+  let values = [req.query.id];
   let d = await client.query(query ,values);
   res.json({success:d.rowCount>0});
 })
@@ -69,7 +69,7 @@ app.post("/blogs", async (req,res) => {
   let d = await client.query(query ,values);
   res.json({success:d.rowCount>0});
 });
-//TODO FINISH
+
 app.put('/blogs', async (req,res) => {
   let query = 'UPDATE website.blogs SET author = $1, body = $2, title = $3 WHERE id = $4';
   let values = [req.body.author, req.body.body, req.body.title, req.body.id];

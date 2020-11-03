@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Blog} from '../../model/blog';
 import {BlogService} from '../../services/blog.service';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-blog-root',
@@ -12,7 +12,7 @@ export class BlogRootComponent implements OnInit {
 
   blogs: Blog[] = [];
 
-  constructor(private blogService: BlogService, private route: ActivatedRoute) {
+  constructor(public blogService: BlogService, private route: ActivatedRoute, private router: Router) {
     this.route.params.subscribe( params => console.log('ROOT', params) );
   }
 
@@ -24,5 +24,22 @@ export class BlogRootComponent implements OnInit {
     });
 
   }
+  deleteBlog(id: number): void {
+    let b: Blog;
+    this.blogs.forEach((blog) => {
+      if (blog.id === id){
+        b = blog;
+        return;
+      }
+    });
+    this.blogs.splice(this.blogs.indexOf(b), 1);
+    this.blogService.deleteBlog(String(id)).then(() => {
+    });
+  }
+
+  String(id: number): string {
+    return String(id);
+  }
+
 
 }

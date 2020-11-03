@@ -3,6 +3,7 @@
   <span><a [routerLink]="['/blog', blog.id]">{{blog.title}}</a>
     <p>          </p>
     <a [routerLink]="['/blog/editor', blog.id]">Edit</a></span>
+    <a (click)="this.deleteBlog(blog.id)" [routerLink]="['/blog']">        Delete</a>
   <br>
   <br>
 </div>
