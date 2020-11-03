@@ -5,22 +5,23 @@
     <div>
       <label>
         Blog Title<br>
-        <input name="title" ngModel required #first="ngModel">
+        <input name="title" required [formControl]="titleFC">
       </label>
     </div>
     <div>
       <label>
         Blog Author<br>
-        <input name="author" ngModel>
+        <input name="author" [formControl]="authorFC">
       </label>
     </div>
     <div>
       <label>
         Blog Body<br>
-        <textarea name = "html" ngModel></textarea>
+        <textarea name = "html" [formControl]="bodyFC"></textarea>
       </label>
     </div>
-    <button>Submit</button>
+    <button *ngIf="!editing">Publish</button>
+    <button *ngIf="editing">Update</button>
   </form>
 </div>
 <h3>{{backendResponse}}</h3>

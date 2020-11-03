@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {BlogService} from '../../services/blog.service';
-import {NgForm} from '@angular/forms';
+import {FormControl, NgForm} from '@angular/forms';
 import {Blog} from '../../model/blog';
+import {ActivatedRoute, Router} from '@angular/router';
 
 
 @Component({
@@ -16,9 +17,27 @@ export class BlogEditorComponent implements OnInit {
   author = '';
   body = '';
   backendResponse = '';
+  titleFC = new FormControl('');
+  authorFC = new FormControl('');
+  bodyFC = new FormControl('');
+  editing = false;
 
-  constructor(private blogService: BlogService) {
-    this.generateID().then((n) => this.id = n);
+  constructor(private blogService: BlogService, public activatedRouter: ActivatedRoute, public route: Router) {
+    if (this.activatedRouter.snapshot.paramMap.get('id')){
+      this.id = Number(this.activatedRouter.snapshot.paramMap.get('id'));
+      blogService.getSingleBlog(String(this.id)).then((rows) => {
+        const blog: Blog = rows[0];
+        this.title = blog.title;
+        this.author = blog.author;
+        this.body = blog.body;
+        this.titleFC.setValue(this.title);
+        this.authorFC.setValue(this.author);
+        this.bodyFC.setValue(this.body);
+        this.editing = true;
+      });
+    } else {
+      this.generateID().then((n) => this.id = n);
+    }
   }
 
   async generateID(): Promise<number> {
@@ -39,17 +58,27 @@ export class BlogEditorComponent implements OnInit {
   }
 
   onSubmit(f: NgForm): void {
-      console.log(f.value);
-      this.title = f.value.title;
-      this.author = f.value.author;
-      this.body = f.value.html;
-      this.blogService.postBlog(this.createBlog()).then((res) => {
-        if (res) {
-          this.backendResponse = 'Blog successfully posted!';
-        } else {
-          this.backendResponse = 'An error has occurred';
-        }
-      });
+      this.title = this.titleFC.value;
+      this.author = this.authorFC.value;
+      this.body = this.bodyFC.value;
+      if (this.editing){
+        this.blogService.updateBlog(this.createBlog()).then((res) => {
+          if (res) {
+            this.backendResponse = 'Blog successfully posted!';
+          } else {
+            this.backendResponse = 'An error has occurred';
+          }
+        });
+      } else{
+        this.blogService.postBlog(this.createBlog()).then((res) => {
+          if (res) {
+            this.backendResponse = 'Blog successfully posted!';
+          } else {
+            this.backendResponse = 'An error has occurred';
+          }
+        });
+      }
+
 
   }
 
