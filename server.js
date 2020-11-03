@@ -4,12 +4,12 @@ const cors = require("cors");
 const process = require('process')
 const { Client } = require('pg');
 const path = require('path');
-
 require('dotenv').config()
 
 const app = express();
 
 var corsOptions = {
+
   origin: "http://localhost:8080"
 };
 
@@ -24,10 +24,12 @@ client.connect( err => {
   }
 });
 
+
 app.use(cors(corsOptions));
 
 // parse requests of content-type - application/json
 app.use(bodyParser.json());
+
 
 
 // parse requests of content-type - application/x-www-form-urlencoded
@@ -109,6 +111,7 @@ app.get("/blogs", async (req,res) => {
   }
 
 })
+
 
 
 

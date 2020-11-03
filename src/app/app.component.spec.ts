@@ -1,6 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
+import {HeaderComponent} from './components/header/header.component';
+import {FooterComponent} from './components/footer/footer.component';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
@@ -9,6 +11,8 @@ describe('AppComponent', () => {
         RouterTestingModule
       ],
       declarations: [
+        HeaderComponent,
+        FooterComponent,
         AppComponent
       ],
     }).compileComponents();
@@ -17,7 +21,9 @@ describe('AppComponent', () => {
   it('should create the app', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
+    console.log('Wow a change!');
     expect(app).toBeTruthy();
+    console.log('oh wow a change but better');
   });
 
   it(`should have as title 'BCEdAccess-Website'`, () => {
@@ -30,6 +36,6 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('span').textContent).toContain('BCEdAccess-Website app is running!');
+    expect(compiled.querySelector('#title').textContent).toContain('BCEdAccess-Website app is running!');
   });
 });
