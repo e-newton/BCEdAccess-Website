@@ -29,13 +29,13 @@ export class BlogService {
   }
 
   async getSingleBlog(id: string): Promise<any> {
-    // const headers = new HttpHeaders();
-    // headers.append('Content-Type', 'application/json');
-    // const params = new HttpParams().set('id', id);
-    // const response =  await this.http.get('/api/blogs/', {headers, params}).toPromise();
-    // return response;
-    return [new Blog(69, 'Stub Blog', 'Stubby', '<h1>Hi I shouldn\'t exist for much longer</h1>')];
-
+    const snapshot = await this.firestore.collection('blogs').doc(id).get().toPromise();
+    if (snapshot.exists){
+      const doc = snapshot;
+      return [new Blog(Number(doc.id), doc.data().title, doc.data().author, doc.data().body)];
+    } else {
+      return [];
+    }
   }
 
   async postBlog(blog: Blog): Promise<boolean> {
