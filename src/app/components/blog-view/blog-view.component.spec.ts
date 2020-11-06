@@ -9,6 +9,8 @@ import {RouterTestingModule} from '@angular/router/testing';
 import {routes} from '../../app-routing.module';
 import {Observable, of} from 'rxjs';
 import {Blog} from '../../model/blog';
+import {AngularFireModule} from '@angular/fire';
+import {environment} from '../../app.module';
 
 
 
@@ -25,7 +27,8 @@ describe('BlogViewComponent', () => {
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule,
         RouterModule.forRoot([]),
-        RouterTestingModule.withRoutes(routes)],
+        RouterTestingModule.withRoutes(routes),
+        AngularFireModule.initializeApp(environment.firebase)],
       providers: [BlogService, {
         provide: ActivatedRoute,
         useValue: {
@@ -53,6 +56,7 @@ describe('BlogViewComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
 
   it('should load when going to regular blog', fakeAsync(() => {
     const blogSpy = spyOn(blogService, 'getSingleBlog')
