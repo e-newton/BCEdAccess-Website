@@ -39,14 +39,15 @@ export class BlogService {
   }
 
   async postBlog(blog: Blog): Promise<boolean> {
-    // const headers = new HttpHeaders();
-    // headers.append('Content-Type', 'application/json');
-    // const params = new HttpParams().set('id', String(blog.id));
-    // const response: any = await this.http.post<Blog>('/api/blogs/', blog, {headers, params}).toPromise();
-    // return response.success as boolean;
-    return true;
-
-    // const response =  await this.http.get('/api/blogs/', {headers, params}).toPromise();
+    return await this.firestore.collection('blogs').doc(String(blog.id)).set({
+      title: blog.title,
+      author: blog.author,
+      body: blog.body,
+    }).then((value => {
+      return true;
+    })).catch((err) => {
+      return false;
+    });
   }
 
   async isBlogIDValid(id: string): Promise<boolean> {
