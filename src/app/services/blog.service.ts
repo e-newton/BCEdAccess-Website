@@ -7,6 +7,8 @@ import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 })
 export class BlogService {
 
+  // TODO: Turn this into an AngularFire app
+
   constructor(private http: HttpClient) { }
 
   async getAllBlogs(): Promise<any>{
