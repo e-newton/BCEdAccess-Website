@@ -69,12 +69,12 @@ export class BlogService {
   }
 
   async deleteBlog(id: string): Promise<boolean> {
-    // const headers = new HttpHeaders();
-    // headers.append('Content-Type', 'application/json');
-    // const params = new HttpParams().set('id', id);
-    // const response: any =  await this.http.delete<Blog>('/api/blogs/', {headers, params}).toPromise();
-    // return response.success as boolean;
-    return true;
+    return await this.firestore.collection('blogs').doc(id).delete().then(() => {
+      return true;
+    }).catch((err) => {
+      return false;
+    });
+
   }
 
 
