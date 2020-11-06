@@ -57,12 +57,15 @@ export class BlogService {
   }
 
   async updateBlog(blog: Blog): Promise<boolean> {
-    // const headers = new HttpHeaders();
-    // headers.append('Content-Type', 'application/json');
-    // const params = new HttpParams().set('id', String(blog.id));
-    // const response: any = await this.http.put<Blog>('/api/blogs/', blog, {headers, params}).toPromise();
-    // return response.success as boolean;
-    return true;
+    return await this.firestore.collection('blogs').doc(String(blog.id)).update({
+      title: blog.title,
+      author: blog.author,
+      body: blog.body,
+    }).then((value => {
+      return true;
+    })).catch((err) => {
+      return false;
+    });
   }
 
   async deleteBlog(id: string): Promise<boolean> {
