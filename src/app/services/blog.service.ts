@@ -19,9 +19,12 @@ export class BlogService {
 
 
   async getAllBlogs(): Promise<any>{
-    // const response =  await this.http.get('/api/blogs/').toPromise();
-    // return response;
-    return [new Blog(69, 'Stub Blog', 'Stubby', '<h1>Hi I shouldn\'t exist for much longer</h1>')];
+    const snapshot = await this.firestore.collection('blogs').get().toPromise();
+    const blogs = [];
+    snapshot.forEach(doc => {
+      blogs.push(new Blog(Number(doc.id), doc.data().title, doc.data().author, doc.data().body));
+    });
+    return blogs;
 
   }
 
