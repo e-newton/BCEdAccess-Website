@@ -48,20 +48,18 @@ describe('BlogViewComponent', () => {
     httpTestingController = TestBed.inject(HttpTestingController);
     router = TestBed.inject(Router);
     activedRouter = TestBed.inject(ActivatedRoute);
-
-    await fixture.whenStable();
   });
 
 
-  it('should create', () => {
+  it('should create', fakeAsync(() => {
+    tick(100);
     expect(component).toBeTruthy();
-  });
+  }));
 
 
   it('should load when going to regular blog', fakeAsync(() => {
     const blogSpy = spyOn(blogService, 'getSingleBlog')
       .and.returnValue(Promise.resolve([new Blog(123, 'title', 'author', 'body')]));
-    fixture.detectChanges();
     component = new BlogViewComponent(activedRouter, blogService, router);
     component.ngOnInit();
     tick(100);
