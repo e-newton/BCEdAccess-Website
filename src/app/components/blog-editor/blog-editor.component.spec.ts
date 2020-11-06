@@ -11,6 +11,8 @@ import {Test} from 'tslint';
 import {of} from 'rxjs';
 import {RouterTestingModule} from '@angular/router/testing';
 import {routes} from '../../app-routing.module';
+import {AngularFireModule} from '@angular/fire';
+import {environment} from '../../app.module';
 
 describe('BlogEditorComponent', () => {
   let component: BlogEditorComponent;
@@ -26,7 +28,8 @@ describe('BlogEditorComponent', () => {
         RouterModule.forRoot([]),
       FormsModule,
       RouterTestingModule.withRoutes(routes),
-      ReactiveFormsModule, FormsModule],
+      ReactiveFormsModule, FormsModule,
+        AngularFireModule.initializeApp(environment.firebase)],
       providers: [BlogService],
       declarations: [ BlogEditorComponent]
     })

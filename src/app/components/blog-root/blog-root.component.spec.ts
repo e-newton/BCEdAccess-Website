@@ -5,6 +5,8 @@ import {HttpClientTestingModule, HttpTestingController} from '@angular/common/ht
 import {BlogService} from '../../services/blog.service';
 import {RouterModule} from '@angular/router';
 import {Blog} from '../../model/blog';
+import {AngularFireModule} from '@angular/fire';
+import {environment} from '../../app.module';
 
 
 describe('BlogRootComponent', () => {
@@ -17,7 +19,8 @@ describe('BlogRootComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule,
-                RouterModule.forRoot([])],
+                RouterModule.forRoot([]),
+        AngularFireModule.initializeApp(environment.firebase)],
       providers: [BlogService],
       declarations: [ BlogRootComponent ]
     })
@@ -30,41 +33,36 @@ describe('BlogRootComponent', () => {
     fixture.detectChanges();
     blogService = TestBed.inject(BlogService);
     httpTestingController = TestBed.inject(HttpTestingController);
-    const req = httpTestingController.expectOne('/api/blogs/');
-    req.flush([]);
-    await fixture.whenStable();
   });
 
-  afterEach(() => {
-    httpTestingController.verify();
-  });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
   it('should have the correct data for no blogs', fakeAsync(() => {
-
-    spyOn(component, 'ngOnInit').and.callThrough();
+    const blogServiceSpy = spyOn(blogService, 'getAllBlogs').and.returnValue(Promise.resolve([]));
+    const initSpy = spyOn(component, 'ngOnInit').and.callThrough();
     component.ngOnInit();
     fixture.detectChanges();
-    const req = httpTestingController.expectOne('/api/blogs/');
-    req.flush([]);
-    expect(component.ngOnInit).toHaveBeenCalled();
+    tick(100);
+    expect(initSpy).toHaveBeenCalled();
     expect(component.blogs.length).toEqual(0);
+    expect(blogServiceSpy).toHaveBeenCalledTimes(1);
 
   }));
 
   it('should have the correct data for single blogs', fakeAsync(async () => {
     const b1: Blog = new Blog(1, 'title1', 'author1', 'body1');
-    spyOn(component, 'ngOnInit').and.callThrough();
+    const blogServiceSpy = spyOn(blogService, 'getAllBlogs').and.returnValue(Promise.resolve([b1]));
+    const initSpy = spyOn(component, 'ngOnInit').and.callThrough();
     component.ngOnInit();
     fixture.detectChanges();
-    const req = httpTestingController.expectOne('/api/blogs/');
-    req.flush([b1]);
-    expect(component.ngOnInit).toHaveBeenCalled();
-    tick();
+    tick(100);
+    expect(initSpy).toHaveBeenCalled();
+    expect(component.blogs).toContain(b1);
     expect(component.blogs.length).toEqual(1);
+    expect(blogServiceSpy).toHaveBeenCalledTimes(1);
 
   }));
 
@@ -72,14 +70,17 @@ describe('BlogRootComponent', () => {
     const b1: Blog = new Blog(1, 'title1', 'author1', 'body1');
     const b2: Blog = new Blog(2, 'title2', 'author2', 'body2');
     const b3: Blog = new Blog(3, 'title3', 'author3', 'body3');
-    spyOn(component, 'ngOnInit').and.callThrough();
+    const blogServiceSpy = spyOn(blogService, 'getAllBlogs').and.returnValue(Promise.resolve([b1, b2, b3]));
+    const initSpy = spyOn(component, 'ngOnInit').and.callThrough();
     component.ngOnInit();
     fixture.detectChanges();
-    const req = httpTestingController.expectOne('/api/blogs/');
-    req.flush([b1, b2, b3]);
-    expect(component.ngOnInit).toHaveBeenCalled();
-    tick();
+    tick(100);
+    expect(initSpy).toHaveBeenCalled();
     expect(component.blogs.length).toEqual(3);
+    expect(component.blogs).toContain(b1);
+    expect(component.blogs).toContain(b2);
+    expect(component.blogs).toContain(b3);
+    expect(blogServiceSpy).toHaveBeenCalledTimes(1);
   }));
 
   it('should delete a blog', fakeAsync(() => {
