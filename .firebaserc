@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "bcedaccess-website": {
+      "hosting": {
+        "BCEdAccess-Website": [
+          "bcedaccess-website"
+        ]
+      }
+    }
+  }
+}
