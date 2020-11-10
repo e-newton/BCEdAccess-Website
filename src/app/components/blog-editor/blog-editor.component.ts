@@ -12,6 +12,8 @@ import {ActivatedRoute, Router} from '@angular/router';
 })
 export class BlogEditorComponent implements OnInit {
 
+  // TODO, ckeditor babbyyyyy
+
   id: number;
   title = '';
   author = '';
