@@ -13,6 +13,7 @@ import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import {AngularFireModule} from '@angular/fire';
 import {AngularFirestoreModule} from '@angular/fire/firestore';
+import {CKEditorModule} from '@ckeditor/ckeditor5-angular';
 
 export const environment = {
   production : false,
@@ -45,6 +46,7 @@ export const environment = {
     ReactiveFormsModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
+    CKEditorModule,
   ],
   exports: [
     HeaderComponent,

@@ -3,6 +3,7 @@ import {BlogService} from '../../services/blog.service';
 import {FormControl, NgForm} from '@angular/forms';
 import {Blog} from '../../model/blog';
 import {ActivatedRoute, Router} from '@angular/router';
+import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 
 @Component({
@@ -13,6 +14,8 @@ import {ActivatedRoute, Router} from '@angular/router';
 export class BlogEditorComponent implements OnInit {
 
   // TODO, ckeditor babbyyyyy
+
+  public Editor = ClassicEditor;
 
   id: number;
   title = '';
