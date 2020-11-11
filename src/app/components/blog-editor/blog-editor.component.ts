@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {BlogService} from '../../services/blog.service';
 import {FormControl, NgForm} from '@angular/forms';
 import {Blog} from '../../model/blog';
 import {ActivatedRoute, Router} from '@angular/router';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import {ChangeEvent, CKEditorComponent} from '@ckeditor/ckeditor5-angular';
 
 
 @Component({
@@ -13,9 +14,9 @@ import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 })
 export class BlogEditorComponent implements OnInit {
 
-  // TODO, ckeditor babbyyyyy
 
-  public Editor = ClassicEditor;
+  editor = ClassicEditor;
+  @ViewChild( 'editorComponent' ) editorComponent: CKEditorComponent;
 
   id: number;
   title = '';
@@ -45,6 +46,12 @@ export class BlogEditorComponent implements OnInit {
     }
   }
 
+  onEditorChange( { editor }: ChangeEvent ): void {
+    const data = editor.getData();
+    console.log( data );
+    this.editorComponent.data = data;
+  }
+
   async generateID(): Promise<number> {
     let n = this.random(3, 100);
     let valid = await this.blogService.isBlogIDValid(String(n));
@@ -63,6 +70,11 @@ export class BlogEditorComponent implements OnInit {
   }
 
   onSubmit(f: NgForm): void {
+      if (!this.titleFC.value){
+        const data = this.editorComponent.data;
+        console.log( data );
+        return;
+      }
       this.title = this.titleFC.value;
       this.author = this.authorFC.value;
       this.body = this.bodyFC.value;

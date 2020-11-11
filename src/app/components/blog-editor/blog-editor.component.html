@@ -26,6 +26,6 @@
 </div>
 <h3>{{backendResponse}}</h3>
 <h1>CK EDITOR BELOOOOW</h1>
-<ckeditor [editor]="Editor" data="<p>Hello, world!</p>"></ckeditor>
+<ckeditor #editorComponent [editor]="editor" data="<p>Hello, world!</p>" (change)="onEditorChange($event)"></ckeditor>
 
 
