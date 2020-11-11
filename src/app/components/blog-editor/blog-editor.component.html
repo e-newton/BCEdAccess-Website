@@ -17,15 +17,14 @@
     <div>
       <label>
         Blog Body<br>
-        <textarea name = "html" [formControl]="bodyFC"></textarea>
       </label>
     </div>
     <button *ngIf="!editing">Publish</button>
     <button *ngIf="editing">Update</button>
   </form>
 </div>
-<h3>{{backendResponse}}</h3>
-<h1>CK EDITOR BELOOOOW</h1>
 <ckeditor #editorComponent [editor]="editor" data="<p>Hello, world!</p>" (change)="onEditorChange($event)"></ckeditor>
+
+<h3>{{backendResponse}}</h3>
 
 

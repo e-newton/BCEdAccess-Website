@@ -21,11 +21,9 @@ export class BlogEditorComponent implements OnInit {
   id: number;
   title = '';
   author = '';
-  body = '';
   backendResponse = '';
   titleFC = new FormControl('');
   authorFC = new FormControl('');
-  bodyFC = new FormControl('');
   editing = false;
 
   constructor(private blogService: BlogService, public activatedRouter: ActivatedRoute, public route: Router) {
@@ -33,12 +31,14 @@ export class BlogEditorComponent implements OnInit {
       this.id = Number(this.activatedRouter.snapshot.paramMap.get('id'));
       blogService.getSingleBlog(String(this.id)).then((rows) => {
         const blog: Blog = rows[0];
+        if (!blog) {
+          return;
+        }
         this.title = blog.title;
         this.author = blog.author;
-        this.body = blog.body;
+        this.editorComponent.data = blog.body;
         this.titleFC.setValue(this.title);
         this.authorFC.setValue(this.author);
-        this.bodyFC.setValue(this.body);
         this.editing = true;
       });
     } else {
@@ -70,14 +70,8 @@ export class BlogEditorComponent implements OnInit {
   }
 
   onSubmit(f: NgForm): void {
-      if (!this.titleFC.value){
-        const data = this.editorComponent.data;
-        console.log( data );
-        return;
-      }
       this.title = this.titleFC.value;
       this.author = this.authorFC.value;
-      this.body = this.bodyFC.value;
       if (this.editing){
         this.blogService.updateBlog(this.createBlog()).then((res) => {
           if (res) {
@@ -100,6 +94,6 @@ export class BlogEditorComponent implements OnInit {
   }
 
   createBlog(): Blog {
-    return new Blog(this.id, this.title, this.author, this.body);
+    return new Blog(this.id, this.title, this.author, this.editorComponent.data);
   }
 }
