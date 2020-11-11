@@ -21,6 +21,7 @@ export class BlogEditorComponent implements OnInit {
   id: number;
   title = '';
   author = '';
+  body = 'string';
   backendResponse = '';
   titleFC = new FormControl('');
   authorFC = new FormControl('');
@@ -36,7 +37,8 @@ export class BlogEditorComponent implements OnInit {
         }
         this.title = blog.title;
         this.author = blog.author;
-        this.editorComponent.data = blog.body;
+        this.body = blog.body;
+        this.editorComponent.editorInstance.setData(blog.body);
         this.titleFC.setValue(this.title);
         this.authorFC.setValue(this.author);
         this.editing = true;

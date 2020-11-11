@@ -23,7 +23,7 @@
     <button *ngIf="editing">Update</button>
   </form>
 </div>
-<ckeditor #editorComponent [editor]="editor" data="<p>Hello, world!</p>" (change)="onEditorChange($event)"></ckeditor>
+<ckeditor #editorComponent [editor]="editor" [data]="body" (change)="onEditorChange($event)"></ckeditor>
 
 <h3>{{backendResponse}}</h3>
 
