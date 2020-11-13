@@ -5,6 +5,7 @@ import {Blog} from '../../model/blog';
 import {ActivatedRoute, Router} from '@angular/router';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import {ChangeEvent, CKEditorComponent} from '@ckeditor/ckeditor5-angular';
+import {DomSanitizer} from '@angular/platform-browser';
 
 
 @Component({
@@ -21,7 +22,7 @@ export class BlogEditorComponent implements OnInit {
   id: number;
   title = '';
   author = '';
-  body = 'string';
+  body = '';
   backendResponse = '';
   titleFC = new FormControl('');
   authorFC = new FormControl('');
@@ -49,7 +50,8 @@ export class BlogEditorComponent implements OnInit {
   }
 
   onEditorChange( { editor }: ChangeEvent ): void {
-    const data = editor.getData();
+    // const data = editor.getData();
+    const data = this.editorComponent.editorInstance.getData();
     console.log( data );
     this.editorComponent.data = data;
   }
@@ -71,7 +73,7 @@ export class BlogEditorComponent implements OnInit {
     return Math.floor(Math.random() * (high - low) + low);
   }
 
-  onSubmit(f: NgForm): void {
+  onSubmit(): void {
       this.title = this.titleFC.value;
       this.author = this.authorFC.value;
       if (this.editing){
