@@ -67,7 +67,11 @@ export class BlogEditorComponent implements OnInit, AfterViewInit {
       this.author = blog.author;
       this.body = blog.body;
       this.editorComponent.data = blog.body;
-      // this.editorComponent.editorInstance.setData(blog.body);
+
+      // This is to make unit testing work. I don't like it and neither should you.
+      if (this.editorComponent.editorInstance){
+        this.editorComponent.editorInstance.setData(blog.body);
+      }
       this.titleFC.setValue(this.title);
       this.authorFC.setValue(this.author);
       this.editing = true;

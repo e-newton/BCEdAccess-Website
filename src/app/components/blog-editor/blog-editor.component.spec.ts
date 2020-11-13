@@ -123,7 +123,7 @@ describe('BlogEditorComponent', () => {
     component = new BlogEditorComponent(blogService, route, router);
     component.editorComponent = TestBed.createComponent(CKEditorComponent).componentInstance as CKEditorComponent;
     component.ngAfterViewInit();
-    tick(100);
+    tick(300);
     expect(component).toBeTruthy();
     expect(component.id).toEqual(123);
     expect(component.title).toEqual('title');
@@ -142,7 +142,7 @@ describe('BlogEditorComponent', () => {
     component = new BlogEditorComponent(blogService, route, router);
     component.editorComponent = TestBed.createComponent(CKEditorComponent).componentInstance as CKEditorComponent;
     component.ngAfterViewInit();
-    tick(100);
+    tick(500);
     expect(spyRoute).toHaveBeenCalledWith('id');
     expect(spyRoute).toHaveBeenCalledTimes(2);
     expect(blogSpy).toHaveBeenCalledWith('123');
