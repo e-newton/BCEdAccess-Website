@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {BlogService} from '../../services/blog.service';
 import {FormControl, NgForm} from '@angular/forms';
 import {Blog} from '../../model/blog';
@@ -13,12 +13,12 @@ import {DomSanitizer} from '@angular/platform-browser';
   templateUrl: './blog-editor.component.html',
   styleUrls: ['./blog-editor.component.css']
 })
-export class BlogEditorComponent implements OnInit {
+export class BlogEditorComponent implements OnInit, AfterViewInit {
 
 
   editor = ClassicEditor;
   @ViewChild( 'editorComponent' ) editorComponent: CKEditorComponent;
-
+  loadedBlog: Blog;
   id: number;
   title = '';
   author = '';
@@ -31,19 +31,6 @@ export class BlogEditorComponent implements OnInit {
   constructor(private blogService: BlogService, public activatedRouter: ActivatedRoute, public route: Router) {
     if (this.activatedRouter.snapshot.paramMap.get('id')){
       this.id = Number(this.activatedRouter.snapshot.paramMap.get('id'));
-      blogService.getSingleBlog(String(this.id)).then((rows) => {
-        const blog: Blog = rows[0];
-        if (!blog) {
-          return;
-        }
-        this.title = blog.title;
-        this.author = blog.author;
-        this.body = blog.body;
-        this.editorComponent.editorInstance.setData(blog.body);
-        this.titleFC.setValue(this.title);
-        this.authorFC.setValue(this.author);
-        this.editing = true;
-      });
     } else {
       this.generateID().then((n) => this.id = n);
     }
@@ -66,7 +53,26 @@ export class BlogEditorComponent implements OnInit {
     return n;
   }
 
+
   ngOnInit(): void {
+  }
+
+  ngAfterViewInit(): void {
+    this.blogService.getSingleBlog(String(this.id)).then((rows) => {
+      const blog: Blog = rows[0];
+      if (!blog) {
+        return;
+      }
+      this.title = blog.title;
+      this.author = blog.author;
+      this.body = blog.body;
+      this.editorComponent.data = blog.body;
+      // this.editorComponent.editorInstance.setData(blog.body);
+      this.titleFC.setValue(this.title);
+      this.authorFC.setValue(this.author);
+      this.editing = true;
+    });
+
   }
 
   random(low: number, high: number): number {

@@ -1,8 +1,8 @@
-import { OembedPipePipe } from './oembed-pipe.pipe';
+import { OembedPipe } from './oembed-pipe.pipe';
 
 describe('OembedPipePipe', () => {
   it('create an instance', () => {
-    const pipe = new OembedPipePipe();
+    const pipe = new OembedPipe();
     expect(pipe).toBeTruthy();
   });
 });
