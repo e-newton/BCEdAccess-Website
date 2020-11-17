@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, NavigationExtras, Router} from '@angular/router';
 import {BlogService} from '../../services/blog.service';
+import {DomSanitizer} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-blog-view',
