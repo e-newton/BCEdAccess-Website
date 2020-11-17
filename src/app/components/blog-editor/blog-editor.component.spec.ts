@@ -13,6 +13,8 @@ import {RouterTestingModule} from '@angular/router/testing';
 import {routes} from '../../app-routing.module';
 import {AngularFireModule} from '@angular/fire';
 import {environment} from '../../app.module';
+import {CKEditorComponent, CKEditorModule} from '@ckeditor/ckeditor5-angular';
+import {ViewChild} from '@angular/core';
 
 describe('BlogEditorComponent', () => {
   let component: BlogEditorComponent;
@@ -29,9 +31,10 @@ describe('BlogEditorComponent', () => {
       FormsModule,
       RouterTestingModule.withRoutes(routes),
       ReactiveFormsModule, FormsModule,
-        AngularFireModule.initializeApp(environment.firebase)],
+        AngularFireModule.initializeApp(environment.firebase),
+      CKEditorModule],
       providers: [BlogService],
-      declarations: [ BlogEditorComponent]
+      declarations: [ BlogEditorComponent, CKEditorComponent]
     })
     .compileComponents();
   });
@@ -44,6 +47,7 @@ describe('BlogEditorComponent', () => {
     activatedRoute = TestBed.inject(ActivatedRoute);
     router = TestBed.inject(Router);
     route = TestBed.inject(ActivatedRoute);
+    component.editorComponent = TestBed.createComponent(CKEditorComponent).componentInstance as CKEditorComponent;
   });
 
   it('should create', () => {
@@ -75,25 +79,18 @@ describe('BlogEditorComponent', () => {
   }));
 
   it('should create a valid blog', () => {
+    component.editorComponent = TestBed.createComponent(CKEditorComponent).componentInstance as CKEditorComponent;
     component.id = 1;
-    component.body = 'body';
+    component.editorComponent.data = 'body';
     component.author = 'author';
     component.title = 'title';
     expect(component.createBlog()).toEqual(new Blog(1, 'title', 'author', 'body'));
   });
 
   it('should post a blog successfully', fakeAsync(() => {
-    const testForm = {
-      value: {
-        id: '1',
-        body: 'body',
-        author: 'author',
-        title: 'title'
-      }
-    } as NgForm;
     const blogSpy = spyOn(blogService, 'postBlog').and.returnValues(Promise.resolve(true));
     component.id = 1;
-    component.onSubmit(testForm);
+    component.onSubmit();
     tick(100);
     expect(component.backendResponse).toEqual('Blog successfully posted!');
     expect(blogSpy).toHaveBeenCalledTimes(1);
@@ -102,17 +99,9 @@ describe('BlogEditorComponent', () => {
   }));
 
   it('should post a blog unsuccessfully', fakeAsync(() => {
-    const testForm = {
-      value: {
-        id: '1',
-        body: 'body',
-        author: 'author',
-        title: 'title'
-      }
-    } as NgForm;
     const blogSpy = spyOn(blogService, 'postBlog').and.returnValues(Promise.resolve(false));
     component.id = 1;
-    component.onSubmit(testForm);
+    component.onSubmit();
     tick(100);
     expect(component.backendResponse).toEqual('An error has occurred');
     expect(blogSpy).toHaveBeenCalledTimes(1);
@@ -132,7 +121,9 @@ describe('BlogEditorComponent', () => {
     const blogSpy = spyOn(blogService, 'getSingleBlog')
       .and.returnValues(Promise.resolve([new Blog(123, 'title', 'author', 'body')]));
     component = new BlogEditorComponent(blogService, route, router);
-    tick(100);
+    component.editorComponent = TestBed.createComponent(CKEditorComponent).componentInstance as CKEditorComponent;
+    component.ngAfterViewInit();
+    tick(300);
     expect(component).toBeTruthy();
     expect(component.id).toEqual(123);
     expect(component.title).toEqual('title');
@@ -149,14 +140,16 @@ describe('BlogEditorComponent', () => {
     const blogSpy = spyOn(blogService, 'getSingleBlog')
       .and.returnValues(Promise.resolve([new Blog(123, 'title', 'author', 'body')]));
     component = new BlogEditorComponent(blogService, route, router);
-    tick(100);
+    component.editorComponent = TestBed.createComponent(CKEditorComponent).componentInstance as CKEditorComponent;
+    component.ngAfterViewInit();
+    tick(500);
     expect(spyRoute).toHaveBeenCalledWith('id');
     expect(spyRoute).toHaveBeenCalledTimes(2);
     expect(blogSpy).toHaveBeenCalledWith('123');
     expect(blogSpy).toHaveBeenCalledTimes(1);
     expect(component.titleFC.value).toEqual('title');
     expect(component.authorFC.value).toEqual('author');
-    expect(component.bodyFC.value).toEqual('body');
+    expect(component.editorComponent.data).toEqual('body');
   }));
 
 

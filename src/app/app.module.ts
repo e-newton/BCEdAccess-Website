@@ -13,6 +13,10 @@ import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import {AngularFireModule} from '@angular/fire';
 import {AngularFirestoreModule} from '@angular/fire/firestore';
+import {CKEditorModule} from '@ckeditor/ckeditor5-angular';
+import { SafeHTMLPipe } from './pipes/safe-html.pipe';
+import { OembedPipe } from './pipes/oembed-pipe.pipe';
+import { BlogPipePipe } from './pipes/blog-pipe.pipe';
 
 export const environment = {
   production : false,
@@ -35,7 +39,10 @@ export const environment = {
     BlogViewComponent,
     BlogEditorComponent,
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    SafeHTMLPipe,
+    OembedPipe,
+    BlogPipePipe
   ],
   imports: [
     BrowserModule,
@@ -45,6 +52,7 @@ export const environment = {
     ReactiveFormsModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
+    CKEditorModule,
   ],
   exports: [
     HeaderComponent,

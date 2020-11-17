@@ -1,29 +1,33 @@
 <p>blog-editor works!</p>
 <p>Current id for new blog: {{id}}</p>
 <div style="display: flex; flex-direction: column">
-  <form ngForm #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate>
+  <form ngForm #f="ngForm" novalidate>
     <div>
+      <div style="height: 1rem"></div>
       <label>
         Blog Title<br>
         <input name="title" required [formControl]="titleFC">
       </label>
     </div>
+    <div style="height: 1rem"></div>
     <div>
       <label>
         Blog Author<br>
         <input name="author" [formControl]="authorFC">
       </label>
     </div>
+    <div style="height: 1rem"></div>
     <div>
       <label>
         Blog Body<br>
-        <textarea name = "html" [formControl]="bodyFC"></textarea>
       </label>
     </div>
-    <button *ngIf="!editing">Publish</button>
-    <button *ngIf="editing">Update</button>
   </form>
 </div>
+<ckeditor #editorComponent [editor]="editor" [data]="body" (change)="onEditorChange($event)"></ckeditor>
+<div style="height: 1rem"></div>
+<button *ngIf="!editing" (click)="onSubmit()">Publish</button>
+<button *ngIf="editing" (click)="onSubmit()">Update</button>
 <h3>{{backendResponse}}</h3>
 
 
