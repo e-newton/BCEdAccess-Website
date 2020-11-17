@@ -5,6 +5,7 @@ import {Blog} from '../../model/blog';
 import {ActivatedRoute, Router} from '@angular/router';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import {ChangeEvent, CKEditorComponent} from '@ckeditor/ckeditor5-angular';
+import * as CustomEditor from 'ckeditor5/build/ckeditor';
 import {DomSanitizer} from '@angular/platform-browser';
 
 
@@ -15,8 +16,64 @@ import {DomSanitizer} from '@angular/platform-browser';
 })
 export class BlogEditorComponent implements OnInit, AfterViewInit {
 
+  config = {
 
-  editor = ClassicEditor;
+    toolbar: {
+      items: [
+        'heading',
+        '|',
+        'CKFinder',
+        'bold',
+        'italic',
+        'underline',
+        'strikethrough',
+        'subscript',
+        'superscript',
+        'removeFormat',
+        '|',
+        'fontBackgroundColor',
+        'fontColor',
+        'fontSize',
+        'fontFamily',
+        '|',
+        'bulletedList',
+        'numberedList',
+        '|',
+        'alignment',
+        'indent',
+        'outdent',
+        '|',
+        'horizontalLine',
+        'link',
+        'imageUpload',
+        'imageInsert',
+        'blockQuote',
+        'insertTable',
+        'mediaEmbed',
+        'specialCharacters',
+        'undo',
+        'redo'
+      ]
+    },
+    language: 'en',
+    image: {
+      toolbar: [
+        'imageTextAlternative',
+        'imageStyle:full',
+        'imageStyle:side'
+      ]
+    },
+    table: {
+      contentToolbar: [
+        'tableColumn',
+        'tableRow',
+        'mergeTableCells',
+        'tableCellProperties',
+        'tableProperties'
+      ]
+    }};
+  editor = CustomEditor;
+  // custom = CustomEditor;
   @ViewChild( 'editorComponent' ) editorComponent: CKEditorComponent;
   loadedBlog: Blog;
   id: number;
