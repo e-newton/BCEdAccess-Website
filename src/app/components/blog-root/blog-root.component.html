@@ -1,11 +1,35 @@
 <p>blog-root works!</p>
-<div *ngFor="let blog of blogs">
-  <span><a [routerLink]="['/blog', blog.id]">{{blog.title}}</a>
-    <p>          </p>
-    <a [routerLink]="['/blog/editor', blog.id]">Edit</a></span>
-    <a (click)="this.deleteBlog(blog.id)" [routerLink]="['/blog']">        Delete</a>
-  <br>
-  <br>
+
+<div class="container-fluid">
+  <div class="row justify-content-center mb-5">
+    <button class="btn col-12 col-md-6 ml-0 mr-0 p-4" style="background-color: #BBEEAA">
+      <h3>New Blog</h3>
+    </button>
+  </div>
+
 </div>
+
+<div class="container-fluid" >
+  <div class="row mb-lg-4 justify-content-center"  *ngFor="let blogList of this.getGroupsOfN(4); index as i; last as last">
+    <div class="col-12 col-sm-6 col-xl-3 mt-1 mb-1 d-flex justify-content-center" *ngFor="let blog of blogList">
+      <div class="card w-100 align-self-center" style="max-width: 18rem; max-height: 21rem; border-radius: 20%;">
+        <a href="#" class="h-auto">
+          <!--Whenever I get images working we should be putting it here-->
+          <img class="card-img-top img-fluid h-50" src="./assets/bird.jpg" alt="Card image cap"
+               style="border-radius: 2.5rem 2.5rem 0 0">
+          <div class="card-body" style="border-radius: 0 0 2.5rem 2.5rem">
+            <h5 class="card-title text-center">{{blog.title}}</h5>
+            <p class="card-subtitle text-center">{{blog.author}}</p>
+            <p class="card-subtitle text-center">November 11 2020</p>
+            <div class="rounded-bottom"></div>
+          </div>
+
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 
 

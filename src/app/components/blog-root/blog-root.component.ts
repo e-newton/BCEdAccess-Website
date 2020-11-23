@@ -40,6 +40,16 @@ export class BlogRootComponent implements OnInit {
 
   }
 
+  getGroupsOfN(N: number): Blog[][]{
+    const rv = [];
+
+    for (let i = 0; i < this.blogs.length; i += N) {
+      const temparray = this.blogs.slice(i, i + N);
+      rv.push(temparray);
+    }
+    return rv;
+  }
+
 
 
 }
