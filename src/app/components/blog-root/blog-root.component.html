@@ -2,7 +2,7 @@
 
 <div class="container-fluid">
   <div class="row justify-content-center mb-5">
-    <button class="btn col-12 col-md-6 ml-0 mr-0 p-4" style="background-color: #BBEEAA">
+    <button class="btn col-12 col-md-6 ml-0 mr-0 p-4 regular-btn">
       <h3>New Blog</h3>
     </button>
   </div>
@@ -21,7 +21,18 @@
             <h5 class="card-title text-center">{{blog.title}}</h5>
             <p class="card-subtitle text-center">{{blog.author}}</p>
             <p class="card-subtitle text-center">November 11 2020</p>
-            <div class="rounded-bottom"></div>
+            <div class="container-fluid mt-3">
+              <div class="row justify-content-around">
+                <a class="regular-btn btn col-5 h-50 mr-1">
+                  Edit
+
+                </a>
+                <a class="delete-btn btn col-5 ml-1">
+                  Delete
+
+                </a>
+              </div>
+            </div>
           </div>
 
         </a>

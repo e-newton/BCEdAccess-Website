@@ -22,8 +22,21 @@ a:hover{
 .card-body{
   background-color: #BBEEAA;
 
-
 }
+.regular-btn{
+  background-color: #689f5c;
+}
+.regular-btn:hover{
+  background-color: #a0d096;
+}
+.delete-btn{
+  background-color: #689f5c;
+}
+.delete-btn:hover{
+  background-color: #ef411f;
+}
+
+
 .card-img-top {
 
 }
