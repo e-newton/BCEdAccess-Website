@@ -1,8 +1,8 @@
-<div *ngIf="authService.user$ | async as user; else login" class="bg-light row align-items-center justify-content-around">
+<div *ngIf="authService.user$ | async as user" class="bg-light row align-items-center justify-content-around">
   <div class="col align-middle d-flex">
     <p class="m-0">You are logged in as {{user.name}}</p>
   </div>
   <div class="col">
-    <button class="btn btn-primary float-right" (click)="authService.signout()">Logout</button>
+    <button class="btn btn-primary float-right" (click)="authService.signOut()">Logout</button>
   </div>
 </div>

@@ -30,13 +30,11 @@ export class AuthService {
   async googleSignIn(): Promise<UserCredential> {
     const provider = new GoogleAuthProvider();
     const creds = await this.afAuth.signInWithPopup(provider);
-    console.log('creds', creds);
     return creds;
-
   }
 
 
-  async signout(): Promise<any> {
+  async signOut(): Promise<any> {
     await this.afAuth.signOut();
   }
 
