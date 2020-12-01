@@ -1,0 +1,7 @@
+<div *ngIf="authService.user$">
+<h1>You are logged in?</h1>
+</div>
+
+<ng-template #login>
+  <button class = "button" (click)="authService.googleSignIn()">Login in Google</button>
+</ng-template>
