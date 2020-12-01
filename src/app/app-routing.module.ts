@@ -4,6 +4,8 @@ import {BlogRootComponent} from './components/blog-root/blog-root.component';
 import {BlogViewComponent} from './components/blog-view/blog-view.component';
 import {BlogEditorComponent} from './components/blog-editor/blog-editor.component';
 import {LoginComponent} from './components/login/login.component';
+import {DashboardComponent} from './components/dashboard/dashboard.component';
+import {CanActivateViaAuthGuard} from './auth/can-activate-via-auth-guard';
 
 export const routes: Routes = [
   {path: 'blog/editor/:id', component: BlogEditorComponent},
@@ -11,6 +13,7 @@ export const routes: Routes = [
   {path: 'blog/:id', component: BlogViewComponent},
   {path: 'blog', component: BlogRootComponent},
   {path: 'login', component: LoginComponent},
+  {path: 'dashboard', component: DashboardComponent, canActivate: [CanActivateViaAuthGuard]}
 
 
 
@@ -18,6 +21,7 @@ export const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forRoot(routes, {onSameUrlNavigation: 'reload'})],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [CanActivateViaAuthGuard],
 })
 export class AppRoutingModule { }

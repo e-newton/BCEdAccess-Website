@@ -27,15 +27,16 @@ export class AuthService {
     );
   }
 
-  async googleSignIn(): Promise<UserCredential> {
+  async googleSignIn(): Promise<boolean> {
     const provider = new GoogleAuthProvider();
     const creds = await this.afAuth.signInWithPopup(provider);
-    return creds;
+    return this.router.navigate(['/dashboard']);
   }
 
 
   async signOut(): Promise<any> {
     await this.afAuth.signOut();
+    this.router.navigate(['/']);
   }
 
 }
