@@ -7,6 +7,7 @@ import {map, take, tap} from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
+/*Use this for any route that you want activated only if the user is logged in*/
 export class CanActivateViaAuthGuard implements CanActivate{
   user;
   constructor(private auth: AuthService, private router: Router) {
