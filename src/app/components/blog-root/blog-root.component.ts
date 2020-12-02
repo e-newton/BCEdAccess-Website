@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {Blog} from '../../model/blog';
 import {BlogService} from '../../services/blog.service';
 import {ActivatedRoute, Router} from '@angular/router';
+import {AuthService} from '../../services/auth.service';
 
 @Component({
   selector: 'app-blog-root',
@@ -12,7 +13,8 @@ export class BlogRootComponent implements OnInit {
 
   blogs: Blog[] = [];
 
-  constructor(public blogService: BlogService, private route: ActivatedRoute, private router: Router) {
+  constructor(public blogService: BlogService, private route: ActivatedRoute,
+              private router: Router, public auth: AuthService) {
     this.route.params.subscribe( params => console.log('ROOT', params) );
   }
 

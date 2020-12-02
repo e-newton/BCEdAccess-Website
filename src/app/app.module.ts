@@ -17,6 +17,10 @@ import {CKEditorModule} from '@ckeditor/ckeditor5-angular';
 import { SafeHTMLPipe } from './pipes/safe-html.pipe';
 import { OembedPipe } from './pipes/oembed-pipe.pipe';
 import { BlogPipePipe } from './pipes/blog-pipe.pipe';
+import { LoginComponent } from './components/login/login.component';
+import {JsonPipe} from '@angular/common';
+import { LogoutBarComponent } from './components/logout-bar/logout-bar.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 export const environment = {
   production : false,
@@ -42,7 +46,10 @@ export const environment = {
     FooterComponent,
     SafeHTMLPipe,
     OembedPipe,
-    BlogPipePipe
+    BlogPipePipe,
+    LoginComponent,
+    LogoutBarComponent,
+    DashboardComponent,
   ],
   imports: [
     BrowserModule,

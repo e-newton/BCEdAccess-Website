@@ -4,6 +4,12 @@ import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {Observable} from 'rxjs';
 
+interface BlogFSObject {
+  title: string;
+  author: string;
+  body: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -22,7 +28,8 @@ export class BlogService {
     const snapshot = await this.firestore.collection('blogs').get().toPromise();
     const blogs = [];
     snapshot.forEach(doc => {
-      blogs.push(new Blog(Number(doc.id), doc.data().title, doc.data().author, doc.data().body));
+      const data = doc.data() as BlogFSObject;
+      blogs.push(new Blog(Number(doc.id), data.title, data.author, data.body));
     });
     return blogs;
 
@@ -32,7 +39,8 @@ export class BlogService {
     const snapshot = await this.firestore.collection('blogs').doc(id).get().toPromise();
     if (snapshot.exists){
       const doc = snapshot;
-      return [new Blog(Number(doc.id), doc.data().title, doc.data().author, doc.data().body)];
+      const data = doc.data() as BlogFSObject;
+      return [new Blog(Number(doc.id), data.title, data.author, data.body)];
     } else {
       return [];
     }
