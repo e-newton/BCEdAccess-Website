@@ -8,22 +8,17 @@
 </div>
 
 <div class="container-xl" >
-  <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 justify-content-center" >
-    <div class="col justify-content-center d-flex mb-4 blog-card mb-2" *ngFor="let blog of this.blogs; even as even" style="">
-      <a [routerLink]="['/blog', blog.id]" class="h-100 card w-100 align-self-center">
-        <!--Whenever I get images working we should be putting it here-->
-        <img *ngIf="even" class="card-img-top img-fluid h-50 p-1" src="./assets/bcedaccess_logo.png" alt="Card image cap"
-             style="background-color: #BBEEAA; opacity: 0.80; max-height: 70%;min-height: 70%">
-        <img *ngIf="!even" class="card-img-top img-fluid h-50 p-1" src="./assets/bird.jpg" alt="Card image cap"
-             style="background-color: #BBEEAA; opacity: 0.80; max-height: 70%; min-height: 70%">
-        <h5 class="card-title text-center p-3 m-0" style="background-color: #BBEEAA;">{{blog.title}}</h5>
-        <div class="card-body d-flex flex-column justify-content-around align-content-center" >
-          <div class="m-0 p-0">
-            <p class="card-subtitle text-center p-1">{{blog.author}}</p>
-            <p class="card-subtitle text-center p-1">November 11 2020</p>
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4" >
+    <div class="col mb-2" *ngFor="let blog of this.blogs; even as even">
+      <a [routerLink]="['/blog', blog.id]">
+        <div class="card w-auto d-flex" >
+          <img *ngIf="even" class="card-img-top flex-shrink-1" src="assets/bird.jpg" alt="Card image cap">
+          <img *ngIf="!even" class="card-img-top flex-shrink-1" src="assets/bcedaccess_logo.png" alt="Card image cap" style="flex-shrink: 5000">
+          <div class="card-body text-center">
+            <h6 class="card-text">{{blog.title}}</h6>
           </div>
-
         </div>
+
 
       </a>
 

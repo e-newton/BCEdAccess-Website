@@ -2,7 +2,6 @@ body{
   padding: 0;
 }
 .blog-card{
-  max-height: 15vh
 }
 
 
@@ -19,9 +18,6 @@ body{
 }
 
 @media (min-width: 992px) and (max-width: 1199.98px) {
-  .blog-card{
-    max-height: 15vh
-  }
 
 
 }
