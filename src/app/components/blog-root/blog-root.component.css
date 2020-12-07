@@ -1,11 +1,11 @@
 .card-img-top {
   width: 100%;
-  height: 22vh;
+  height: 22vmax;
   object-fit: cover;
 }
 .card-body {
   width: 100%;
-  height: 15vh;
+  height: 15vmax;
   object-fit: cover;
 }
 a {
@@ -23,6 +23,42 @@ a:hover{
 .card-subtitle{
   font-size: 85%;
   line-height: 140%;
+}
+p{
+  font-size: 120%;
+}
+
+@media (max-width: 575.98px) {  }
+
+@media (min-width: 576px) and (max-width: 767.98px) { }
+
+@media (min-width: 768px) and (max-width: 991.98px) {  }
+
+@media (min-width: 992px) and (max-width: 1199.98px) {
+  .card-img-top {
+    width: 100%;
+    height: 12vmax;
+    object-fit: cover;
+  }
+  .card-body {
+    width: 100%;
+    height: 11vmax;
+    object-fit: cover;
+  }
+
+}
+
+@media (min-width: 1200px) {
+  .card-img-top {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+  .card-body {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+  }
 }
 
 
