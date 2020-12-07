@@ -8,16 +8,27 @@
   height: 15vmax;
   object-fit: cover;
 }
+.card{
+  box-shadow: 0px 0px 0px rgba(0,0,0,0 );
+  transition: 0.3s;
+}
+.card:hover{
+  box-shadow: 0px 0px 10px rgba(0,0,0,0.5);
+}
 a {
   color: #000000;
   line-height: 140%;
   background-color: rgba(0,0,0,0);
   border-color: rgba(0,0,0,0);
+
+  z-index: 5;
+  position: relative;
 }
 
 a:hover{
   text-decoration: none;
-    color: #1f1f1f;
+  color: #1f1f1f;
+
   }
 
 .card-subtitle{
@@ -63,7 +74,7 @@ p{
 
 
 .card-body{
-  background-color: #BBEEAA;
+  background-color: #f1f1f1;
 
 }
 .regular-btn{
