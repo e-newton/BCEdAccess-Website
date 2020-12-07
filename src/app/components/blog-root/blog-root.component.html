@@ -9,36 +9,25 @@
 </div>
 
 <div class="container-xl" >
-  <div class="row mb-lg-4 justify-content-center"  *ngFor="let blogList of this.getGroupsOfN(4); index as i; last as last">
-    <div class="col-12 col-sm-6 col-xl-3 mt-1 mb-1 d-flex justify-content-center" *ngFor="let blog of blogList">
-      <div class="card w-100 align-self-center" style="max-width: 18rem; max-height: 21rem; border-radius: 20%;">
-        <a [routerLink]="['/blog', blog.id]" class="h-auto">
-          <!--Whenever I get images working we should be putting it here-->
-          <img class="card-img-top img-fluid h-50" src="./assets/bird.jpg" alt="Card image cap"
-               style="border-radius: 2.5rem 2.5rem 0 0">
-          <div class="card-body" style="border-radius: 0 0 2.5rem 2.5rem">
-            <h5 class="card-title text-center">{{blog.title}}</h5>
-            <p class="card-subtitle text-center">{{blog.author}}</p>
-            <p class="card-subtitle text-center">November 11 2020</p>
-<!--            <div class="container-fluid mt-3">-->
-<!--              <div class="row justify-content-around">-->
-<!--                <a [routerLink]="['/blog/editor', blog.id]" class="regular-btn btn col-5 h-50 mr-1">-->
-<!--                  Edit-->
-
-<!--                </a>-->
-<!--                <a (click)="this.deleteBlog(blog.id)" [routerLink]= "" class="delete-btn btn col-5 ml-1">-->
-<!--                  Delete-->
-
-<!--                </a>-->
-<!--              </div>-->
-<!--            </div>-->
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 " >
+    <div class="col mb-2" *ngFor="let blog of this.blogs; even as even">
+      <a [routerLink]="['/blog', blog.id]">
+        <div class="card w-auto d-flex rounded-0 border-0" >
+          <img *ngIf="even" class="card-img-top flex-shrink-1 rounded-0" src="assets/bird.jpg" alt="Card image cap">
+          <img *ngIf="!even" class="card-img-top flex-shrink-1 rounded-0" src="assets/bcedaccess_logo.png" alt="Card image cap" style="flex-shrink: 5000">
+          <div class="card-body text-center d-flex flex-column justify-content-center align-content-center align-items-center">
+            <p class="card-text">{{blog.title}}</p>
           </div>
+        </div>
 
-        </a>
-      </div>
+
+      </a>
+
     </div>
   </div>
+
 </div>
+
 
 
 
