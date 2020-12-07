@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class HeaderComponent implements OnInit {
 
   style = {
-    'background-color': '#94ab91',
+    'background-color': '#BBEEAA',
   };
 
   constructor() { }

@@ -1,26 +1,80 @@
 .card-img-top {
   width: 100%;
-  height: 15vw;
+  height: 22vmax;
   object-fit: cover;
+}
+.card-body {
+  width: 100%;
+  height: 15vmax;
+  object-fit: cover;
+}
+.card{
+  box-shadow: 0 0 0 rgba(0,0,0,0 );
+  transition: 0.3s;
+}
+.card:hover{
+  box-shadow: 0 2px 10px rgba(0,0,0,0.5);
 }
 a {
   color: #000000;
   line-height: 140%;
+  background-color: rgba(0,0,0,0);
+  border-color: rgba(0,0,0,0);
+
+  z-index: 5;
+  position: relative;
 }
 
 a:hover{
   text-decoration: none;
-    color: #1f1f1f;
+  color: #1f1f1f;
+
   }
 
 .card-subtitle{
   font-size: 85%;
   line-height: 140%;
 }
+p{
+  font-size: 120%;
+}
+
+@media (max-width: 575.98px) {  }
+
+@media (min-width: 576px) and (max-width: 767.98px) { }
+
+@media (min-width: 768px) and (max-width: 991.98px) {  }
+
+@media (min-width: 992px) and (max-width: 1199.98px) {
+  .card-img-top {
+    width: 100%;
+    height: 12vmax;
+    object-fit: cover;
+  }
+  .card-body {
+    width: 100%;
+    height: 11vmax;
+    object-fit: cover;
+  }
+
+}
+
+@media (min-width: 1200px) {
+  .card-img-top {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+  .card-body {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+  }
+}
 
 
 .card-body{
-  background-color: #BBEEAA;
+  background-color: #f1f1f1;
 
 }
 .regular-btn{
@@ -35,99 +89,3 @@ a:hover{
 .delete-btn:hover{
   background-color: #ef411f;
 }
-
-
-.card-img-top {
-
-}
-
-@media (min-width: 0px) {
-  #name {
-
-    font-size: 2.5rem;
-  }
-
-  #intro {
-    font-size: 1.3rem;
-    font-weight: 400;
-  }
-  #buffer {
-    height: 6rem;
-  }
-  .work-title{
-    font-size: 75%;
-  }
-  .work-right{
-    font-size: 70%;
-  }
-  h6{
-    font-size: 80%;
-    color: rgba(23,25,28, 1);
-  }
-}
-
-@media (min-width: 576px) {
-  #name{
-
-    font-size: 2.5rem;
-  }
-
-  #intro{
-    font-size: 1.3rem;
-    font-weight: 400;
-  }
-  #buffer {
-    height: 8rem;
-  }
-  h6{
-    font-size: 100%;
-  }
-}
-
-@media (min-width: 768px) {
-  #name{
-
-    font-size: 2.8rem;
-  }
-
-  #intro{
-    font-size: 1.8rem;
-    font-weight: 400;
-  }
-  #buffer {
-    height: 10rem;
-  }
-}
-
-@media (min-width: 992px) {
-  #name{
-
-    font-size: 3rem;
-  }
-
-  #intro{
-    font-size: 1.7rem;
-    font-weight: 400;
-  }
-
-  #buffer {
-    height: 12rem;
-  }
-}
-
-@media (min-width: 1200px) {
-  #name{
-
-    font-size: 3.5rem;
-  }
-
-  #intro{
-    font-size: 2rem;
-    font-weight: 400;
-  }
-  #buffer {
-    height: 18rem;
-  }
-}
-
-
