@@ -11,7 +11,7 @@ export class InviteAuthorComponent implements OnInit {
 
   submitting = false;
 
-  formGroup = new FormGroup({
+  public formGroup = new FormGroup({
     email: new FormControl('')
   });
 
