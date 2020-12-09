@@ -6,6 +6,7 @@ import {BlogEditorComponent} from './components/blog-editor/blog-editor.componen
 import {LoginComponent} from './components/login/login.component';
 import {DashboardComponent} from './components/dashboard/dashboard.component';
 import {CanActivateViaAuthGuard} from './auth/can-activate-via-auth-guard';
+import {HomePageComponent} from './components/home-page/home-page.component';
 
 export const routes: Routes = [
   {path: 'blog/editor/:id', component: BlogEditorComponent},
@@ -13,7 +14,8 @@ export const routes: Routes = [
   {path: 'blog/:id', component: BlogViewComponent},
   {path: 'blog', component: BlogRootComponent},
   {path: 'login', component: LoginComponent},
-  {path: 'dashboard', component: DashboardComponent, canActivate: [CanActivateViaAuthGuard]}
+  {path: 'dashboard', component: DashboardComponent, canActivate: [CanActivateViaAuthGuard]},
+  {path: '', component: HomePageComponent}
 
 
 

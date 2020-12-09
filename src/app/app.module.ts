@@ -21,6 +21,7 @@ import { LoginComponent } from './components/login/login.component';
 import {JsonPipe} from '@angular/common';
 import { LogoutBarComponent } from './components/logout-bar/logout-bar.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { HomePageComponent } from './components/home-page/home-page.component';
 
 export const environment = {
   production : false,
@@ -50,6 +51,7 @@ export const environment = {
     LoginComponent,
     LogoutBarComponent,
     DashboardComponent,
+    HomePageComponent,
   ],
   imports: [
     BrowserModule,
