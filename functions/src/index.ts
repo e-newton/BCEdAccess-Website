@@ -8,3 +8,6 @@ export const helloWorld = functions.https.onRequest((request, response) => {
   response.send('Hello from Firebase!');
 });
 
+export const sendAuthorInviteEmail = functions.firestore.document('author-invites/{email}').onCreate((snap, context) => {
+  functions.logger.info('A new author was invited:', snap.id);
+});
