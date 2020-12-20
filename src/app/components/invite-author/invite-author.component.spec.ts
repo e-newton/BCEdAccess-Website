@@ -5,9 +5,9 @@ import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {ActivatedRoute, Router, RouterModule} from '@angular/router';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {RouterTestingModule} from '@angular/router/testing';
-import {routes} from '../app-routing.module';
+import {routes} from '../../app-routing.module';
 import {AngularFireModule} from '@angular/fire';
-import {environment} from '../app.module';
+import {environment} from '../../app.module';
 import {CKEditorModule} from '@ckeditor/ckeditor5-angular';
 
 describe('InviteAuthorComponent', () => {
