@@ -22,6 +22,8 @@ import {JsonPipe} from '@angular/common';
 import { LogoutBarComponent } from './components/logout-bar/logout-bar.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { HomePageComponent } from './components/home-page/home-page.component';
+import { InviteAuthorComponent } from './components/invite-author/invite-author.component';
+import { AcceptInviteComponent } from './components/accept-invite/accept-invite.component';
 
 export const environment = {
   production : false,
@@ -52,6 +54,8 @@ export const environment = {
     LogoutBarComponent,
     DashboardComponent,
     HomePageComponent,
+    InviteAuthorComponent,
+    AcceptInviteComponent,
   ],
   imports: [
     BrowserModule,
