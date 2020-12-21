@@ -1,7 +1,11 @@
 import * as functions from 'firebase-functions';
 import * as mailer from 'nodemailer';
+import * as admin from 'firebase-admin';
 // // Start writing Firebase Functions
 // // https://firebase.google.com/docs/functions/typescript
+const viewDecrementValue = 10;
+
+admin.initializeApp();
 
 const mailTransport = mailer.createTransport({
   host: functions.config().email.server,
@@ -15,6 +19,17 @@ const mailTransport = mailer.createTransport({
 export const helloWorld = functions.https.onRequest( (request, response) => {
   functions.logger.info('Hello logs!', {structuredData: true});
   response.send('Hello from Firebase!');
+});
+
+export const decrementBlogViews = functions.pubsub.schedule('30 5 * * *').onRun((context) => {
+  functions.logger.info('Decrementing Blog Views at ', context.timestamp);
+  admin.firestore().collection('blogs').get().then((snapshot) => {
+    snapshot.forEach((blog) => {
+      const views: number = blog.data().views;
+      admin.firestore().doc(`blogs/${blog.id}`).update({views: Math.max(0, views - viewDecrementValue)}).then(() => {});
+    });
+  });
+
 });
 
 export const sendAuthorInviteEmail = functions.firestore.document('author-invites/{email}').onCreate(async (snap, context) => {

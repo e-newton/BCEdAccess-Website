@@ -53,7 +53,7 @@ describe('BlogRootComponent', () => {
   }));
 
   it('should have the correct data for single blogs', fakeAsync(async () => {
-    const b1: Blog = new Blog(1, 'title1', 'author1', 'body1');
+    const b1: Blog = new Blog(1, 'title1', 'author1', 'body1', 1);
     const blogServiceSpy = spyOn(blogService, 'getAllBlogs').and.returnValue(Promise.resolve([b1]));
     const initSpy = spyOn(component, 'ngOnInit').and.callThrough();
     component.ngOnInit();
@@ -67,9 +67,9 @@ describe('BlogRootComponent', () => {
   }));
 
   it('should have the correct data for multiple blogs', fakeAsync(() => {
-    const b1: Blog = new Blog(1, 'title1', 'author1', 'body1');
-    const b2: Blog = new Blog(2, 'title2', 'author2', 'body2');
-    const b3: Blog = new Blog(3, 'title3', 'author3', 'body3');
+    const b1: Blog = new Blog(1, 'title1', 'author1', 'body1', 5);
+    const b2: Blog = new Blog(2, 'title2', 'author2', 'body2', 6);
+    const b3: Blog = new Blog(3, 'title3', 'author3', 'body3', 7);
     const blogServiceSpy = spyOn(blogService, 'getAllBlogs').and.returnValue(Promise.resolve([b1, b2, b3]));
     const initSpy = spyOn(component, 'ngOnInit').and.callThrough();
     component.ngOnInit();
@@ -84,9 +84,9 @@ describe('BlogRootComponent', () => {
   }));
 
   it('should delete a blog', fakeAsync(() => {
-    const b1: Blog = new Blog(1, 'title1', 'author1', 'body1');
-    const b2: Blog = new Blog(2, 'title2', 'author2', 'body2');
-    const b3: Blog = new Blog(3, 'title3', 'author3', 'body3');
+    const b1: Blog = new Blog(1, 'title1', 'author1', 'body1', 2);
+    const b2: Blog = new Blog(2, 'title2', 'author2', 'body2', 3);
+    const b3: Blog = new Blog(3, 'title3', 'author3', 'body3', 4);
     component.blogs.push(b1, b2, b3);
     const blogSpy = spyOn(blogService, 'deleteBlog').and.returnValue(Promise.resolve(true));
     component.deleteBlog(1);

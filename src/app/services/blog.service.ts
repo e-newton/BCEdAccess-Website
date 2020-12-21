@@ -8,6 +8,7 @@ interface BlogFSObject {
   title: string;
   author: string;
   body: string;
+  views: number;
 }
 
 @Injectable({
@@ -29,18 +30,21 @@ export class BlogService {
     const blogs = [];
     snapshot.forEach(doc => {
       const data = doc.data() as BlogFSObject;
-      blogs.push(new Blog(Number(doc.id), data.title, data.author, data.body));
+      blogs.push(new Blog(Number(doc.id), data.title, data.author, data.body, data.views));
     });
     return blogs;
 
   }
 
-  async getSingleBlog(id: string): Promise<any> {
+  async getSingleBlog(id: string, addViews: boolean = false): Promise<any> {
     const snapshot = await this.firestore.collection('blogs').doc(id).get().toPromise();
     if (snapshot.exists){
       const doc = snapshot;
       const data = doc.data() as BlogFSObject;
-      return [new Blog(Number(doc.id), data.title, data.author, data.body)];
+      if (addViews){
+        this.firestore.collection('blogs').doc(id).update({views: data.views + 1}).then(r => {});
+      }
+      return [new Blog(Number(doc.id), data.title, data.author, data.body, data.views)];
     } else {
       return [];
     }
@@ -51,6 +55,7 @@ export class BlogService {
       title: blog.title,
       author: blog.author,
       body: blog.body,
+      views: blog.views
     }).then((value => {
       return true;
     })).catch((err) => {
@@ -69,6 +74,7 @@ export class BlogService {
       title: blog.title,
       author: blog.author,
       body: blog.body,
+      views: blog.views
     }).then((value => {
       return true;
     })).catch((err) => {
