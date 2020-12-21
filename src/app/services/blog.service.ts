@@ -8,6 +8,7 @@ interface BlogFSObject {
   title: string;
   author: string;
   body: string;
+  views: number;
 }
 
 @Injectable({
@@ -29,7 +30,7 @@ export class BlogService {
     const blogs = [];
     snapshot.forEach(doc => {
       const data = doc.data() as BlogFSObject;
-      blogs.push(new Blog(Number(doc.id), data.title, data.author, data.body));
+      blogs.push(new Blog(Number(doc.id), data.title, data.author, data.body, data.views));
     });
     return blogs;
 
@@ -40,7 +41,7 @@ export class BlogService {
     if (snapshot.exists){
       const doc = snapshot;
       const data = doc.data() as BlogFSObject;
-      return [new Blog(Number(doc.id), data.title, data.author, data.body)];
+      return [new Blog(Number(doc.id), data.title, data.author, data.body, data.views)];
     } else {
       return [];
     }
@@ -51,6 +52,7 @@ export class BlogService {
       title: blog.title,
       author: blog.author,
       body: blog.body,
+      views: blog.views
     }).then((value => {
       return true;
     })).catch((err) => {
@@ -69,6 +71,7 @@ export class BlogService {
       title: blog.title,
       author: blog.author,
       body: blog.body,
+      views: blog.views
     }).then((value => {
       return true;
     })).catch((err) => {
