@@ -36,11 +36,14 @@ export class BlogService {
 
   }
 
-  async getSingleBlog(id: string): Promise<any> {
+  async getSingleBlog(id: string, addViews: boolean = false): Promise<any> {
     const snapshot = await this.firestore.collection('blogs').doc(id).get().toPromise();
     if (snapshot.exists){
       const doc = snapshot;
       const data = doc.data() as BlogFSObject;
+      if (addViews){
+        this.firestore.collection('blogs').doc(id).update({views: data.views + 1}).then(r => {});
+      }
       return [new Blog(Number(doc.id), data.title, data.author, data.body, data.views)];
     } else {
       return [];
