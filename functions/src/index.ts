@@ -21,7 +21,7 @@ export const helloWorld = functions.https.onRequest( (request, response) => {
   response.send('Hello from Firebase!');
 });
 
-export const decrementBlogViews = functions.pubsub.schedule('every 24 hours').onRun((context) => {
+export const decrementBlogViews = functions.pubsub.schedule('30 5 * * *').onRun((context) => {
   functions.logger.info('Decrementing Blog Views at ', context.timestamp);
   admin.firestore().collection('blogs').get().then((snapshot) => {
     snapshot.forEach((blog) => {
