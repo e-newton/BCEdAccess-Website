@@ -26,7 +26,7 @@ export class BlogViewComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.blogService.getSingleBlog(String(this.id)).then((res) => {
+    this.blogService.getSingleBlog(String(this.id), true).then((res) => {
       if (res.length > 0) {
         this.html = res[0].body;
         this.title = res[0].title;
