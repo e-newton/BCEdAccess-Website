@@ -173,4 +173,5 @@ export class BlogEditorComponent implements OnInit, AfterViewInit {
   createBlog(): Blog {
     return new Blog(this.id, this.title, this.author, this.editorComponent.data, this.views, this.date, this.featured);
   }
+
 }
