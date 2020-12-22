@@ -80,6 +80,7 @@ export class BlogEditorComponent implements OnInit, AfterViewInit {
   title = '';
   author = '';
   body = '';
+  featured = false;
   views = 0;
   date = new Date();
   backendResponse = '';
@@ -128,6 +129,7 @@ export class BlogEditorComponent implements OnInit, AfterViewInit {
       this.editorComponent.data = blog.body;
       this.views = blog.views;
       this.date = blog.date;
+      this.featured = blog.featured;
 
       // This is to make unit testing work. I don't like it and neither should you.
       if (this.editorComponent.editorInstance){
@@ -169,6 +171,6 @@ export class BlogEditorComponent implements OnInit, AfterViewInit {
   }
 
   createBlog(): Blog {
-    return new Blog(this.id, this.title, this.author, this.editorComponent.data, this.views, this.date);
+    return new Blog(this.id, this.title, this.author, this.editorComponent.data, this.views, this.date, this.featured);
   }
 }
