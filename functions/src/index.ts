@@ -22,13 +22,18 @@ export const helloWorld = functions.https.onRequest( (request, response) => {
 });
 
 export const decrementBlogViews = functions.pubsub.schedule('30 5 * * *').onRun((context) => {
-  functions.logger.info('Decrementing Blog Views at ', context.timestamp);
+  functions.logger.info('Decrementing Blog Views at ', context.timestamp, viewDecrementValue);
   admin.firestore().collection('blogs').get().then((snapshot) => {
     snapshot.forEach((blog) => {
       const views: number = blog.data().views;
-      admin.firestore().doc(`blogs/${blog.id}`).update({views: Math.max(0, views - viewDecrementValue)}).then(() => {});
+      admin.firestore().doc(`blogs/${blog.id}`).update({views: Math.max(0, views - viewDecrementValue)}).then(() => {
+        functions.logger.info(blog.id, ' views decremented');
+        return null;
+      });
+      return null;
     });
   });
+  return null;
 
 });
 

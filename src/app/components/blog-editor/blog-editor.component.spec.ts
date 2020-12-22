@@ -84,7 +84,7 @@ describe('BlogEditorComponent', () => {
     component.editorComponent.data = 'body';
     component.author = 'author';
     component.title = 'title';
-    expect(component.createBlog()).toEqual(new Blog(1, 'title', 'author', 'body', 0));
+    expect(component.createBlog()).toEqual(new Blog(1, 'title', 'author', 'body', 0, component.date));
   });
 
   it('should post a blog successfully', fakeAsync(() => {
