@@ -15,6 +15,12 @@
         <input name="author" [formControl]="authorFC">
       </label>
     </div>
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" [checked]="featured" (change)="featured = !featured" id="featuredCheck">
+      <label class="form-check-label" for="featuredCheck">
+        Feature Blog
+      </label>
+    </div>
     <div style="height: 1rem"></div>
     <div>
       <label>

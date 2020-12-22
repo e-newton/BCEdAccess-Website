@@ -5,8 +5,9 @@ export class Blog {
   body: string;
   views: number;
   date: Date;
+  featured: boolean;
 
-  constructor(id: number, title: string, author: string, body: string, views: number, date?: Date) {
+  constructor(id: number, title: string, author: string, body: string, views: number, date?: Date, featured?: boolean) {
     this.id = id;
     this.title = title;
     this.author = author;
@@ -17,7 +18,10 @@ export class Blog {
     } else{
       this.date = new Date();
     }
-
+    this.featured = false;
+    if (featured){
+      this.featured = featured;
+    }
   }
 
 
