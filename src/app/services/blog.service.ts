@@ -5,6 +5,7 @@ import {AngularFirestore} from '@angular/fire/firestore';
 import {Observable} from 'rxjs';
 
 interface BlogFSObject {
+  date: Date;
   title: string;
   author: string;
   body: string;
@@ -30,7 +31,7 @@ export class BlogService {
     const blogs = [];
     snapshot.forEach(doc => {
       const data = doc.data() as BlogFSObject;
-      blogs.push(new Blog(Number(doc.id), data.title, data.author, data.body, data.views));
+      blogs.push(new Blog(Number(doc.id), data.title, data.author, data.body, data.views, data.date));
     });
     return blogs;
 
@@ -44,7 +45,7 @@ export class BlogService {
       if (addViews){
         this.firestore.collection('blogs').doc(id).update({views: data.views + 1}).then(r => {});
       }
-      return [new Blog(Number(doc.id), data.title, data.author, data.body, data.views)];
+      return [new Blog(Number(doc.id), data.title, data.author, data.body, data.views, data.date)];
     } else {
       return [];
     }
@@ -55,7 +56,8 @@ export class BlogService {
       title: blog.title,
       author: blog.author,
       body: blog.body,
-      views: blog.views
+      views: blog.views,
+      date: blog.date
     }).then((value => {
       return true;
     })).catch((err) => {
@@ -74,7 +76,8 @@ export class BlogService {
       title: blog.title,
       author: blog.author,
       body: blog.body,
-      views: blog.views
+      views: blog.views,
+      date: blog.date,
     }).then((value => {
       return true;
     })).catch((err) => {
