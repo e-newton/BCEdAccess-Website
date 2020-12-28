@@ -21,6 +21,12 @@
         Feature Blog
       </label>
     </div>
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" [checked]="draft" (change)="draft = !draft" id="draftCheck">
+      <label class="form-check-label" for="draftCheck">
+        Draft
+      </label>
+    </div>
     <div style="height: 1rem"></div>
     <div>
       <label>
