@@ -41,11 +41,11 @@ describe('BlogRootComponent', () => {
   });
 
   it('should have the correct data for no blogs', fakeAsync(() => {
-    const blogServiceSpy = spyOn(blogService, 'getAllBlogs').and.returnValue(Promise.resolve([]));
+    const blogServiceSpy = spyOn(blogService, 'getAllNonDraftBlogs').and.returnValue(Promise.resolve([]));
     const initSpy = spyOn(component, 'ngOnInit').and.callThrough();
     component.ngOnInit();
     fixture.detectChanges();
-    tick(100);
+    tick(200);
     expect(initSpy).toHaveBeenCalled();
     expect(component.blogs.length).toEqual(0);
     expect(blogServiceSpy).toHaveBeenCalledTimes(1);
@@ -53,12 +53,12 @@ describe('BlogRootComponent', () => {
   }));
 
   it('should have the correct data for single blogs', fakeAsync(async () => {
-    const b1: Blog = new Blog(1, 'title1', 'author1', 'body1', 1);
-    const blogServiceSpy = spyOn(blogService, 'getAllBlogs').and.returnValue(Promise.resolve([b1]));
+    const b1: Blog = new Blog(1, 'title1', 'author1', 'body1', 1, false);
+    const blogServiceSpy = spyOn(blogService, 'getAllNonDraftBlogs').and.returnValue(Promise.resolve([b1]));
     const initSpy = spyOn(component, 'ngOnInit').and.callThrough();
     component.ngOnInit();
     fixture.detectChanges();
-    tick(100);
+    tick(200);
     expect(initSpy).toHaveBeenCalled();
     expect(component.blogs).toContain(b1);
     expect(component.blogs.length).toEqual(1);
@@ -67,14 +67,14 @@ describe('BlogRootComponent', () => {
   }));
 
   it('should have the correct data for multiple blogs', fakeAsync(() => {
-    const b1: Blog = new Blog(1, 'title1', 'author1', 'body1', 5);
-    const b2: Blog = new Blog(2, 'title2', 'author2', 'body2', 6);
-    const b3: Blog = new Blog(3, 'title3', 'author3', 'body3', 7);
-    const blogServiceSpy = spyOn(blogService, 'getAllBlogs').and.returnValue(Promise.resolve([b1, b2, b3]));
+    const b1: Blog = new Blog(1, 'title1', 'author1', 'body1', 5, false);
+    const b2: Blog = new Blog(2, 'title2', 'author2', 'body2', 6, false);
+    const b3: Blog = new Blog(3, 'title3', 'author3', 'body3', 7, false);
+    const blogServiceSpy = spyOn(blogService, 'getAllNonDraftBlogs').and.returnValue(Promise.resolve([b1, b2, b3]));
     const initSpy = spyOn(component, 'ngOnInit').and.callThrough();
     component.ngOnInit();
     fixture.detectChanges();
-    tick(100);
+    tick(200);
     expect(initSpy).toHaveBeenCalled();
     expect(component.blogs.length).toEqual(3);
     expect(component.blogs).toContain(b1);
@@ -84,9 +84,9 @@ describe('BlogRootComponent', () => {
   }));
 
   it('should delete a blog', fakeAsync(() => {
-    const b1: Blog = new Blog(1, 'title1', 'author1', 'body1', 2);
-    const b2: Blog = new Blog(2, 'title2', 'author2', 'body2', 3);
-    const b3: Blog = new Blog(3, 'title3', 'author3', 'body3', 4);
+    const b1: Blog = new Blog(1, 'title1', 'author1', 'body1', 2, false);
+    const b2: Blog = new Blog(2, 'title2', 'author2', 'body2', 3, false);
+    const b3: Blog = new Blog(3, 'title3', 'author3', 'body3', 4, false);
     component.blogs.push(b1, b2, b3);
     const blogSpy = spyOn(blogService, 'deleteBlog').and.returnValue(Promise.resolve(true));
     component.deleteBlog(1);

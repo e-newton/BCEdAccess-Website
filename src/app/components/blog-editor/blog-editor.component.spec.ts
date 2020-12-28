@@ -84,7 +84,8 @@ describe('BlogEditorComponent', () => {
     component.editorComponent.data = 'body';
     component.author = 'author';
     component.title = 'title';
-    expect(component.createBlog()).toEqual(new Blog(1, 'title', 'author', 'body', 0, component.date));
+    component.draft = false;
+    expect(component.createBlog()).toEqual(new Blog(1, 'title', 'author', 'body', 0, false, component.date));
   });
 
   it('should post a blog successfully', fakeAsync(() => {
@@ -119,7 +120,7 @@ describe('BlogEditorComponent', () => {
   it('should get an existing blog from the db', fakeAsync(() => {
     const spyRoute = spyOn(route.snapshot.paramMap, 'get').and.returnValues('123', '123');
     const blogSpy = spyOn(blogService, 'getSingleBlog')
-      .and.returnValues(Promise.resolve([new Blog(123, 'title', 'author', 'body', 42)]));
+      .and.returnValues(Promise.resolve([new Blog(123, 'title', 'author', 'body', 42, false)]));
     component = new BlogEditorComponent(blogService, route, router);
     component.editorComponent = TestBed.createComponent(CKEditorComponent).componentInstance as CKEditorComponent;
     component.ngAfterViewInit();
@@ -130,6 +131,7 @@ describe('BlogEditorComponent', () => {
     expect(component.body).toEqual('body');
     expect(component.author).toEqual('author');
     expect(component.views).toEqual(42);
+    expect(component.draft).toEqual(false);
     expect(spyRoute).toHaveBeenCalledWith('id');
     expect(spyRoute).toHaveBeenCalledTimes(2);
     expect(blogSpy).toHaveBeenCalledWith('123');
@@ -139,7 +141,7 @@ describe('BlogEditorComponent', () => {
   it('should load forms with the value from the given blog', fakeAsync(() => {
     const spyRoute = spyOn(route.snapshot.paramMap, 'get').and.returnValues('123', '123');
     const blogSpy = spyOn(blogService, 'getSingleBlog')
-      .and.returnValues(Promise.resolve([new Blog(123, 'title', 'author', 'body', 42)]));
+      .and.returnValues(Promise.resolve([new Blog(123, 'title', 'author', 'body', 42, false)]));
     component = new BlogEditorComponent(blogService, route, router);
     component.editorComponent = TestBed.createComponent(CKEditorComponent).componentInstance as CKEditorComponent;
     component.ngAfterViewInit();

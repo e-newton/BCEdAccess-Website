@@ -11,6 +11,7 @@ interface BlogFSObject {
   body: string;
   views: number;
   featured: boolean;
+  draft: boolean;
 }
 
 @Injectable({
@@ -32,7 +33,7 @@ export class BlogService {
     const blogs = [];
     snapshot.forEach(doc => {
       const data = doc.data() as BlogFSObject;
-      blogs.push(new Blog(Number(doc.id), data.title, data.author, data.body, data.views, data.date, data.featured));
+      blogs.push(new Blog(Number(doc.id), data.title, data.author, data.body, data.views, data.draft, data.date, data.featured));
     });
     return blogs;
 
@@ -43,7 +44,7 @@ export class BlogService {
     const blogs = [];
     snapshot.forEach(doc => {
       const data = doc.data() as BlogFSObject;
-      blogs.push(new Blog(Number(doc.id), data.title, data.author, data.body, data.views, data.date, data.featured));
+      blogs.push(new Blog(Number(doc.id), data.title, data.author, data.body, data.views, data.draft, data.date, data.featured));
     });
     return blogs;
   }
@@ -56,7 +57,7 @@ export class BlogService {
       if (addViews){
         this.firestore.collection('blogs').doc(id).update({views: data.views + 1}).then(r => {});
       }
-      return [new Blog(Number(doc.id), data.title, data.author, data.body, data.views, data.date, data.featured)];
+      return [new Blog(Number(doc.id), data.title, data.author, data.body, data.views, data.draft, data.date, data.featured)];
     } else {
       return [];
     }
@@ -69,7 +70,8 @@ export class BlogService {
       body: blog.body,
       views: blog.views,
       date: blog.date,
-      featured: blog.featured
+      featured: blog.featured,
+      draft: blog.draft,
     }).then((value => {
       return true;
     })).catch((err) => {
@@ -91,6 +93,7 @@ export class BlogService {
       views: blog.views,
       date: blog.date,
       featured: blog.featured,
+      draft: blog.draft,
     }).then((value => {
       return true;
     })).catch((err) => {

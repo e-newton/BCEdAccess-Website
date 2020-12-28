@@ -59,7 +59,7 @@ describe('BlogViewComponent', () => {
 
   it('should load when going to regular blog', fakeAsync(() => {
     const blogSpy = spyOn(blogService, 'getSingleBlog')
-      .and.returnValue(Promise.resolve([new Blog(123, 'title', 'author', 'body', 42)]));
+      .and.returnValue(Promise.resolve([new Blog(123, 'title', 'author', 'body', 42, false)]));
     component = new BlogViewComponent(activedRouter, blogService, router);
     component.ngOnInit();
     tick(100);
