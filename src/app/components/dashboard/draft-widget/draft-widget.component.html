@@ -1,1 +1,7 @@
-<p>draft-widget works!</p>
+<div class="form-group border-info border rounded p-1">
+  <p>Drafts</p>
+  <div class="border-info border rounded p-1 my-1" *ngFor="let blog of blogs">
+    {{blog.date | toDate}}
+  </div>
+
+</div>

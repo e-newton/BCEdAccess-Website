@@ -25,6 +25,7 @@ import { HomePageComponent } from './components/home-page/home-page.component';
 import { InviteAuthorComponent } from './components/invite-author/invite-author.component';
 import { AcceptInviteComponent } from './components/accept-invite/accept-invite.component';
 import { DraftWidgetComponent } from './components/dashboard/draft-widget/draft-widget.component';
+import { ToDatePipe } from './pipes/to-date.pipe';
 
 export const environment = {
   production : false,
@@ -58,6 +59,7 @@ export const environment = {
     InviteAuthorComponent,
     AcceptInviteComponent,
     DraftWidgetComponent,
+    ToDatePipe,
   ],
   imports: [
     BrowserModule,
