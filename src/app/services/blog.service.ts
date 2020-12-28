@@ -120,5 +120,15 @@ export class BlogService {
 
   }
 
+  async publishBlog(id: string): Promise<boolean> {
+    return await this.firestore.collection('blogs').doc(id).update(
+      {draft: false}
+    ).then(() => {
+      return true;
+    }).catch((err) => {
+      return false;
+    });
+  }
+
 
 }

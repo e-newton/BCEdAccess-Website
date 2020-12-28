@@ -16,7 +16,18 @@ export class DraftWidgetComponent implements OnInit {
     });
   }
 
+  async deleteBlog(id: number): Promise<void> {
+    await this.blogService.deleteBlog(String(id));
+    this.blogs = [];
+    this.blogs = await this.blogService.getAllDraftBlogs();
+  }
+
   ngOnInit(): void {
   }
 
+  async publishBlog(id: number): Promise<void> {
+    await this.blogService.publishBlog(String(id));
+    this.blogs = [];
+    this.blogs = await this.blogService.getAllDraftBlogs();
+  }
 }
