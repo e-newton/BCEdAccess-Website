@@ -39,6 +39,16 @@ export class BlogService {
 
   }
 
+  async getAllDraftBlogs(): Promise<any>{
+    const snapshot = await this.firestore.collection('blogs').ref.where('draft', '==', true).orderBy('date', 'asc').get();
+    const blogs = [];
+    snapshot.forEach(doc => {
+      const data = doc.data() as BlogFSObject;
+      blogs.push(new Blog(Number(doc.id), data.title, data.author, data.body, data.views, data.draft, data.date, data.featured));
+    });
+    return blogs;
+  }
+
   async getAllNonDraftBlogs(): Promise<any>{
     const snapshot = await this.firestore.collection('blogs').ref.where('draft', '==', false).orderBy('date', 'asc').get();
     const blogs = [];
