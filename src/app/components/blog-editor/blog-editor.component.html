@@ -21,12 +21,6 @@
         Feature Blog
       </label>
     </div>
-    <div class="form-check">
-      <input class="form-check-input" type="checkbox" [checked]="draft" (change)="draft = !draft" id="draftCheck">
-      <label class="form-check-label" for="draftCheck">
-        Draft
-      </label>
-    </div>
     <div style="height: 1rem"></div>
     <div>
       <label>
@@ -37,8 +31,9 @@
 </div>
 <ckeditor #editorComponent [config]="config" [editor]="editor" [data]="body" (change)="onEditorChange($event)"></ckeditor>
 <div style="height: 1rem"></div>
-<button *ngIf="!editing" (click)="onSubmit()">Publish</button>
-<button *ngIf="editing" (click)="onSubmit()">Update</button>
+<button (click)="saveAsDraft()">Save As Draft</button>
+<button *ngIf="!editing" (click)="publish()">Publish</button>
+<button *ngIf="editing" (click)="publish()">Update</button>
 <h3>{{backendResponse}}</h3>
 
 

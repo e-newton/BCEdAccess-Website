@@ -148,6 +148,16 @@ export class BlogEditorComponent implements OnInit, AfterViewInit {
     return Math.floor(Math.random() * (high - low) + low);
   }
 
+  saveAsDraft(): void {
+    this.draft = true;
+    this.onSubmit();
+  }
+
+  publish(): void {
+    this.draft = false;
+    this.onSubmit();
+  }
+
   onSubmit(): void {
       this.title = this.titleFC.value;
       this.author = this.authorFC.value;
@@ -167,6 +177,11 @@ export class BlogEditorComponent implements OnInit, AfterViewInit {
             this.backendResponse = 'An error has occurred';
           }
         });
+      }
+      if (this.draft){
+        this.route.navigate(['./dashboard']);
+      } else {
+        this.route.navigate(['./blog']);
       }
 
 
