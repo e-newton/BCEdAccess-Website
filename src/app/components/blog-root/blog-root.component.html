@@ -1,11 +1,34 @@
-<p>blog-root works!</p>
-<div *ngFor="let blog of blogs">
-  <span><a [routerLink]="['/blog', blog.id]">{{blog.title}}</a>
-    <p>          </p>
-    <a [routerLink]="['/blog/editor', blog.id]">Edit</a></span>
-    <a (click)="this.deleteBlog(blog.id)" [routerLink]="['/blog']">        Delete</a>
-  <br>
-  <br>
+
+<div class="container-fluid" *ngIf="auth.user$ | async as user">
+  <div class="row justify-content-center mb-5">
+    <a [routerLink]="['/blog/editor']" class="btn col-12 col-md-6 ml-0 mr-0 p-4 regular-btn">
+      <h3>New Blog</h3>
+    </a>
+  </div>
+
 </div>
+
+<div class="container-xl" >
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 " >
+    <div class="col mb-2" *ngFor="let blog of this.blogs; even as even">
+      <a [routerLink]="['/blog', blog.id]">
+        <div class="card w-auto d-flex rounded-0 border-0" >
+          <img *ngIf="even" class="card-img-top flex-shrink-1 rounded-0" src="assets/bird.jpg" alt="Card image cap">
+          <img *ngIf="!even" class="card-img-top flex-shrink-1 rounded-0" src="assets/bcedaccess_logo.png" alt="Card image cap" style="flex-shrink: 5000">
+          <div class="card-body text-center d-flex flex-column justify-content-center align-content-center align-items-center">
+            <p class="card-text">{{blog.title}}</p>
+          </div>
+        </div>
+
+
+      </a>
+
+    </div>
+  </div>
+
+</div>
+
+
+
 
 

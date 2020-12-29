@@ -38,12 +38,6 @@ describe('HeaderComponent', () => {
     const img = fixture.debugElement.nativeElement.querySelector('#logo');
     expect(img.src).toContain('bcedaccess_logo.png');
   });
-  it('should have the correct style', () => {
-    const nav = fixture.debugElement.nativeElement.querySelector('nav');
-    const rgb = hexToRgb(component.style['background-color']);
-    const col = 'background-color: rgb(' + rgb.r + ', ' + rgb.g + ', ' + rgb.b + ')';
 
-    expect(nav.attributes.style.value).toContain(col);
-  });
 
 });

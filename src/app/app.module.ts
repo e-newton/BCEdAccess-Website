@@ -13,6 +13,20 @@ import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import {AngularFireModule} from '@angular/fire';
 import {AngularFirestoreModule} from '@angular/fire/firestore';
+import {CKEditorModule} from '@ckeditor/ckeditor5-angular';
+import { SafeHTMLPipe } from './pipes/safe-html.pipe';
+import { OembedPipe } from './pipes/oembed-pipe.pipe';
+import { BlogPipePipe } from './pipes/blog-pipe.pipe';
+import { LoginComponent } from './components/login/login.component';
+import {JsonPipe} from '@angular/common';
+import { LogoutBarComponent } from './components/logout-bar/logout-bar.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { HomePageComponent } from './components/home-page/home-page.component';
+import { InviteAuthorComponent } from './components/invite-author/invite-author.component';
+import { AcceptInviteComponent } from './components/accept-invite/accept-invite.component';
+import { DraftWidgetComponent } from './components/dashboard/draft-widget/draft-widget.component';
+import { ToDatePipe } from './pipes/to-date.pipe';
+import { ConcatPipe } from './pipes/concat.pipe';
 
 export const environment = {
   production : false,
@@ -35,7 +49,19 @@ export const environment = {
     BlogViewComponent,
     BlogEditorComponent,
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    SafeHTMLPipe,
+    OembedPipe,
+    BlogPipePipe,
+    LoginComponent,
+    LogoutBarComponent,
+    DashboardComponent,
+    HomePageComponent,
+    InviteAuthorComponent,
+    AcceptInviteComponent,
+    DraftWidgetComponent,
+    ToDatePipe,
+    ConcatPipe,
   ],
   imports: [
     BrowserModule,
@@ -45,6 +71,7 @@ export const environment = {
     ReactiveFormsModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
+    CKEditorModule,
   ],
   exports: [
     HeaderComponent,

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, NavigationExtras, Router} from '@angular/router';
 import {BlogService} from '../../services/blog.service';
+import {DomSanitizer} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-blog-view',
@@ -25,7 +26,7 @@ export class BlogViewComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.blogService.getSingleBlog(String(this.id)).then((res) => {
+    this.blogService.getSingleBlog(String(this.id), true).then((res) => {
       if (res.length > 0) {
         this.html = res[0].body;
         this.title = res[0].title;

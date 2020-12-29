@@ -32,10 +32,4 @@ describe('AppComponent', () => {
     expect(app.title).toEqual('BCEdAccess-Website');
   });
 
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('#title').textContent).toContain('BCEdAccess-Website app is running!');
-  });
 });
