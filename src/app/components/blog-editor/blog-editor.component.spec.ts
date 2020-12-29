@@ -157,6 +157,34 @@ describe('BlogEditorComponent', () => {
     expect(component.views).toEqual(42);
   }));
 
+  it('saveAsDraft should set the blog to a draft', fakeAsync(() => {
+    const submitSpy = spyOn(component, 'onSubmit').and.stub();
+    component.draft = false;
+    component.saveAsDraft();
+    expect(component.draft).toEqual(true);
+  }));
+
+  it('publish should set the blog to not be a draft', fakeAsync(() => {
+    const submitSpy = spyOn(component, 'onSubmit').and.stub();
+    component.draft = true;
+    component.publish();
+    expect(component.draft).toEqual(false);
+  }));
+
+  it('onSubmit should cause a navigation change when publishing', fakeAsync(() => {
+    const navSpy = spyOn(router, 'navigate').and.stub();
+    component.draft = false;
+    component.onSubmit();
+    expect(navSpy).toHaveBeenCalledTimes(1);
+  }));
+
+  it('onSubmit should cause a navigation change when saving a draft', fakeAsync(() => {
+    const navSpy = spyOn(router, 'navigate').and.stub();
+    component.draft = true;
+    component.onSubmit();
+    expect(navSpy).toHaveBeenCalledTimes(1);
+  }));
+
 
 
 });
