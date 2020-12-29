@@ -90,17 +90,18 @@ describe('BlogEditorComponent', () => {
 
   it('should post a blog successfully', fakeAsync(() => {
     const blogSpy = spyOn(blogService, 'postBlog').and.returnValues(Promise.resolve(true));
+    const navSpy = spyOn(router, 'navigate').and.stub();
     component.id = 1;
     component.onSubmit();
     tick(100);
     expect(component.backendResponse).toEqual('Blog successfully posted!');
     expect(blogSpy).toHaveBeenCalledTimes(1);
     expect(blogSpy).toHaveBeenCalledWith(component.createBlog());
-
   }));
 
   it('should post a blog unsuccessfully', fakeAsync(() => {
     const blogSpy = spyOn(blogService, 'postBlog').and.returnValues(Promise.resolve(false));
+    const navSpy = spyOn(router, 'navigate').and.stub();
     component.id = 1;
     component.onSubmit();
     tick(100);
