@@ -24,6 +24,9 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { HomePageComponent } from './components/home-page/home-page.component';
 import { InviteAuthorComponent } from './components/invite-author/invite-author.component';
 import { AcceptInviteComponent } from './components/accept-invite/accept-invite.component';
+import { DraftWidgetComponent } from './components/dashboard/draft-widget/draft-widget.component';
+import { ToDatePipe } from './pipes/to-date.pipe';
+import { ConcatPipe } from './pipes/concat.pipe';
 
 export const environment = {
   production : false,
@@ -56,6 +59,9 @@ export const environment = {
     HomePageComponent,
     InviteAuthorComponent,
     AcceptInviteComponent,
+    DraftWidgetComponent,
+    ToDatePipe,
+    ConcatPipe,
   ],
   imports: [
     BrowserModule,

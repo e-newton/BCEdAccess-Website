@@ -33,7 +33,7 @@ describe('BlogserviceService', () => {
   });
 
   it('should retrieve a single blog', fakeAsync(() => {
-    const blog: Blog = new Blog(123, 'title', 'author', '<h1>body</h1>', 42);
+    const blog: Blog = new Blog(123, 'title', 'author', '<h1>body</h1>', 42, false);
     const blogSpy = spyOn(service, 'getSingleBlog').and.returnValue(Promise.resolve([blog]));
     service.getSingleBlog('1').then((b) => {
       expect(b).toContain(blog);
@@ -47,7 +47,7 @@ describe('BlogserviceService', () => {
   }));
 
   it('should fail to retrieve a single blog', fakeAsync(() => {
-    const blog: Blog = new Blog(123, 'title', 'author', '<h1>body</h1>', 42);
+    const blog: Blog = new Blog(123, 'title', 'author', '<h1>body</h1>', 42, false);
     const blogSpy = spyOn(service, 'getSingleBlog').and.returnValue(Promise.resolve([]));
     service.getSingleBlog('0').then((b) => {
       expect(b).not.toContain(blog);
@@ -60,7 +60,7 @@ describe('BlogserviceService', () => {
   }));
 
   it('should cause a 404 error due to a formatting error', fakeAsync(() => {
-    const blog: Blog = new Blog(123, 'title', 'author', '<h1>body</h1>', 42);
+    const blog: Blog = new Blog(123, 'title', 'author', '<h1>body</h1>', 42, false);
     const blogSpy = spyOn(service, 'getSingleBlog').and.returnValue(Promise.resolve([blog]));
     service.getSingleBlog('test').then((b) => {
     }).catch((reason) => {
@@ -73,7 +73,7 @@ describe('BlogserviceService', () => {
 
   it('should post a blog', fakeAsync(() => {
 
-    const blog: Blog = new Blog(123, 'title', 'author', '<h1>body</h1>', 42);
+    const blog: Blog = new Blog(123, 'title', 'author', '<h1>body</h1>', 42, false);
     const blogSpy = spyOn(service, 'postBlog').and.returnValue(Promise.resolve(true));
     service.postBlog(blog).then((response) => {
       expect(response).toBeTrue();
@@ -86,7 +86,7 @@ describe('BlogserviceService', () => {
   }));
 
   it('should fail to post a blog', fakeAsync(() => {
-    const blog: Blog = new Blog(123, 'title', 'author', '<h1>body</h1>', 42);
+    const blog: Blog = new Blog(123, 'title', 'author', '<h1>body</h1>', 42, false);
     const blogSpy = spyOn(service, 'postBlog').and.returnValue(Promise.resolve(false));
     service.postBlog(blog).then((response) => {
       expect(response).toBeFalse();
@@ -99,8 +99,8 @@ describe('BlogserviceService', () => {
   }));
 
   it('should get all the blogs', fakeAsync(() => {
-    const blog1: Blog = new Blog(123, 'title', 'author', '<h1>body</h1>', 42);
-    const blog2: Blog = new Blog(124, 'title', 'author', '<h1>body</h1>', 43);
+    const blog1: Blog = new Blog(123, 'title', 'author', '<h1>body</h1>', 42, false);
+    const blog2: Blog = new Blog(124, 'title', 'author', '<h1>body</h1>', 43, false);
     const blogSpy = spyOn(service, 'getAllBlogs').and.returnValue(Promise.resolve([blog1, blog2]));
     service.getAllBlogs().then((response) => {
       expect(response).toContain(blog1);

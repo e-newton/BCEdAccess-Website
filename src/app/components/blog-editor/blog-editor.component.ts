@@ -80,6 +80,7 @@ export class BlogEditorComponent implements OnInit, AfterViewInit {
   title = '';
   author = '';
   body = '';
+  draft = true;
   featured = false;
   views = 0;
   date = new Date();
@@ -130,6 +131,7 @@ export class BlogEditorComponent implements OnInit, AfterViewInit {
       this.views = blog.views;
       this.date = blog.date;
       this.featured = blog.featured;
+      this.draft = blog.draft;
 
       // This is to make unit testing work. I don't like it and neither should you.
       if (this.editorComponent.editorInstance){
@@ -144,6 +146,16 @@ export class BlogEditorComponent implements OnInit, AfterViewInit {
 
   random(low: number, high: number): number {
     return Math.floor(Math.random() * (high - low) + low);
+  }
+
+  saveAsDraft(): void {
+    this.draft = true;
+    this.onSubmit();
+  }
+
+  publish(): void {
+    this.draft = false;
+    this.onSubmit();
   }
 
   onSubmit(): void {
@@ -166,12 +178,17 @@ export class BlogEditorComponent implements OnInit, AfterViewInit {
           }
         });
       }
+      if (this.draft){
+        this.route.navigate(['./dashboard']);
+      } else {
+        this.route.navigate(['./blog']);
+      }
 
 
   }
 
   createBlog(): Blog {
-    return new Blog(this.id, this.title, this.author, this.editorComponent.data, this.views, this.date, this.featured);
+    return new Blog(this.id, this.title, this.author, this.editorComponent.data, this.views, this.draft, this.date, this.featured);
   }
 
 }

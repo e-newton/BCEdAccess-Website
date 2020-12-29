@@ -84,22 +84,24 @@ describe('BlogEditorComponent', () => {
     component.editorComponent.data = 'body';
     component.author = 'author';
     component.title = 'title';
-    expect(component.createBlog()).toEqual(new Blog(1, 'title', 'author', 'body', 0, component.date));
+    component.draft = false;
+    expect(component.createBlog()).toEqual(new Blog(1, 'title', 'author', 'body', 0, false, component.date));
   });
 
   it('should post a blog successfully', fakeAsync(() => {
     const blogSpy = spyOn(blogService, 'postBlog').and.returnValues(Promise.resolve(true));
+    const navSpy = spyOn(router, 'navigate').and.stub();
     component.id = 1;
     component.onSubmit();
     tick(100);
     expect(component.backendResponse).toEqual('Blog successfully posted!');
     expect(blogSpy).toHaveBeenCalledTimes(1);
     expect(blogSpy).toHaveBeenCalledWith(component.createBlog());
-
   }));
 
   it('should post a blog unsuccessfully', fakeAsync(() => {
     const blogSpy = spyOn(blogService, 'postBlog').and.returnValues(Promise.resolve(false));
+    const navSpy = spyOn(router, 'navigate').and.stub();
     component.id = 1;
     component.onSubmit();
     tick(100);
@@ -119,7 +121,7 @@ describe('BlogEditorComponent', () => {
   it('should get an existing blog from the db', fakeAsync(() => {
     const spyRoute = spyOn(route.snapshot.paramMap, 'get').and.returnValues('123', '123');
     const blogSpy = spyOn(blogService, 'getSingleBlog')
-      .and.returnValues(Promise.resolve([new Blog(123, 'title', 'author', 'body', 42)]));
+      .and.returnValues(Promise.resolve([new Blog(123, 'title', 'author', 'body', 42, false)]));
     component = new BlogEditorComponent(blogService, route, router);
     component.editorComponent = TestBed.createComponent(CKEditorComponent).componentInstance as CKEditorComponent;
     component.ngAfterViewInit();
@@ -130,6 +132,7 @@ describe('BlogEditorComponent', () => {
     expect(component.body).toEqual('body');
     expect(component.author).toEqual('author');
     expect(component.views).toEqual(42);
+    expect(component.draft).toEqual(false);
     expect(spyRoute).toHaveBeenCalledWith('id');
     expect(spyRoute).toHaveBeenCalledTimes(2);
     expect(blogSpy).toHaveBeenCalledWith('123');
@@ -139,7 +142,7 @@ describe('BlogEditorComponent', () => {
   it('should load forms with the value from the given blog', fakeAsync(() => {
     const spyRoute = spyOn(route.snapshot.paramMap, 'get').and.returnValues('123', '123');
     const blogSpy = spyOn(blogService, 'getSingleBlog')
-      .and.returnValues(Promise.resolve([new Blog(123, 'title', 'author', 'body', 42)]));
+      .and.returnValues(Promise.resolve([new Blog(123, 'title', 'author', 'body', 42, false)]));
     component = new BlogEditorComponent(blogService, route, router);
     component.editorComponent = TestBed.createComponent(CKEditorComponent).componentInstance as CKEditorComponent;
     component.ngAfterViewInit();
@@ -152,6 +155,34 @@ describe('BlogEditorComponent', () => {
     expect(component.authorFC.value).toEqual('author');
     expect(component.editorComponent.data).toEqual('body');
     expect(component.views).toEqual(42);
+  }));
+
+  it('saveAsDraft should set the blog to a draft', fakeAsync(() => {
+    const submitSpy = spyOn(component, 'onSubmit').and.stub();
+    component.draft = false;
+    component.saveAsDraft();
+    expect(component.draft).toEqual(true);
+  }));
+
+  it('publish should set the blog to not be a draft', fakeAsync(() => {
+    const submitSpy = spyOn(component, 'onSubmit').and.stub();
+    component.draft = true;
+    component.publish();
+    expect(component.draft).toEqual(false);
+  }));
+
+  it('onSubmit should cause a navigation change when publishing', fakeAsync(() => {
+    const navSpy = spyOn(router, 'navigate').and.stub();
+    component.draft = false;
+    component.onSubmit();
+    expect(navSpy).toHaveBeenCalledTimes(1);
+  }));
+
+  it('onSubmit should cause a navigation change when saving a draft', fakeAsync(() => {
+    const navSpy = spyOn(router, 'navigate').and.stub();
+    component.draft = true;
+    component.onSubmit();
+    expect(navSpy).toHaveBeenCalledTimes(1);
   }));
 
 

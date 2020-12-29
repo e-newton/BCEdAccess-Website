@@ -3,6 +3,7 @@ import {Blog} from '../../model/blog';
 import {BlogService} from '../../services/blog.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AuthService} from '../../services/auth.service';
+import {map, take, tap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-blog-root',
@@ -19,13 +20,13 @@ export class BlogRootComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.blogService.getAllBlogs().then((res) => {
+    this.blogService.getAllNonDraftBlogs().then((res) => {
       res.forEach(blog => {
         this.blogs.push(blog);
       });
     });
-
   }
+
   deleteBlog(id: number): void {
     let b: Blog;
     this.blogs.forEach((blog) => {
