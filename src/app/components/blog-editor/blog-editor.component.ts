@@ -126,7 +126,13 @@ export class BlogEditorComponent implements OnInit, AfterViewInit {
     const data = this.editorComponent.editorInstance.getData();
     const imageRX = /%2F.+?\..+?(?=\?)/g; // Will find an image file in the html, including a %2F string
     const imgs = data.match(imageRX);
+    if (!imgs) {
+      this.images = [];
+      return;
+    }
     for (let i = 0; i < imgs.length; i++){
+      const index = imgs[i].lastIndexOf('%2F');
+      imgs[i] = imgs[i].slice(index);
       imgs[i] = decodeURI(imgs[i].replace('%2F', ''));
     }
     this.images = imgs;
@@ -144,6 +150,7 @@ export class BlogEditorComponent implements OnInit, AfterViewInit {
       this.editorComponent.editorInstance.plugins.get( 'FileRepository' ).createUploadAdapter = (loader) => {
         const adapter = new FirebaseStorageUploadAdapter(loader);
         adapter.as = this.as;
+        adapter.id = this.id;
         return adapter;
       };
       if (!blog) {
