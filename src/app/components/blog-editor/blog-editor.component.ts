@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {BlogService} from '../../services/blog.service';
 import {FormControl, NgForm} from '@angular/forms';
 import {Blog} from '../../model/blog';
@@ -9,6 +9,7 @@ import * as CustomEditor from 'ckeditor5/build/ckeditor';
 import {DomSanitizer} from '@angular/platform-browser';
 import {FirebaseStorageUploadAdapter} from '../../model/firebase-storage-upload-adapter';
 import {AngularFireStorage} from '@angular/fire/storage';
+import {FirebaseStorageImageCacheService} from '../../services/firebase-storage-image-cache.service';
 
 
 @Component({
@@ -16,7 +17,7 @@ import {AngularFireStorage} from '@angular/fire/storage';
   templateUrl: './blog-editor.component.html',
   styleUrls: ['./blog-editor.component.css']
 })
-export class BlogEditorComponent implements OnInit, AfterViewInit {
+export class BlogEditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
   config = {
 
@@ -93,7 +94,7 @@ export class BlogEditorComponent implements OnInit, AfterViewInit {
   images = [];
 
   constructor(private blogService: BlogService, public activatedRouter: ActivatedRoute, public route: Router,
-              public as: AngularFireStorage) {
+              public as: AngularFireStorage, public fsic: FirebaseStorageImageCacheService) {
     if (this.activatedRouter.snapshot.paramMap.get('id')){
       this.id = Number(this.activatedRouter.snapshot.paramMap.get('id'));
     } else {
@@ -184,6 +185,8 @@ export class BlogEditorComponent implements OnInit, AfterViewInit {
 
 
 
+
+
   random(low: number, high: number): number {
     return Math.floor(Math.random() * (high - low) + low);
   }
@@ -229,6 +232,11 @@ export class BlogEditorComponent implements OnInit, AfterViewInit {
 
   createBlog(): Blog {
     return new Blog(this.id, this.title, this.author, this.editorComponent.data, this.views, this.draft, this.date, this.featured);
+  }
+
+  async ngOnDestroy(): Promise<void> {
+    await this.getImages();
+    await this.fsic.updateBlogImages(this.id, this.images);
   }
 
 }
