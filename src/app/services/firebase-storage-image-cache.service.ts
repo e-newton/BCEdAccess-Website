@@ -22,4 +22,10 @@ export class FirebaseStorageImageCacheService {
     }
 
   }
+
+  async uploadBlogCoverImage(id: string|number, file: File): Promise<void> {
+    const ext = file.name.substr(file.name.lastIndexOf('.') + 1);
+    const storageRef = await this.as.ref(`blogs/${id}/cover_image.${ext}`);
+    await storageRef.put(file);
+  }
 }

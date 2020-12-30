@@ -239,4 +239,15 @@ export class BlogEditorComponent implements OnInit, AfterViewInit, OnDestroy {
     await this.fsic.updateBlogImages(this.id, this.images);
   }
 
+  uploadCoverImage($event: InputEvent): void {
+    const files: FileList = ($event.target as HTMLInputElement & EventTarget).files;
+    if (!files){
+      return;
+    }
+    const file: File = files[0];
+    this.fsic.uploadBlogCoverImage(this.id, file).then(() => {
+      console.log('file uploaded');
+    });
+
+  }
 }

@@ -21,6 +21,10 @@
         Feature Blog
       </label>
     </div>
+    <div class="form-group">
+      <label for="fileUpload">Upload Cover Image</label>
+      <input type="file" class="form-control-file" id = 'fileUpload' accept=".png, .jpg, .jpeg" (change)="uploadCoverImage($event)">
+    </div>
     <div style="height: 1rem"></div>
     <div>
       <label>
