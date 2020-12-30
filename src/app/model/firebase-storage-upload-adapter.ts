@@ -23,8 +23,8 @@ export class FirebaseStorageUploadAdapter {
           );
         });
       }).catch(err => {
-        console.log('An error occured', err);
-        reject('An error occured');
+        console.log('An error occurred', err);
+        reject('An error occurred');
       });
 
     })));

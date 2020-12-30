@@ -90,6 +90,7 @@ export class BlogEditorComponent implements OnInit, AfterViewInit {
   titleFC = new FormControl('');
   authorFC = new FormControl('');
   editing = false;
+  images = [];
 
   constructor(private blogService: BlogService, public activatedRouter: ActivatedRoute, public route: Router,
               public as: AngularFireStorage) {
@@ -106,6 +107,9 @@ export class BlogEditorComponent implements OnInit, AfterViewInit {
     const data = this.editorComponent.editorInstance.getData();
     console.log( data );
     this.editorComponent.data = data;
+    this.getImages().then(() => {
+      console.log('Images', this.images);
+    });
   }
 
   async generateID(): Promise<number> {
@@ -116,6 +120,18 @@ export class BlogEditorComponent implements OnInit, AfterViewInit {
       valid = await this.blogService.isBlogIDValid(String(n));
     }
     return n;
+  }
+
+  async getImages(): Promise<void> {
+    const data = this.editorComponent.editorInstance.getData();
+    const imageRX = /%2F.+?\..+?(?=\?)/g; // Will find an image file in the html, including a %2F string
+    const imgs = data.match(imageRX);
+    for (let i = 0; i < imgs.length; i++){
+      imgs[i] = decodeURI(imgs[i].replace('%2F', ''));
+    }
+    this.images = imgs;
+
+
   }
 
 
@@ -151,6 +167,9 @@ export class BlogEditorComponent implements OnInit, AfterViewInit {
       this.titleFC.setValue(this.title);
       this.authorFC.setValue(this.author);
       this.editing = true;
+      this.getImages().then(() => {
+        console.log('Images', this.images);
+      });
     });
 
   }
