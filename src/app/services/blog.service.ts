@@ -3,6 +3,7 @@ import {Blog} from '../model/blog';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {Observable} from 'rxjs';
+import {FirebaseStorageImageCacheService} from './firebase-storage-image-cache.service';
 
 interface BlogFSObject {
   date: Date;
@@ -23,7 +24,7 @@ export class BlogService {
 
   // TODO: Turn this into an AngularFire app
 
-  constructor(private http: HttpClient, private firestore: AngularFirestore) {
+  constructor(private http: HttpClient, private firestore: AngularFirestore, private fsic: FirebaseStorageImageCacheService) {
     this.blogs$ = firestore.collection('blogs').valueChanges();
   }
 
@@ -112,12 +113,15 @@ export class BlogService {
   }
 
   async deleteBlog(id: string): Promise<boolean> {
-    return await this.firestore.collection('blogs').doc(id).delete().then(() => {
+    const rv = await this.firestore.collection('blogs').doc(id).delete().then(() => {
       return true;
     }).catch((err) => {
       return false;
     });
-
+    if (rv) {
+      await this.fsic.deleteBlogImageCache(id);
+    }
+    return rv;
   }
 
   async publishBlog(id: string): Promise<boolean> {

@@ -15,6 +15,8 @@ import {AngularFireModule} from '@angular/fire';
 import {environment} from '../../app.module';
 import {CKEditorComponent, CKEditorModule} from '@ckeditor/ckeditor5-angular';
 import {ViewChild} from '@angular/core';
+import {AngularFireStorage} from '@angular/fire/storage';
+import {FirebaseStorageImageCacheService} from '../../services/firebase-storage-image-cache.service';
 
 describe('BlogEditorComponent', () => {
   let component: BlogEditorComponent;
@@ -23,6 +25,8 @@ describe('BlogEditorComponent', () => {
   let activatedRoute: ActivatedRoute;
   let route: ActivatedRoute;
   let router: Router;
+  let as: AngularFireStorage;
+  let fsic: FirebaseStorageImageCacheService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -47,6 +51,9 @@ describe('BlogEditorComponent', () => {
     activatedRoute = TestBed.inject(ActivatedRoute);
     router = TestBed.inject(Router);
     route = TestBed.inject(ActivatedRoute);
+    as = TestBed.inject(AngularFireStorage);
+    fsic = TestBed.inject(FirebaseStorageImageCacheService);
+    const fsicSpy = spyOn(fsic, 'updateBlogImages').and.stub();
     component.editorComponent = TestBed.createComponent(CKEditorComponent).componentInstance as CKEditorComponent;
   });
 
@@ -60,7 +67,7 @@ describe('BlogEditorComponent', () => {
                                                                                   Promise.resolve(true),
                                                                                   Promise.resolve(true));
     let editor: BlogEditorComponent;
-    editor = new BlogEditorComponent(blogService, route, router);
+    editor = new BlogEditorComponent(blogService, route, router, as, fsic);
     tick(100);
     blogService.isBlogIDValid(String(editor.id)).then((res) => {
       expect(blogSpy).toHaveBeenCalled();
@@ -72,7 +79,7 @@ describe('BlogEditorComponent', () => {
   it('should be fine with a single call to the blog service', fakeAsync( () => {
     const blogSpy = spyOn(blogService, 'isBlogIDValid').and.returnValues(Promise.resolve(true));
     let editor: BlogEditorComponent;
-    editor = new BlogEditorComponent(blogService, route, router);
+    editor = new BlogEditorComponent(blogService, route, router, as, fsic);
     tick(100);
     expect(blogSpy).toHaveBeenCalledTimes(1);
     expect(editor.id).toBeTruthy();
@@ -112,7 +119,9 @@ describe('BlogEditorComponent', () => {
 
   it('should get id from router', fakeAsync(() => {
     const spyRoute = spyOn(route.snapshot.paramMap, 'get').and.returnValues('123', '123');
-    component = new BlogEditorComponent(blogService, route, router);
+    component = new BlogEditorComponent(blogService, route, router, as, fsic);
+    const destroySpy = spyOn(component, 'getImages').and.stub();
+    const destroySpy2 = spyOn(component, 'ngOnDestroy').and.stub();
     tick(100);
     expect(component).toBeTruthy();
     expect(component.id).toEqual(123);
@@ -122,7 +131,7 @@ describe('BlogEditorComponent', () => {
     const spyRoute = spyOn(route.snapshot.paramMap, 'get').and.returnValues('123', '123');
     const blogSpy = spyOn(blogService, 'getSingleBlog')
       .and.returnValues(Promise.resolve([new Blog(123, 'title', 'author', 'body', 42, false)]));
-    component = new BlogEditorComponent(blogService, route, router);
+    component = new BlogEditorComponent(blogService, route, router, as, fsic);
     component.editorComponent = TestBed.createComponent(CKEditorComponent).componentInstance as CKEditorComponent;
     component.ngAfterViewInit();
     tick(300);
@@ -143,7 +152,7 @@ describe('BlogEditorComponent', () => {
     const spyRoute = spyOn(route.snapshot.paramMap, 'get').and.returnValues('123', '123');
     const blogSpy = spyOn(blogService, 'getSingleBlog')
       .and.returnValues(Promise.resolve([new Blog(123, 'title', 'author', 'body', 42, false)]));
-    component = new BlogEditorComponent(blogService, route, router);
+    component = new BlogEditorComponent(blogService, route, router, as, fsic);
     component.editorComponent = TestBed.createComponent(CKEditorComponent).componentInstance as CKEditorComponent;
     component.ngAfterViewInit();
     tick(500);

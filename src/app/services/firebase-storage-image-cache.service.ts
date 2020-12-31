@@ -28,4 +28,8 @@ export class FirebaseStorageImageCacheService {
     const storageRef = await this.as.ref(`blogs/${id}/cover_image.${ext}`);
     await storageRef.put(file);
   }
+
+  async deleteBlogImageCache(id: string|number): Promise<void> {
+    await this.as.ref(`blog/${id}`).delete().toPromise();
+  }
 }

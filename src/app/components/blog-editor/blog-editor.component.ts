@@ -108,9 +108,7 @@ export class BlogEditorComponent implements OnInit, AfterViewInit, OnDestroy {
     const data = this.editorComponent.editorInstance.getData();
     console.log( data );
     this.editorComponent.data = data;
-    this.getImages().then(() => {
-      console.log('Images', this.images);
-    });
+
   }
 
   async generateID(): Promise<number> {
@@ -124,6 +122,9 @@ export class BlogEditorComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   async getImages(): Promise<void> {
+    if (!this.editorComponent.editorInstance) {
+      return;
+    }
     const data = this.editorComponent.editorInstance.getData();
     const imageRX = /%2F.+?\..+?(?=\?)/g; // Will find an image file in the html, including a %2F string
     const imgs = data.match(imageRX);
@@ -148,12 +149,15 @@ export class BlogEditorComponent implements OnInit, AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     this.blogService.getSingleBlog(String(this.id)).then((rows) => {
       const blog: Blog = rows[0];
-      this.editorComponent.editorInstance.plugins.get( 'FileRepository' ).createUploadAdapter = (loader) => {
-        const adapter = new FirebaseStorageUploadAdapter(loader);
-        adapter.as = this.as;
-        adapter.id = this.id;
-        return adapter;
-      };
+      if (this.editorComponent.editorInstance) {
+        this.editorComponent.editorInstance.plugins.get( 'FileRepository' ).createUploadAdapter = (loader) => {
+          const adapter = new FirebaseStorageUploadAdapter(loader);
+          adapter.as = this.as;
+          adapter.id = this.id;
+          return adapter;
+        };
+      }
+
       if (!blog) {
         console.log(this.editorComponent);
         return;
@@ -175,9 +179,6 @@ export class BlogEditorComponent implements OnInit, AfterViewInit, OnDestroy {
       this.titleFC.setValue(this.title);
       this.authorFC.setValue(this.author);
       this.editing = true;
-      this.getImages().then(() => {
-        console.log('Images', this.images);
-      });
     });
 
   }
