@@ -13,7 +13,7 @@ export class FirebaseStorageImageCacheService {
     const currentImagesRefs: ListResult = await this.as.ref(`blogs/${id}`).listAll().toPromise();
     const toDelete: Reference[] = [];
     currentImagesRefs.items.forEach((ref) => {
-      if (!images.includes(ref.name)){
+      if (!images.includes(ref.name) && !ref.name.includes('cover_image')){
         toDelete.push(ref);
       }
     });
