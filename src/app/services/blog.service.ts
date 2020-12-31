@@ -65,9 +65,6 @@ export class BlogService {
     if (snapshot.exists){
       const doc = snapshot;
       const data = doc.data() as BlogFSObject;
-      if (addViews){
-        this.firestore.collection('blogs').doc(id).update({views: data.views + 1}).then(r => {});
-      }
       return [new Blog(Number(doc.id), data.title, data.author, data.body, data.views, data.draft, data.date, data.featured)];
     } else {
       return [];

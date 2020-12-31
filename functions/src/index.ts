@@ -1,10 +1,13 @@
 import * as functions from 'firebase-functions';
 import * as mailer from 'nodemailer';
 import * as admin from 'firebase-admin';
+import * as express from 'express';
+import * as cors from 'cors';
 // // Start writing Firebase Functions
 // // https://firebase.google.com/docs/functions/typescript
 const viewDecrementValue = 10;
-
+const app = express();
+app.use(cors({ origin: true }));
 admin.initializeApp();
 
 const mailTransport = mailer.createTransport({
@@ -16,10 +19,19 @@ const mailTransport = mailer.createTransport({
   },
 });
 
-export const helloWorld = functions.https.onRequest( (request, response) => {
-  functions.logger.info('Hello logs!', {structuredData: true});
-  response.send('Hello from Firebase!');
+app.post('/blogs/', async (req, res) => {
+  functions.logger.info('Blog View', req.body.id);
+  const id = req.body.id;
+  const snapshot = await admin.firestore().doc(`blogs/${id}`);
+  const doc = await snapshot.get();
+  const views = doc.get('views');
+  await snapshot.update({views: views + 1});
+  res.send({id, views: views + 1});
+
 });
+
+export const httpRequests = functions.https.onRequest(app);
+
 
 export const decrementBlogViews = functions.pubsub.schedule('30 5 * * *').onRun((context) => {
   functions.logger.info('Decrementing Blog Views at ', context.timestamp, viewDecrementValue);

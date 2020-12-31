@@ -35,6 +35,15 @@ export class BlogViewComponent implements OnInit {
         this.router.navigate(['../'], {relativeTo: this.route});
        }
     });
+    void fetch('https://us-central1-bcedaccess-website.cloudfunctions.net/httpRequests/blogs/', {
+      method: 'POST',
+      body: JSON.stringify({
+        id: 51
+      }),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8'
+      }
+    });
   }
 
 
