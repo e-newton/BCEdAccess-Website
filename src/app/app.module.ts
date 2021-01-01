@@ -27,6 +27,7 @@ import { AcceptInviteComponent } from './components/accept-invite/accept-invite.
 import { DraftWidgetComponent } from './components/dashboard/draft-widget/draft-widget.component';
 import { ToDatePipe } from './pipes/to-date.pipe';
 import { ConcatPipe } from './pipes/concat.pipe';
+import { BlogCardComponent } from './components/blog-card/blog-card.component';
 
 export const environment = {
   production : false,
@@ -62,6 +63,7 @@ export const environment = {
     DraftWidgetComponent,
     ToDatePipe,
     ConcatPipe,
+    BlogCardComponent,
   ],
   imports: [
     BrowserModule,

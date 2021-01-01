@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {BlogService} from '../../services/blog.service';
 import {FormControl, NgForm} from '@angular/forms';
 import {Blog} from '../../model/blog';
@@ -7,6 +7,9 @@ import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import {ChangeEvent, CKEditorComponent} from '@ckeditor/ckeditor5-angular';
 import * as CustomEditor from 'ckeditor5/build/ckeditor';
 import {DomSanitizer} from '@angular/platform-browser';
+import {FirebaseStorageUploadAdapter} from '../../model/firebase-storage-upload-adapter';
+import {AngularFireStorage} from '@angular/fire/storage';
+import {FirebaseStorageImageCacheService} from '../../services/firebase-storage-image-cache.service';
 
 
 @Component({
@@ -14,7 +17,7 @@ import {DomSanitizer} from '@angular/platform-browser';
   templateUrl: './blog-editor.component.html',
   styleUrls: ['./blog-editor.component.css']
 })
-export class BlogEditorComponent implements OnInit, AfterViewInit {
+export class BlogEditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
   config = {
 
@@ -88,13 +91,16 @@ export class BlogEditorComponent implements OnInit, AfterViewInit {
   titleFC = new FormControl('');
   authorFC = new FormControl('');
   editing = false;
+  images = [];
 
-  constructor(private blogService: BlogService, public activatedRouter: ActivatedRoute, public route: Router) {
+  constructor(private blogService: BlogService, public activatedRouter: ActivatedRoute, public route: Router,
+              public as: AngularFireStorage, public fsic: FirebaseStorageImageCacheService) {
     if (this.activatedRouter.snapshot.paramMap.get('id')){
       this.id = Number(this.activatedRouter.snapshot.paramMap.get('id'));
     } else {
       this.generateID().then((n) => this.id = n);
     }
+
   }
 
   onEditorChange( { editor }: ChangeEvent ): void {
@@ -102,6 +108,7 @@ export class BlogEditorComponent implements OnInit, AfterViewInit {
     const data = this.editorComponent.editorInstance.getData();
     console.log( data );
     this.editorComponent.data = data;
+
   }
 
   async generateID(): Promise<number> {
@@ -114,6 +121,27 @@ export class BlogEditorComponent implements OnInit, AfterViewInit {
     return n;
   }
 
+  async getImages(): Promise<void> {
+    if (!this.editorComponent.editorInstance) {
+      return;
+    }
+    const data = this.editorComponent.editorInstance.getData();
+    const imageRX = /%2F.+?\..+?(?=\?)/g; // Will find an image file in the html, including a %2F string
+    const imgs = data.match(imageRX);
+    if (!imgs) {
+      this.images = [];
+      return;
+    }
+    for (let i = 0; i < imgs.length; i++){
+      const index = imgs[i].lastIndexOf('%2F');
+      imgs[i] = imgs[i].slice(index);
+      imgs[i] = decodeURI(imgs[i].replace('%2F', ''));
+    }
+    this.images = imgs;
+
+
+  }
+
 
   ngOnInit(): void {
   }
@@ -121,7 +149,17 @@ export class BlogEditorComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.blogService.getSingleBlog(String(this.id)).then((rows) => {
       const blog: Blog = rows[0];
+      if (this.editorComponent.editorInstance) {
+        this.editorComponent.editorInstance.plugins.get( 'FileRepository' ).createUploadAdapter = (loader) => {
+          const adapter = new FirebaseStorageUploadAdapter(loader);
+          adapter.as = this.as;
+          adapter.id = this.id;
+          return adapter;
+        };
+      }
+
       if (!blog) {
+        console.log(this.editorComponent);
         return;
       }
       this.title = blog.title;
@@ -136,6 +174,7 @@ export class BlogEditorComponent implements OnInit, AfterViewInit {
       // This is to make unit testing work. I don't like it and neither should you.
       if (this.editorComponent.editorInstance){
         this.editorComponent.editorInstance.setData(blog.body);
+
       }
       this.titleFC.setValue(this.title);
       this.authorFC.setValue(this.author);
@@ -143,6 +182,11 @@ export class BlogEditorComponent implements OnInit, AfterViewInit {
     });
 
   }
+
+
+
+
+
 
   random(low: number, high: number): number {
     return Math.floor(Math.random() * (high - low) + low);
@@ -191,4 +235,20 @@ export class BlogEditorComponent implements OnInit, AfterViewInit {
     return new Blog(this.id, this.title, this.author, this.editorComponent.data, this.views, this.draft, this.date, this.featured);
   }
 
+  async ngOnDestroy(): Promise<void> {
+    await this.getImages();
+    await this.fsic.updateBlogImages(this.id, this.images);
+  }
+
+  uploadCoverImage($event: InputEvent): void {
+    const files: FileList = ($event.target as HTMLInputElement & EventTarget).files;
+    if (!files){
+      return;
+    }
+    const file: File = files[0];
+    this.fsic.uploadBlogCoverImage(this.id, file).then(() => {
+      console.log('file uploaded');
+    });
+
+  }
 }

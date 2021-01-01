@@ -102,4 +102,5 @@ Editor.builtinPlugins = [
 	Underline
 ];
 
+
 export default Editor;

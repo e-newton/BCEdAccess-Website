@@ -11,18 +11,7 @@
 <div class="container-xl" >
   <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 " >
     <div class="col mb-2" *ngFor="let blog of this.blogs; even as even">
-      <a [routerLink]="['/blog', blog.id]">
-        <div class="card w-auto d-flex rounded-0 border-0" >
-          <img *ngIf="even" class="card-img-top flex-shrink-1 rounded-0" src="assets/bird.jpg" alt="Card image cap">
-          <img *ngIf="!even" class="card-img-top flex-shrink-1 rounded-0" src="assets/bcedaccess_logo.png" alt="Card image cap" style="flex-shrink: 5000">
-          <div class="card-body text-center d-flex flex-column justify-content-center align-content-center align-items-center">
-            <p class="card-text">{{blog.title}}</p>
-          </div>
-        </div>
-
-
-      </a>
-
+      <app-blog-card id="{{blog.id}}" title="{{blog.title}}"></app-blog-card>
     </div>
   </div>
 
