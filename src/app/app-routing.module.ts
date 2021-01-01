@@ -10,8 +10,8 @@ import {HomePageComponent} from './components/home-page/home-page.component';
 import {AcceptInviteComponent} from './components/accept-invite/accept-invite.component';
 
 export const routes: Routes = [
-  {path: 'blog/editor/:id', component: BlogEditorComponent},
-  {path: 'blog/editor', component: BlogEditorComponent},
+  {path: 'blog/editor/:id', component: BlogEditorComponent, canActivate: [CanActivateViaAuthGuard]},
+  {path: 'blog/editor', component: BlogEditorComponent, canActivate: [CanActivateViaAuthGuard]},
   {path: 'blog/:id', component: BlogViewComponent},
   {path: 'blog', component: BlogRootComponent},
   {path: 'login', component: LoginComponent},
