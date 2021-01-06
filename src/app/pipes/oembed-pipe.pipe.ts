@@ -1,6 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 @Pipe({
-  name: 'oembed'
+  name: 'oembed',
+  pure: true
 })
 export class OembedPipe implements PipeTransform {
   transform(htmlContent: any): any {

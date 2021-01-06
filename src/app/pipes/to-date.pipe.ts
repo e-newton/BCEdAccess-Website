@@ -3,7 +3,8 @@ import firebase from 'firebase';
 import Timestamp = firebase.firestore.Timestamp;
 
 @Pipe({
-  name: 'toDate'
+  name: 'toDate',
+  pure: true
 })
 export class ToDatePipe implements PipeTransform {
 
