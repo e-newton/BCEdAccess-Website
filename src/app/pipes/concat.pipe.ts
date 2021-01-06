@@ -1,7 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'concat'
+  name: 'concat',
+  pure: true
 })
 export class ConcatPipe implements PipeTransform {
 
