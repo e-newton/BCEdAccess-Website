@@ -28,6 +28,7 @@ import { DraftWidgetComponent } from './components/dashboard/draft-widget/draft-
 import { ToDatePipe } from './pipes/to-date.pipe';
 import { ConcatPipe } from './pipes/concat.pipe';
 import { BlogCardComponent } from './components/blog-card/blog-card.component';
+import { ShellNonRenderDirectiveDirective } from './directives/shell-non-render-directive.directive';
 
 export const environment = {
   production : false,
@@ -64,6 +65,7 @@ export const environment = {
     ToDatePipe,
     ConcatPipe,
     BlogCardComponent,
+    ShellNonRenderDirectiveDirective,
   ],
   imports: [
     BrowserModule,
