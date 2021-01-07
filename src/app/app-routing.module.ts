@@ -8,6 +8,7 @@ import {DashboardComponent} from './components/dashboard/dashboard.component';
 import {CanActivateViaAuthGuard} from './auth/can-activate-via-auth-guard';
 import {HomePageComponent} from './components/home-page/home-page.component';
 import {AcceptInviteComponent} from './components/accept-invite/accept-invite.component';
+import {GrapeEditorComponent} from './components/grape-editor/grape-editor.component';
 
 export const routes: Routes = [
   {path: 'blog/editor/:id', component: BlogEditorComponent, canActivate: [CanActivateViaAuthGuard]},
@@ -17,6 +18,7 @@ export const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'dashboard', component: DashboardComponent, canActivate: [CanActivateViaAuthGuard]},
   {path: 'acceptinvite', component: AcceptInviteComponent},
+  {path: 'grape', component: GrapeEditorComponent},
   {path: '', component: HomePageComponent}
 
 
