@@ -10,7 +10,7 @@ import * as csm from './customStyleManager';
 @Component({
   selector: 'app-grape-editor',
   templateUrl: './grape-editor.component.html',
-  styleUrls: ['./grape-editor.component.css']
+  styleUrls: ['./grape-editor.component.css', ]
 })
 export class GrapeEditorComponent implements OnInit, AfterViewInit {
   editor;
@@ -40,7 +40,8 @@ export class GrapeEditorComponent implements OnInit, AfterViewInit {
       // plugins: ['gjs-preset-webpage', 'grapesjs-blocks-bootstrap4'],
       canvas: {
         styles: [
-          'https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css'
+          'https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css',
+          'assets/canvas-styling.css'
         ],
         scripts: [
           'https://code.jquery.com/jquery-3.4.1.slim.min.js',
