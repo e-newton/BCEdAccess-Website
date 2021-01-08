@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Injector, OnInit} from '@angular/core';
+import {createCustomElement} from '@angular/elements';
 
 @Component({
   selector: 'app-header',
@@ -8,7 +9,13 @@ import { Component, OnInit } from '@angular/core';
 export class HeaderComponent implements OnInit {
 
 
-  constructor() { }
+  constructor(injector: Injector) {
+    if (!customElements.get('hello-world')){
+      customElements.define('hello-world', createCustomElement(HeaderComponent, {injector}));
+      console.log('HELLO I HAVE BEEN BUILT');
+    }
+
+  }
 
   ngOnInit(): void {
   }
