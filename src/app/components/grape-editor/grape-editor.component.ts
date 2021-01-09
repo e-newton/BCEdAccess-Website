@@ -5,6 +5,7 @@ import grapesjs from 'grapesjs';
 import 'grapesjs-blocks-bootstrap4';
 import 'grapesjs-preset-webpage';
 import './bootstrap-fixed-columns';
+import './bootstrap-responsive-columns';
 import * as csm from './customStyleManager';
 
 @Component({
@@ -35,7 +36,7 @@ export class GrapeEditorComponent implements OnInit, AfterViewInit {
       styleManager: {
         clearProperties: true,
       },
-      plugins: ['bootstrap-fixed-columns', 'gjs-preset-webpage'],
+      plugins: ['bootstrap-responsive-columns', 'bootstrap-fixed-columns', 'gjs-preset-webpage'],
 
       // plugins: ['gjs-preset-webpage', 'grapesjs-blocks-bootstrap4'],
       canvas: {
@@ -49,6 +50,7 @@ export class GrapeEditorComponent implements OnInit, AfterViewInit {
           'https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js'
         ],
       },
+
       customStyleManager: csm.default,
     });
     this.editor.BlockManager.add('link-button', {
@@ -113,6 +115,7 @@ export class GrapeEditorComponent implements OnInit, AfterViewInit {
     });
 
     console.log('editor', this.editor);
+
     this.editor.refresh();
 
 
@@ -134,6 +137,7 @@ export class GrapeEditorComponent implements OnInit, AfterViewInit {
     fontProperty.set('defaults', `-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"\\n' +
         '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji"`);
     styleManager.render();
+    this.editor.runCommand('open-tm');
   }
 
   printHTML(): void {
