@@ -6,6 +6,7 @@ import 'grapesjs-blocks-bootstrap4';
 import 'grapesjs-preset-webpage';
 import './bootstrap-fixed-columns';
 import './bootstrap-responsive-columns';
+import './bootstrap-lists';
 import * as csm from './customStyleManager';
 import '../../../assets/canvas-styling.css';
 
@@ -37,7 +38,7 @@ export class GrapeEditorComponent implements OnInit, AfterViewInit {
       styleManager: {
         clearProperties: true,
       },
-      plugins: ['bootstrap-responsive-columns', 'bootstrap-fixed-columns', 'gjs-preset-webpage'],
+      plugins: ['bootstrap-responsive-columns', 'bootstrap-fixed-columns', 'gjs-preset-webpage', 'bootstrap-lists'],
 
       // plugins: ['gjs-preset-webpage', 'grapesjs-blocks-bootstrap4'],
       canvas: {
