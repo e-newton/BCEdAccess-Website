@@ -7,11 +7,12 @@ import 'grapesjs-preset-webpage';
 import './bootstrap-fixed-columns';
 import './bootstrap-responsive-columns';
 import * as csm from './customStyleManager';
+import '../../../assets/canvas-styling.css';
 
 @Component({
   selector: 'app-grape-editor',
   templateUrl: './grape-editor.component.html',
-  styleUrls: ['./grape-editor.component.css', ]
+  styleUrls: ['./grape-editor.component.css',]
 })
 export class GrapeEditorComponent implements OnInit, AfterViewInit {
   editor;
@@ -61,7 +62,7 @@ export class GrapeEditorComponent implements OnInit, AfterViewInit {
         droppable: true,
         components: '<a type="button" class="btn btn-primary">Learn More</a>'
       },
-      render: ({ model, className }) => '<button class = "btn btn-primary">Button that is a link</button>',
+      render: ({model, className}) => '<button class = "btn btn-primary">Button that is a link</button>',
     });
     this.editor.BlockManager.add('f-container', {
       category: 'fuc',
@@ -81,11 +82,10 @@ export class GrapeEditorComponent implements OnInit, AfterViewInit {
     this.editor.BlockManager.add('bs-row', {
       category: 'fuc',
       label: 'Row',
-      content: {
-        draggable: true,
-        droppable: true,
-        components: '<div class = "row" data-gjs-droppable=".col" data-gjs-draggable=".col" data-gjs-custom-name="Row"></div>'
-      },
+      tagName: '',
+      draggable: true,
+      droppable: true,
+      content: '<div class = "row" data-gjs-custom-name="Row" data-gjs-droppable=".col" data-gjs-draggable=".col, .container, .container-sm, .container-md, .container-lg, .container-xl, .container-fluid"></div>'
     });
     this.editor.BlockManager.add('bs-col', {
       category: 'fuc',
@@ -131,8 +131,11 @@ export class GrapeEditorComponent implements OnInit, AfterViewInit {
     const typographySector = styleManager.getSector('typography');
     const fontProperty = styleManager.getProperty('typography', 'font-family');
     const list = fontProperty.get('list');
-    list.push({ value: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"\n' +
-        '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji"', name: 'Bootstrap Default' });
+    list.push({
+      value: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"\n' +
+        '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji"',
+      name: 'Bootstrap Default'
+    });
     fontProperty.set('list', list);
     fontProperty.set('defaults', `-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"\\n' +
         '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji"`);
@@ -144,6 +147,7 @@ export class GrapeEditorComponent implements OnInit, AfterViewInit {
     // console.log(this.editor.getHtml());
     console.log(this.editor.getHtml());
   }
+
   printCSS(): void {
     console.log(this.editor.getCss());
   }

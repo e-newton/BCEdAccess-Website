@@ -1,6 +1,12 @@
 .col {
   border: 1px dashed rgba(93, 174, 64, 0.50);
+  min-height: 5px;
 }
-.row {
+.row, .col, .container, .container-sm, .container-md, .container-lg, .container-xl, .container-fluid {
   border: 1px dashed rgba(12, 179, 227, 0.50);
+  min-height: 25px;
 }
+.container-fluid{
+  min-height: 100%;
+}
+
