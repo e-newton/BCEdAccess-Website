@@ -7,6 +7,7 @@ import 'grapesjs-preset-webpage';
 import './bootstrap-fixed-columns';
 import './bootstrap-responsive-columns';
 import './bootstrap-lists';
+import './bootstrap-text';
 import * as csm from './customStyleManager';
 import '../../../assets/canvas-styling.css';
 
@@ -38,7 +39,7 @@ export class GrapeEditorComponent implements OnInit, AfterViewInit {
       styleManager: {
         clearProperties: true,
       },
-      plugins: ['bootstrap-responsive-columns', 'bootstrap-fixed-columns', 'gjs-preset-webpage', 'bootstrap-lists'],
+      plugins: ['bootstrap-responsive-columns', 'bootstrap-fixed-columns', 'gjs-preset-webpage', 'bootstrap-lists', 'bootstrap-text'],
 
       // plugins: ['gjs-preset-webpage', 'grapesjs-blocks-bootstrap4'],
       canvas: {
@@ -71,14 +72,7 @@ export class GrapeEditorComponent implements OnInit, AfterViewInit {
       tagName: '', // removes the containter around the random shit
       draggable: true,
       droppable: true,
-      content: {
-        draggable: true,
-        droppable: true,
-        components: '<div class="row" data-gjs-droppable=".col" data-gjs-custom-name="Row">' +
-          '<div class="col" data-gjs-draggable=".row">I am box 1</div>' +
-          '<div class="col" data-gjs-draggable=".row"> AND I AM BOX 2</div>' +
-          '</div>',
-      },
+      content: ''
     });
     this.editor.BlockManager.add('bs-row', {
       category: 'fuc',

@@ -5,7 +5,7 @@ export default grapesjs.plugins.add('bootstrap-responsive-columns', (editor, opt
     label: 'Column-XS',
     draggable: true,
     droppable: true,
-    content: '<div class="col col-6 col-md-2 col-lg-1" data-gjs-draggable=".row">Extra Small Column</div>',
+    content: '<div class="col col-6 col-md-2 col-lg-1" >Extra Small Column</div>',
     render: ({ model, className }) => 'Column-XS<h1>XS</h1>'
 
   });
@@ -14,7 +14,7 @@ export default grapesjs.plugins.add('bootstrap-responsive-columns', (editor, opt
     label: 'Column-SM',
     draggable: true,
     droppable: true,
-    content: '<div class="col col-8 col-md-4 col-lg-2" data-gjs-draggable=".row">Small Column</div>',
+    content: '<div class="col col-8 col-md-4 col-lg-2" >Small Column</div>',
     render: ({ model, className }) => 'Column-SM<h1>SM</h1>'
 
   });
@@ -23,7 +23,7 @@ export default grapesjs.plugins.add('bootstrap-responsive-columns', (editor, opt
     label: 'Column-MD',
     draggable: true,
     droppable: true,
-    content: '<div class="col col-10 col-md-6 col-lg-4" data-gjs-draggable=".row">Medium Column</div>',
+    content: '<div class="col col-10 col-md-6 col-lg-4" >Medium Column</div>',
     render: ({ model, className }) => 'Column-MD<h1>MD</h1>'
 
   });
@@ -32,7 +32,7 @@ export default grapesjs.plugins.add('bootstrap-responsive-columns', (editor, opt
     label: 'Column-LG',
     draggable: true,
     droppable: true,
-    content: '<div class="col col-12 col-md-12 col-lg-8" data-gjs-draggable=".row">Large Column</div>',
+    content: '<div class="col col-12 col-md-12 col-lg-8" >Large Column</div>',
     render: ({ model, className }) => 'Column-LG<h1>LG</h1>'
 
   });
@@ -41,7 +41,7 @@ export default grapesjs.plugins.add('bootstrap-responsive-columns', (editor, opt
     label: 'Column-XL',
     draggable: true,
     droppable: true,
-    content: '<div class="col col-12 col-md-12 col-lg-10" data-gjs-draggable=".row">Extra Large Column</div>',
+    content: '<div class="col col-12 col-md-12 col-lg-10" >Extra Large Column</div>',
     render: ({ model, className }) => 'Column-XL<h1>XL</h1>'
 
   });
@@ -50,7 +50,7 @@ export default grapesjs.plugins.add('bootstrap-responsive-columns', (editor, opt
     label: 'Column-Full-Row',
     draggable: true,
     droppable: true,
-    content: '<div class="col col-12 col-md-12 col-lg-12" data-gjs-draggable=".row">Full Row Column</div>',
+    content: '<div class="col col-12 col-md-12 col-lg-12" >Full Row Column</div>',
     render: ({ model, className }) => 'Column-Full-Row<h1>XXL</h1>'
 
   });
@@ -59,7 +59,7 @@ export default grapesjs.plugins.add('bootstrap-responsive-columns', (editor, opt
     label: 'Column-Fill',
     draggable: true,
     droppable: true,
-    content: '<div class="col" data-gjs-draggable=".row">Fill Column</div>',
+    content: '<div class="col" >Fill Column</div>',
     render: ({ model, className }) => 'Column-Fill<h1>F</h1>'
 
   });
