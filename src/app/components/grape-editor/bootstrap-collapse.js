@@ -49,7 +49,7 @@ export default grapesjs.plugins.add('bootstrap-collapse', (editor, options) => {
   //domComps.addComponent('Accordion').set({type: 'collapse-card'}).addTrait({type: 'checkbox', name: 'open'});
   editor.BlockManager.add('Accordion', {
     label: "Bootstrap Components",
-    category: 'fuc',
+    category: 'Bootstrap Components',
     content: '<div class="accordion" data-gjs-custom-name="Accordion">' +
       '<collapse-card></collapse-card>' +
       '<collapse-card></collapse-card>' +
@@ -57,8 +57,8 @@ export default grapesjs.plugins.add('bootstrap-collapse', (editor, options) => {
       '</div>'
   })
   editor.BlockManager.add('Accordion-Card', {
-    label: "Bootstrap Components",
-    category: 'fuc',
+    label: "Accordion Card",
+    category: 'Bootstrap Components',
     droppable: '.accordion',
     draggable: '.accordion',
     content: '<collapse-card></collapse-card>'
