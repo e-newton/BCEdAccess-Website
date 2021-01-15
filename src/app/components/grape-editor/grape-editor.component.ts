@@ -81,7 +81,7 @@ export class GrapeEditorComponent implements OnInit, AfterViewInit {
       tagName: '',
       draggable: true,
       droppable: true,
-      content: '<div class = "row" data-gjs-custom-name="Row" data-gjs-droppable=".col" data-gjs-draggable=".col, .container, .container-sm, .container-md, .container-lg, .container-xl, .container-fluid"></div>'
+      content: '<div class = "row" data-gjs-custom-name="Row"></div>'
     });
     this.editor.BlockManager.add('bs-col', {
       category: 'fuc',
@@ -137,6 +137,13 @@ export class GrapeEditorComponent implements OnInit, AfterViewInit {
         '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji"`);
     styleManager.render();
     this.editor.runCommand('open-tm');
+    this.editor.BlockManager.getAll().forEach(block => {
+      console.log(block);
+      if (block && block.attributes && block.attributes.category === 'Forms') {
+        console.log(block);
+        this.editor.BlockManager.remove(block.id);
+      }
+    });
   }
 
   printHTML(): void {

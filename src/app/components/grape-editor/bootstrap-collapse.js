@@ -55,12 +55,20 @@ export default grapesjs.plugins.add('bootstrap-collapse', (editor, options) => {
       '<collapse-card></collapse-card>' +
       '<collapse-card></collapse-card>'+
       '</div>'
+    ,
+    render: () => {
+    return '<p>Accordion</p><img src="assets/accordion-menu.png" style="width: 100%; height: auto; filter: brightness(200%)">' +
+      ''
+  }
   })
   editor.BlockManager.add('Accordion-Card', {
     label: "Accordion Card",
     category: 'Bootstrap Components',
     droppable: '.accordion',
     draggable: '.accordion',
-    content: '<collapse-card></collapse-card>'
+    content: '<collapse-card></collapse-card>',
+    render: () => {
+      return '<p>Accordion Card</p><img src="assets/accordion-menu.png" style="width: 100%; height: auto; filter: brightness(200%)">'
+    }
   })
 });
