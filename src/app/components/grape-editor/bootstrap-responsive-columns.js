@@ -63,5 +63,13 @@ export default grapesjs.plugins.add('bootstrap-responsive-columns', (editor, opt
     render: ({ model, className }) => 'Column-Fill<h1>F</h1>'
 
   });
+  editor.BlockManager.add('base-layer', {
+    category: 'Responsive Columns',
+    label: 'Base Layer',
+    draggable: true,
+    droppable: true,
+    content: '<div class="container-fluid" data-gjs-custom-name="BASE LAYER"></div>',
+    render: ({ model, className }) => 'Base Layer<h5>BASE</h5>'
+  })
 
 })
