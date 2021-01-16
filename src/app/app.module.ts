@@ -29,6 +29,7 @@ import { ToDatePipe } from './pipes/to-date.pipe';
 import { ConcatPipe } from './pipes/concat.pipe';
 import { BlogCardComponent } from './components/blog-card/blog-card.component';
 import { GrapeEditorComponent } from './components/grape-editor/grape-editor.component';
+import { PageBaseComponent } from './components/page-base/page-base.component';
 
 export const environment = {
   production : false,
@@ -66,6 +67,7 @@ export const environment = {
     ConcatPipe,
     BlogCardComponent,
     GrapeEditorComponent,
+    PageBaseComponent,
   ],
   imports: [
     BrowserModule,
