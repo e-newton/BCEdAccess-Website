@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {PageService} from '../../services/page.service';
+import {Page} from '../../model/page';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-page-base',
@@ -8,18 +10,26 @@ import {PageService} from '../../services/page.service';
 })
 export class PageBaseComponent implements OnInit {
 
-  constructor(public ps: PageService) {
-    this.ps.getPage('pages/root').then((page) => {
-      console.log('page', page);
-      page.children.forEach(child => {
-        this.ps.getPage(child).then(childPage => {
-          console.log('CHILD PAGE', childPage);
-        });
-      });
-    });
+  currentPage: Page;
+  id: string;
+  loading = true;
+  constructor(public ps: PageService, public router: Router, public activeRouter: ActivatedRoute) {
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this.router.urlUpdateStrategy = 'eager';
+
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    this.id = this.activeRouter.snapshot.params.id;
+    try{
+      this.currentPage = await this.ps.getPage(this.id);
+    } catch (e) {
+      console.error(e);
+      await this.router.navigate(['']);
+    }
+    this.loading = false;
+    console.log('Children', this.currentPage.children);
+
   }
 
 }

@@ -10,6 +10,7 @@ import {HomePageComponent} from './components/home-page/home-page.component';
 import {AcceptInviteComponent} from './components/accept-invite/accept-invite.component';
 import {GrapeEditorComponent} from './components/grape-editor/grape-editor.component';
 import {PageBaseComponent} from './components/page-base/page-base.component';
+import {PageViewComponent} from './components/page-view/page-view.component';
 
 export const routes: Routes = [
   {path: 'blog/editor/:id', component: BlogEditorComponent, canActivate: [CanActivateViaAuthGuard]},
@@ -17,7 +18,7 @@ export const routes: Routes = [
   {path: 'blog/:id', component: BlogViewComponent},
   {path: 'blog', component: BlogRootComponent},
   {path: 'login', component: LoginComponent},
-  {path: 'page', component: PageBaseComponent},
+  {path: 'p/:id', component: PageBaseComponent},
   {path: 'dashboard', component: DashboardComponent, canActivate: [CanActivateViaAuthGuard]},
   {path: 'acceptinvite', component: AcceptInviteComponent},
   {path: 'grape', component: GrapeEditorComponent},

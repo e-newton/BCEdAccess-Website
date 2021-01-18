@@ -1,0 +1,6 @@
+<div *ngIf="currentPage && currentPage.children">
+  <div *ngFor="let child of currentPage.children">
+    <a [routerLink]="['/','p',child]">{{child}}</a>
+  </div>
+</div>
+<div *ngIf="currentPage" [innerHTML]="currentPage.body"></div>

@@ -1,1 +1,9 @@
-<p>page-base works!</p>
+<!--<div *ngIf="currentPage && currentPage.children">-->
+<!--  <div *ngFor="let child of currentPage.children">-->
+<!--    <a [routerLink]="['/','p',child]">{{child}}</a>-->
+<!--  </div>-->
+<!--</div>-->
+<!--<div *ngIf="currentPage" [innerHTML]="currentPage.body"></div>-->
+<!--<router-outlet></router-outlet>-->
+<app-page-view *ngIf="currentPage" [currentPage]="currentPage"></app-page-view>
+

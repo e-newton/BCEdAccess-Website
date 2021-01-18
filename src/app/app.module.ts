@@ -30,6 +30,8 @@ import { ConcatPipe } from './pipes/concat.pipe';
 import { BlogCardComponent } from './components/blog-card/blog-card.component';
 import { GrapeEditorComponent } from './components/grape-editor/grape-editor.component';
 import { PageBaseComponent } from './components/page-base/page-base.component';
+import {RouterModule} from '@angular/router';
+import { PageViewComponent } from './components/page-view/page-view.component';
 
 export const environment = {
   production : false,
@@ -68,6 +70,7 @@ export const environment = {
     BlogCardComponent,
     GrapeEditorComponent,
     PageBaseComponent,
+    PageViewComponent,
   ],
   imports: [
     BrowserModule,
@@ -78,6 +81,7 @@ export const environment = {
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     CKEditorModule,
+    RouterModule
   ],
   exports: [
     HeaderComponent,

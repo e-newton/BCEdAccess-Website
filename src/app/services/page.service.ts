@@ -42,15 +42,18 @@ export class PageService {
   }
 
   public async getPage(pageId: string): Promise<Page> {
-    const snapshot = this.firestore.doc(pageId);
+    const snapshot = this.firestore.collection('pages').doc(pageId);
     const docData = await snapshot.get().toPromise();
+    if (!docData.exists){
+      throw new Error('This page does not exist');
+    }
     const pageData = docData.data() as FireStorePage;
     const page: Page = new Page(pageData.parent, pageData.title, pageData.body, pageData.showChildren, docData.id);
     console.log('PAGE DATA', pageData);
     const children = await snapshot.collection('children').get().toPromise();
     console.log('CHILDREN', children.docs);
     for (const child of children.docs){
-      const childID = await child.get('ref') as string;
+      const childID = await child.get('childID') as string;
       page.addChild(childID);
     }
     return page;
