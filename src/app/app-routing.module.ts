@@ -18,7 +18,9 @@ export const routes: Routes = [
   {path: 'blog/:id', component: BlogViewComponent},
   {path: 'blog', component: BlogRootComponent},
   {path: 'login', component: LoginComponent},
-  {path: 'p/:id', component: PageBaseComponent},
+  {path: 'p', component: PageBaseComponent, children: [
+      {path: '**', component: PageBaseComponent}
+    ]},
   {path: 'dashboard', component: DashboardComponent, canActivate: [CanActivateViaAuthGuard]},
   {path: 'acceptinvite', component: AcceptInviteComponent},
   {path: 'grape', component: GrapeEditorComponent},

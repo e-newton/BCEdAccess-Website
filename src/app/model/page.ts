@@ -1,6 +1,8 @@
+import {PageChild} from './page-child';
+
 export class Page {
   parent: string;
-  children: string[];
+  children: PageChild[];
   title: string;
   body: string;
   showChildren: boolean;
@@ -15,11 +17,16 @@ export class Page {
     this.children = [];
   }
 
-  addChild(childId: string): void {
-    this.children.push(childId);
+  addChild(child: PageChild): void {
+    this.children.push(child);
   }
   removeChild(childId: string): void {
-    const index = this.children.indexOf(childId);
+    let index = -1;
+    this.children.forEach((obj, i) => {
+      if (obj.ref === childId) {
+        index = i;
+      }
+    });
     if (index > -1) {
       this.children.splice(index, 1);
     }

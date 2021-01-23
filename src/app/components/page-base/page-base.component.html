@@ -5,5 +5,7 @@
 <!--</div>-->
 <!--<div *ngIf="currentPage" [innerHTML]="currentPage.body"></div>-->
 <!--<router-outlet></router-outlet>-->
+<button (click)="deletePage()">Delete Page</button>
+<button (click)="addTestPage()">Add Test Page</button>
 <app-page-view *ngIf="currentPage" [currentPage]="currentPage"></app-page-view>
 

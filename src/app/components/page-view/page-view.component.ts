@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {Page} from '../../model/page';
 import {PageService} from '../../services/page.service';
 import {ActivatedRoute, Router} from '@angular/router';
+import {PageChild} from '../../model/page-child';
 
 @Component({
   selector: 'app-page-view',
@@ -20,5 +21,30 @@ export class PageViewComponent implements OnInit {
 
 
   }
+
+  getDecodedLinks(): string[] {
+    const rv = [];
+    this.currentPage.children.forEach(child => {
+      rv.push(decodeURIComponent(child.ref.replace('\\', '/')));
+    });
+    return rv;
+
+  }
+
+  getDecodedChildren(): PageChild[] {
+    const rv = [];
+    this.currentPage.children.forEach(child => {
+      const sc = (child.ref.match(/\\/g) || []).length;
+      let newRef = child.ref;
+      for (let i = 0; i < sc; i++){
+        newRef = newRef.replace('\\', '/');
+      }
+      rv.push(new PageChild(decodeURIComponent(newRef), child.title));
+    });
+    return rv;
+
+  }
+
+
 
 }
