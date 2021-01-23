@@ -4,7 +4,6 @@ import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firest
 import {FirebaseStorageImageCacheService} from './firebase-storage-image-cache.service';
 import {Page} from '../model/page';
 import {PageChild} from '../model/page-child';
-import {root} from 'rxjs/internal-compatibility';
 
 
 interface FireStorePage {
@@ -40,7 +39,6 @@ export class PageService {
       children: this.generateChildrenObject(page),
       showChildren: page.showChildren,
     });
-    console.log('Saved Page', page.id);
   }
 
   public async getAllPageIds(): Promise<string[]> {
@@ -50,34 +48,36 @@ export class PageService {
       rv.push(doc.id);
     });
     return rv;
-
   }
 
+  // Deletes a page from the database
+  // param: aggressive --> if true, will delete the page and all children
+  //                       if false (default), will delete the page and the parent will inherit the children.
   public async deletePage(pageId: string, aggressive = false): Promise<void> {
-    if (aggressive) {
-      console.log('WE AGGRESSIVE BOY');
-      await this.aggressiveDeletePage(pageId);
-    } else {
-      console.log('we chill');
-      await this.mergeDeletePage(pageId);
-    }
-
+    aggressive ? await this.aggressiveDeletePage(pageId) : await this.mergeDeletePage(pageId);
   }
 
   private async mergeDeletePage(pageId: string): Promise<void> {
     const rootPage = await this.getPage(pageId);
     const parentID = rootPage.parent;
-    if (!parentID) {
-      await this.firestore.collection('pages').doc(pageId).delete();
-      return;
-    }
-    const parentPage = await this.getPage(parentID);
     const snapshot = this.firestore.collection('pages').doc(pageId);
     const docData = await snapshot.get().toPromise();
     const pageData = docData.data() as FireStorePage;
+    // If this page has no parent, then we change all children to root pages
+    if (!parentID) {
+      if (pageData.children){
+        await this.turnDeletedPageChildrenToRootPages(pageData);
+      }
+      await this.firestore.collection('pages').doc(pageId).delete();
+      return;
+    }
+    // This page has a parent, so we need to change all of its children to have its parent.
+    // As well, we need to add all children to the parent
+    const parentPage = await this.getPage(parentID);
     if (pageData.children){
-      for (const i of Object.values<any>(pageData.children)) {
-        parentPage.addChild(i);
+      for (const i of Object.values<PageChild>(pageData.children)) {
+        const newID = parentID + i.ref.replace(pageId, '');
+        parentPage.addChild(new PageChild(newID, i.title));
       }
     }
     parentPage.removeChild(pageId);
@@ -85,11 +85,34 @@ export class PageService {
     const parentDocData = await this.firestore.collection('pages').doc(pageId).get().toPromise();
     const parentPageData = parentDocData.data() as FireStorePage;
     if (parentPageData.children) {
-      for (const i of Object.values<any>(parentPageData.children)) {
-        await this.firestore.collection('pages').doc(i.ref).update({parent: parentID});
-      }
+      await this.changeParentsOfDeletedPageChildren(parentPageData, parentID);
     }
     await this.firestore.collection('pages').doc(pageId).delete();
+  }
+
+  private async changeParentsOfDeletedPageChildren(parentPageData: FireStorePage, parentID: string): Promise<void> {
+    for (const i of Object.values<any>(parentPageData.children)) {
+      // Change Parents of children of deleted page
+      const childDocData = await this.firestore.collection('pages').doc(i.ref).get().toPromise();
+      const childData = childDocData.data() as FireStorePage;
+      const newID = parentID + childDocData.id.replace(childData.parent, '');
+      childData.parent = parentID;
+      await this.firestore.collection('pages').doc(newID).set(childData);
+      console.log('Child should be changed', newID, i.ref);
+      await this.firestore.collection('pages').doc(i.ref).delete();
+    }
+  }
+
+  private async turnDeletedPageChildrenToRootPages(pageData: FireStorePage): Promise<void> {
+    for (const i of Object.values<any>(pageData.children)) {
+      const childDocData = await this.firestore.collection('pages').doc(i.ref).get().toPromise();
+      const childData = childDocData.data() as FireStorePage;
+      const newID = childDocData.id.replace(childData.parent, '');
+      childData.parent = '';
+      await this.firestore.collection('pages').doc(newID).set(childData);
+      console.log('Child should be changed', newID, i.ref);
+      await this.firestore.collection('pages').doc(i.ref).delete();
+    }
   }
 
   private async aggressiveDeletePage(pageId: string): Promise<void>{
@@ -139,6 +162,7 @@ export class PageService {
     return rv;
   }
 
+  // Retrieves the page data and places it into a Page object
   public async getPage(pageId: string): Promise<Page> {
     const snapshot = this.firestore.collection('pages').doc(pageId);
     const docData = await snapshot.get().toPromise();
