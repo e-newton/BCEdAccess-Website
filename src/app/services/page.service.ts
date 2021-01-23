@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
+import {AngularFirestore} from '@angular/fire/firestore';
 import {FirebaseStorageImageCacheService} from './firebase-storage-image-cache.service';
 import {Page} from '../model/page';
 import {PageChild} from '../model/page-child';
@@ -48,6 +48,38 @@ export class PageService {
       rv.push(doc.id);
     });
     return rv;
+  }
+
+  public async changeParent(pageID, newParentID): Promise<void> {
+    // Change Current Page's Parent Field
+    const currentPage = await this.getPage(pageID);
+    const newID = newParentID + currentPage.id.replace(currentPage.parent, '');
+    const oldParent = currentPage.parent;
+    currentPage.parent = newParentID;
+    currentPage.id = newID;
+    await this.savePage(currentPage);
+    // Delete Page from Old Parent's Children
+    if (oldParent) {
+      const oldParentPage = await this.getPage(oldParent);
+      oldParentPage.removeChild(pageID);
+      await this.savePage(oldParentPage);
+    }
+    // Update new parent with new child
+    if (newParentID) {
+      const newParentPage = await this.getPage(newParentID);
+      newParentPage.addChild(new PageChild(newID, currentPage.title));
+      await this.savePage(newParentPage);
+    }
+    if (currentPage.children) {
+      // update all children
+      currentPage.children.forEach((child) => {
+        this.changeParent(child.ref, pageID);
+        child.ref = newID + child.ref.replace(pageID, '');
+      });
+      await this.savePage(currentPage);
+    }
+    await this.firestore.collection('pages').doc(pageID).delete();
+
   }
 
   // Deletes a page from the database
