@@ -47,17 +47,30 @@ export class PageBaseComponent implements OnInit {
     });
   }
 
+  moveToRoot(pageID): void {
+    void this.ps.changeParent(pageID, '');
+  }
+
   addTestPage(): void {
     const parentPage = new Page('', 'Test', '<h1>Test</h1>', true, 'test');
     const child1Page = new Page('test', 'Child 1', '<h1>Child 1</h1>', true, 'test\\c1');
     const child2Page = new Page('test\\c1', 'Child 2', '<h1>Child 22</h1>', true, 'test\\c1\\c2');
+    const child3Page = new Page('test\\c1\\c2', 'Sub Child 3', '<h1>child 3</h1>', true, 'test\\c1\\c2\\c3');
+    const child4Page = new Page('test\\c1\\c2', 'Sub Child 4', '<h1>child 4</h1>', true, 'test\\c1\\c2\\c4');
     parentPage.addChild(new PageChild('test\\c1', 'Child 1'));
     child1Page.addChild(new PageChild('test\\c1\\c2', 'Child 2'));
+    child2Page.addChild(new PageChild(child3Page.id, child3Page.title));
+    child2Page.addChild(new PageChild(child4Page.id, child4Page.title));
     console.log('adding test pages');
     void this.ps.savePage(parentPage);
     void this.ps.savePage(child1Page);
     void this.ps.savePage(child2Page);
+    void this.ps.savePage(child3Page);
+    void this.ps.savePage(child4Page);
 
   }
 
+  moveToTest(id: string): void {
+    void this.ps.changeParent(id, 'test');
+  }
 }

@@ -7,5 +7,7 @@
 <!--<router-outlet></router-outlet>-->
 <button (click)="deletePage()">Delete Page</button>
 <button (click)="addTestPage()">Add Test Page</button>
+<button (click)="moveToRoot(currentPage.id)">Move to root</button>
+<button (click)="moveToTest(currentPage.id)">Move Up To Test</button>
 <app-page-view *ngIf="currentPage" [currentPage]="currentPage"></app-page-view>
 

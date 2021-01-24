@@ -53,10 +53,15 @@ export class PageService {
   public async changeParent(pageID, newParentID): Promise<void> {
     // Change Current Page's Parent Field
     const currentPage = await this.getPage(pageID);
-    const newID = newParentID + currentPage.id.replace(currentPage.parent, '');
+    let newID = newParentID + currentPage.id.replace(currentPage.parent, '');
+    console.log('IDs', newID, newParentID, currentPage.parent);
+    if (newID?.startsWith('\\')) {
+      newID = newID.substr(1);
+    }
     const oldParent = currentPage.parent;
     currentPage.parent = newParentID;
     currentPage.id = newID;
+    console.log(`Saving 1: ${currentPage.id}`);
     await this.savePage(currentPage);
     // Delete Page from Old Parent's Children
     if (oldParent) {
@@ -72,12 +77,20 @@ export class PageService {
     }
     if (currentPage.children) {
       // update all children
-      currentPage.children.forEach((child) => {
-        this.changeParent(child.ref, pageID);
-        child.ref = newID + child.ref.replace(pageID, '');
-      });
-      await this.savePage(currentPage);
+      for (const child of currentPage.children) {
+        await this.changeParent(child.ref, newID);
+        let newChildID = newID + child.ref.replace(pageID, '');
+
+        if (newChildID?.startsWith('\\')) {
+          newChildID = newChildID.substr(1);
+        }
+        child.ref = newChildID;
+      }
+      // await this.savePage(currentPage);
     }
+    console.log(`Saving 2: ${currentPage.id}`);
+    await this.savePage(currentPage);
+    console.log(`Deleting: ${pageID}`);
     await this.firestore.collection('pages').doc(pageID).delete();
 
   }
@@ -199,7 +212,7 @@ export class PageService {
     const snapshot = this.firestore.collection('pages').doc(pageId);
     const docData = await snapshot.get().toPromise();
     if (!docData.exists){
-      throw new Error('This page does not exist');
+      throw new Error(`This page does not exist: ${pageId}`);
     }
     const pageData = docData.data() as FireStorePage;
     const page: Page = new Page(pageData.parent, pageData.title, pageData.body, pageData.showChildren, docData.id);
