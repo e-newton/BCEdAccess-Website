@@ -25,7 +25,7 @@ interface FireStoreChild {
 export class PageService {
 
 
-  constructor(private http: HttpClient, private firestore: AngularFirestore, private fsic: FirebaseStorageImageCacheService) { }
+  constructor(private firestore: AngularFirestore) { }
 
   private static randomNumber(): number{
     return Math.floor(Math.random() * 100000);
