@@ -34,6 +34,10 @@ import {RouterModule} from '@angular/router';
 import { PageViewComponent } from './components/page-view/page-view.component';
 import {PageTreeComponent} from './components/page-tree/page-tree.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
+import {MatTreeModule} from '@angular/material/tree';
+import {MatIcon, MatIconModule} from '@angular/material/icon';
+import {MatButtonModule} from '@angular/material/button';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 export const environment = {
   production : false,
@@ -85,7 +89,11 @@ export const environment = {
     AngularFirestoreModule,
     CKEditorModule,
     RouterModule,
-    DragDropModule
+    DragDropModule,
+    MatTreeModule,
+    MatIconModule,
+    MatButtonModule,
+    BrowserAnimationsModule
   ],
   exports: [
     HeaderComponent,
