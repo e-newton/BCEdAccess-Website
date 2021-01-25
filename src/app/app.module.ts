@@ -33,6 +33,7 @@ import { PageBaseComponent } from './components/page-base/page-base.component';
 import {RouterModule} from '@angular/router';
 import { PageViewComponent } from './components/page-view/page-view.component';
 import {PageTreeComponent} from './components/page-tree/page-tree.component';
+import {DragDropModule} from '@angular/cdk/drag-drop';
 
 export const environment = {
   production : false,
@@ -83,7 +84,8 @@ export const environment = {
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     CKEditorModule,
-    RouterModule
+    RouterModule,
+    DragDropModule
   ],
   exports: [
     HeaderComponent,

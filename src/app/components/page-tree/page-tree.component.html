@@ -1,1 +1,15 @@
-<p>page-tree works!</p>
+<ng-template #tempNode let-node="node" class="example-box m-1" >
+  <div [attr.data-id]="node.id" [attr.id]="'node-'+node.id">
+    {{node.id}}
+  </div>
+  <div *ngFor="let child of node.children" class="example-list">
+    <ng-container *ngTemplateOutlet="tempNode,context:{node:child}"></ng-container>
+  </div>
+</ng-template>
+
+
+<div id="root" cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
+  <div *ngFor="let child of root" cdkDrag class="example-box">
+   <ng-container *ngTemplateOutlet="tempNode,context:{node:child}"></ng-container>
+  </div>
+</div>
