@@ -32,6 +32,7 @@ import { GrapeEditorComponent } from './components/grape-editor/grape-editor.com
 import { PageBaseComponent } from './components/page-base/page-base.component';
 import {RouterModule} from '@angular/router';
 import { PageViewComponent } from './components/page-view/page-view.component';
+import {PageTreeComponent} from './components/page-tree/page-tree.component';
 
 export const environment = {
   production : false,
@@ -71,6 +72,7 @@ export const environment = {
     GrapeEditorComponent,
     PageBaseComponent,
     PageViewComponent,
+    PageTreeComponent,
   ],
   imports: [
     BrowserModule,
