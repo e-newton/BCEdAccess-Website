@@ -1,5 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
+import {ITreeOptions, ITreeState} from '@circlon/angular-tree-component';
+import { v4 } from 'uuid';
 
 interface Node {
   id: string;
@@ -9,54 +11,55 @@ interface Node {
 @Component({
   selector: 'app-page-tree',
   templateUrl: './page-tree.component.html',
-  styleUrls: ['./page-tree.component.css']
+  styleUrls: ['./page-tree.component.scss', './page-tree.component.css', '../../../../node_modules/@circlon/angular-tree-component/css/angular-tree-component.css']
 })
-export class PageTreeComponent implements OnInit {
+export class PageTreeComponent {
 
+  state: ITreeState = {
+    expandedNodeIds: {},
+    hiddenNodeIds: {},
+    activeNodeIds: {}
+  };
 
+  options: ITreeOptions = {
+    allowDrag: (node) => true,
+    getNodeClone: (node) => ({
+      ...node.data,
+      id: v4(),
+      name: `copy of ${node.data.name}`
+    })
+  };
 
-  root: Node[] = [
+  nodes = [
     {
-      id: 'item 1',
-      children: []
-    },
-    {
-      id: 'item 2',
+      id: 1,
+      name: 'root1',
       children: [
-        {id: 'item 69',
-        children: [
-          {id: 'item 72',
-            children: []}
-        ]},
+        { name: 'child1' },
+        { name: 'child2' }
       ]
     },
     {
-      id: 'item 3',
-      children: []
+      name: 'root2',
+      id: 'BOOP BAH BOOP',
+      children: [
+        { name: 'child2.1', children: [] },
+        { name: 'child2.2', children: [
+            {name: 'grandchild2.2.1'}
+          ] }
+      ]
     },
+    { name: 'root3' },
+    { name: 'root4', children: [] },
+    { name: 'root5', children: null }
   ];
-
-  allIDs = [];
-  nodeLookup = {};
-  constructor() {
-    this.prepare(this.root);
-    console.log(this.allIDs);
+  onMoveNode($event): void {
+    console.log(
+      'Moved',
+      $event.node.id,
+      'to',
+      $event.to.parent.id);
   }
 
-  private prepare(nodes: Node[]): void{
-    nodes.forEach((node) => {
-      this.allIDs.push(node.id);
-      this.nodeLookup[node.id] = node;
-      this.prepare(node.children);
-    });
-  }
-
-  ngOnInit(): void {
-  }
-
-  drop(event: CdkDragDrop<Node[]>): void {
-    console.log('Drop Event', event);
-    moveItemInArray(this.root, event.previousIndex, event.currentIndex);
-  }
 
 }

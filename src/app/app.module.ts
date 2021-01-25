@@ -34,6 +34,7 @@ import {RouterModule} from '@angular/router';
 import { PageViewComponent } from './components/page-view/page-view.component';
 import {PageTreeComponent} from './components/page-tree/page-tree.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
+import {TreeModule} from '@circlon/angular-tree-component';
 
 export const environment = {
   production : false,
@@ -85,7 +86,8 @@ export const environment = {
     AngularFirestoreModule,
     CKEditorModule,
     RouterModule,
-    DragDropModule
+    DragDropModule,
+    TreeModule
   ],
   exports: [
     HeaderComponent,
