@@ -15,6 +15,11 @@ interface FireStorePage {
 interface FireStoreChild {
   ref: string;
 }
+interface Node{
+  name: string;
+  id: string;
+  children?: Node[];
+}
 
 @Injectable({
   providedIn: 'root'
@@ -39,6 +44,43 @@ export class PageService {
     });
   }
 
+
+  public async getTree(): Promise<Node[]> {
+    const nodes: Node[] = [];
+    const roots = await this.getRoots();
+
+    const getChildren = async (id: string): Promise<Node> => {
+      const page = await this.getPage(id);
+      const node: Node = {id: page.id, name: page.title};
+      if (page.children){
+        node.children = [];
+        for (const child of page.children) {
+          node.children.push(await getChildren(child.ref));
+        }
+      }
+      return node;
+    };
+
+    for (const root of roots) {
+      nodes.push(await getChildren(root));
+    }
+
+
+    return nodes;
+
+  }
+
+  private async getRoots(): Promise<string[]> {
+    const rv = [];
+    const ids = await this.getAllPageIds();
+    ids.forEach(id => {
+      if (!id.includes('\\')) {
+        rv.push(id);
+      }
+    });
+    return rv;
+  }
+
   public async getAllPageIds(): Promise<string[]> {
     const rv = [];
     const docs = await this.firestore.collection('pages').get().toPromise();
@@ -51,11 +93,15 @@ export class PageService {
   public async changeParent(pageID, newParentID): Promise<void> {
     // Change the current page's parent field
     const currentPage = await this.getPage(pageID);
-    let newID = newParentID + currentPage.id.replace(currentPage.parent, '');
+    let newID = newParentID + '\\' + currentPage.id.replace(currentPage.parent, '');
     console.log('IDs', newID, newParentID, currentPage.parent);
-    if (newID?.startsWith('\\')) {
+    while (newID?.startsWith('\\')) {
       newID = newID.substr(1);
     }
+    while (newID?.includes('\\\\')){
+      newID = newID.replace('\\\\', '\\');
+    }
+    console.log('new id 1', newID);
     // Change Current Page's Parent Field
     const oldParent = currentPage.parent;
     currentPage.parent = newParentID;
@@ -83,6 +129,7 @@ export class PageService {
         if (newChildID?.startsWith('\\')) {
           newChildID = newChildID.substr(1);
         }
+        console.log('new id 2', newChildID);
         child.ref = newChildID;
       }
       // await this.savePage(currentPage);

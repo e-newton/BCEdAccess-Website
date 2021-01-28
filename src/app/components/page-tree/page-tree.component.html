@@ -1,5 +1,11 @@
+<div *ngIf="loading" class="spinner-border" role="status">
+  <span class="sr-only">Loading...</span>
+</div>
+<tree-root *ngIf="loading" style="color: rgba(0,0,0,0.5)" [state]="state" [options]="options" [focused]="true" [nodes]="nodes"
+           (moveNode)="onMoveNode($event)">
+</tree-root>
+<tree-root *ngIf="!loading" [state]="state" [options]="options" [focused]="true" [nodes]="nodes"
+           (moveNode)="onMoveNode($event)">
+</tree-root>
 
-<h4>Allowing to drag only leaf nodes; ctrl-drag to copy</h4>
-<tree-root [state]="state" [options]="options" [focused]="true" [nodes]="nodes"
- (moveNode)="onMoveNode($event)"></tree-root>
 
