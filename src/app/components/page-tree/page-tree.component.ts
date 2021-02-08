@@ -63,5 +63,9 @@ export class PageTreeComponent {
     this.loading = false;
   }
 
+  print(event: any) {
+    console.log('AH');
+  }
+
 
 }

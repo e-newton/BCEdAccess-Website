@@ -1,10 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
 @import '~@circlon/angular-tree-component/css/angular-tree-component.css';
+
 body {
-
   color: #F5F3F5;
-  font-family: "urw-form", sans-serif;
-
+  font-family: "futura-pt", "urw-form", sans-serif;
 }
 /* Let's highlight canvas boundaries */
 #gjs {
