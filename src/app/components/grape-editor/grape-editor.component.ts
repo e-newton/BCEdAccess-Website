@@ -182,9 +182,16 @@ export class GrapeEditorComponent implements OnInit, AfterViewInit {
       const parent = await this.ps.getPage(this.parentID);
       parent.addChild(new PageChild(newID, this.titleFC.value));
       await this.ps.savePage(parent);
+    } else if ( this.initialID !== this.page.parent + '\\' + this.urlFC.value) {
+      console.log('init', this.initialID, this.urlFC.value, this.page);
+      const newID = this.page.parent + '\\' + this.urlFC.value;
+      this.page.body = this.getHTML();
+      this.page.title = this.titleFC.value;
+      await this.ps.savePage(this.page);
+      await this.ps.changeID(this.initialID, newID);
     } else {
-      throw new Error('Not Implemented Yet Dummy');
-
+      this.page.body = this.getHTML();
+      await this.ps.savePage(this.page);
     }
   }
 

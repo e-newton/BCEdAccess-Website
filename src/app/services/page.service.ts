@@ -157,6 +157,12 @@ export class PageService {
     children?.forEach((child) => {
       this.changeParent(child.ref, newID);
     });
+    if (page.parent) {
+      const parent = await this.getPage(page.parent);
+      parent.addChild(new PageChild(newID, page.title));
+      parent.removeChild(oldID);
+      await this.savePage(parent);
+    }
     await this.deletePage(oldID, true);
   }
 
