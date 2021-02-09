@@ -21,7 +21,7 @@ import * as juice from 'juice';
 @Component({
   selector: 'app-grape-editor',
   templateUrl: './grape-editor.component.html',
-  styleUrls: ['./grape-editor.component.css',]
+  styleUrls: ['./grape-editor.component.css', ]
 })
 export class GrapeEditorComponent implements OnInit, AfterViewInit {
   editor;
@@ -176,9 +176,11 @@ export class GrapeEditorComponent implements OnInit, AfterViewInit {
   }
 
   printHTML(): void {
-    // console.log(this.editor.getHtml());
-
     console.log(juice(this.editor.getHtml() + `<style>${this.editor.getCss()}</style>`));
+  }
+
+  getHTML(): string {
+    return juice(this.editor.getHtml() + `<style>${this.editor.getCss()}</style>`);
   }
 
   printCSS(): void {

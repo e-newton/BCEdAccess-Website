@@ -148,6 +148,17 @@ export class PageService {
     aggressive ? await this.aggressiveDeletePage(pageId) : await this.mergeDeletePage(pageId);
   }
 
+  public async changeID(oldID: string, newID: string): Promise<void> {
+    const page: Page = await this.getPage(oldID);
+    page.id = newID;
+    page.children = [];
+    await this.savePage(page);
+    page.children?.forEach((child) => {
+      this.changeParent(child.ref, newID);
+    });
+    await this.deletePage(oldID, true);
+  }
+
   private async mergeDeletePage(pageId: string): Promise<void> {
     const rootPage = await this.getPage(pageId);
     const parentID = rootPage.parent;
