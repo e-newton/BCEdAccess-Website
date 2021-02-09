@@ -1,4 +1,16 @@
 <p>grape-editor works!</p>
+<ng-form class="w-50">
+  <div class="row">
+    <div class = 'col'><label for="title-box">Title</label><br>
+      <input id="title-box" type="text" placeholder="Title of Page" class="w-100" (ngModelChange)="titleUpdate()" [formControl]="titleFC">
+    </div>
+    <div class = 'col'><label for="url-box">URL</label><br>
+      <input id="url-box" type="text" placeholder="" class="w-100" [formControl]="urlFC" disabled>
+    </div>
+  </div>
+
+
+</ng-form>
 <div id="gjs" class="container-fluid">
   <div class="container-fluid" data-gjs-custom-name="BASE LAYER"></div>
 </div>

@@ -39,7 +39,7 @@ export class PageViewComponent implements OnInit {
       for (let i = 0; i < sc; i++){
         newRef = newRef.replace('\\', '/');
       }
-      rv.push(new PageChild(decodeURIComponent(newRef), child.title));
+      rv.push(new PageChild(decodeURIComponent('/' + newRef), child.title));
     });
     return rv;
 

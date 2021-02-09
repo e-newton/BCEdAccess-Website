@@ -4,6 +4,7 @@ import 'grapesjs/dist/css/grapes.min.css';
 import grapesjs from 'grapesjs';
 import 'grapesjs-blocks-bootstrap4';
 import 'grapesjs-preset-webpage';
+import 'grapesjs-preset-newsletter';
 import './bootstrap-fixed-columns';
 import './bootstrap-responsive-columns';
 import './bootstrap-lists';
@@ -11,6 +12,11 @@ import './bootstrap-text';
 import './bootstrap-collapse';
 import * as csm from './customStyleManager';
 import '../../../assets/canvas-styling.css';
+import {ActivatedRoute} from '@angular/router';
+import {PageService} from '../../services/page.service';
+import {FormControl} from '@angular/forms';
+import {Page} from '../../model/page';
+import * as juice from 'juice';
 
 @Component({
   selector: 'app-grape-editor',
@@ -19,11 +25,19 @@ import '../../../assets/canvas-styling.css';
 })
 export class GrapeEditorComponent implements OnInit, AfterViewInit {
   editor;
+  parentID: string;
+  id: string;
+  initialID = '';
+  page: Page;
+  titleFC = new FormControl('');
+  urlFC = new FormControl('');
 
-  constructor() {
+  constructor(private activeRoute: ActivatedRoute, private ps: PageService) {
   }
 
   ngOnInit(): void {
+    // const params = await this.activeRoute.params.toPromise();
+    // console.log('params', params);
     this.editor = grapesjs.init({
       // Indicate where to init the editor. You can also pass an HTMLElement
       container: '#gjs',
@@ -33,6 +47,7 @@ export class GrapeEditorComponent implements OnInit, AfterViewInit {
       // Size of the editor
       height: '700px',
       width: '100%',
+      inlineCss: 1,
       // Disable the storage manager for the moment
       storageManager: false,
       // Avoid any default panel
@@ -40,7 +55,8 @@ export class GrapeEditorComponent implements OnInit, AfterViewInit {
       styleManager: {
         clearProperties: true,
       },
-      plugins: ['bootstrap-collapse', 'bootstrap-responsive-columns', 'bootstrap-fixed-columns', 'gjs-preset-webpage', 'bootstrap-lists', 'bootstrap-text'],
+      plugins: ['bootstrap-collapse', 'bootstrap-responsive-columns', 'bootstrap-fixed-columns', 'gjs-preset-webpage',
+                'bootstrap-lists', 'bootstrap-text'],
 
       // plugins: ['gjs-preset-webpage', 'grapesjs-blocks-bootstrap4'],
       canvas: {
@@ -138,21 +154,42 @@ export class GrapeEditorComponent implements OnInit, AfterViewInit {
     styleManager.render();
     this.editor.runCommand('open-tm');
     this.editor.BlockManager.getAll().forEach(block => {
-      console.log(block);
       if (block && block.attributes && block.attributes.category === 'Forms') {
-        console.log(block);
         this.editor.BlockManager.remove(block.id);
       }
     });
+    this.parentID = this.activeRoute.snapshot.queryParams.parent;
+    this.id = this.activeRoute.snapshot.queryParams.id;
+    // If we are already on a page, load that HTML.
+    if (this.id) {
+      this.ps.getPage(this.id).then((page) => {
+        this.page = page;
+        this.editor.setComponents(page.body);
+        this.titleFC.setValue(page.title);
+        this.initialID = page.id;
+        console.log('initial id', this.page);
+        this.urlFC.setValue(this.initialID.replace(this.page.parent, '').replace('\\', ''));
+        this.editor.store();
+      });
+    }
+
   }
 
   printHTML(): void {
     // console.log(this.editor.getHtml());
-    console.log(this.editor.getHtml());
+
+    console.log(juice(this.editor.getHtml() + `<style>${this.editor.getCss()}</style>`));
   }
 
   printCSS(): void {
-    console.log(this.editor.getCss());
+    // console.log(this.editor.getCss());
+  }
+
+  titleUpdate(): void {
+    console.log('title:', this.titleFC.value);
+    let value = this.titleFC.value.toString().toLowerCase().trim().replaceAll(' ', '-');
+    value = value.replaceAll(/[^a-z^A-Z^0-9_-]+/gi, '');
+    this.urlFC.setValue(value);
   }
 
 }

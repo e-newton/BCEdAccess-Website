@@ -21,14 +21,11 @@ export class PageBaseComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.id = '';
-    this.activeRouter.snapshot.children.forEach(c => {
-      c.url.forEach(url => {
-        this.id += url.path + '\\';
-      });
-    });
-    this.id = this.id.substring(0, this.id.length - 1);
-    console.log(this.activeRouter);
-    console.log('id', this.id);
+    this.id = this.router.url;
+    while (this.id.includes('/')) {
+      this.id = this.id.replace('/', '\\');
+    }
+    this.id = this.id.substring(1, this.id.length);
     try{
       this.currentPage = await this.ps.getPage(this.id);
     } catch (e) {
@@ -36,7 +33,6 @@ export class PageBaseComponent implements OnInit {
       await this.router.navigate(['']);
     }
     this.loading = false;
-    console.log('Children', this.currentPage.children);
 
   }
 

@@ -20,13 +20,13 @@ export const routes: Routes = [
   {path: 'blog', component: BlogRootComponent},
   {path: 'login', component: LoginComponent},
   {path: 'tree', component: PageTreeComponent},
-  {path: 'p', component: PageBaseComponent, children: [
-      {path: '**', component: PageBaseComponent}
-    ]},
   {path: 'dashboard', component: DashboardComponent, canActivate: [CanActivateViaAuthGuard]},
   {path: 'acceptinvite', component: AcceptInviteComponent},
   {path: 'grape', component: GrapeEditorComponent},
-  {path: '', component: HomePageComponent}
+  {path: '', component: HomePageComponent},
+  {path: '**', component: PageBaseComponent, children: [
+      {path: '**', component: PageBaseComponent}
+    ]},
 
 
 
