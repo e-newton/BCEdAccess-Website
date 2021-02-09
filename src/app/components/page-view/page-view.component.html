@@ -3,4 +3,4 @@
     <a [routerLink]="[child.ref]">{{child.title}}</a>
   </div>
 </div>
-<div *ngIf="currentPage" [innerHTML]="currentPage.body"></div>
+<div *ngIf="currentPage" [innerHTML]="currentPage.body | safeHTML"></div>

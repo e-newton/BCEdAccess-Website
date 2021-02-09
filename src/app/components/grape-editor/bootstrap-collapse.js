@@ -21,6 +21,7 @@ export default grapesjs.plugins.add('bootstrap-collapse', (editor, options) => {
         const id = generateID();
         const header_id = generateID()
         const parent = this.parent();
+        console.log('parent', parent);
         this.components().add(`<div class="card">
                                   <div class="card-header" id="${header_id}" data-gjs-custom-name="Collapse Card Header">
                                     <h2 class="mb-0">
@@ -50,7 +51,10 @@ export default grapesjs.plugins.add('bootstrap-collapse', (editor, options) => {
   editor.BlockManager.add('Accordion', {
     label: "Bootstrap Components",
     category: 'Bootstrap Components',
-    content: '<div class="accordion" data-gjs-custom-name="Accordion">' +
+    attributes: {
+      id: generateID(),
+    },
+    content: `<div class="accordion" data-gjs-custom-name="Accordion" id = ${generateID()}>` +
       '<collapse-card></collapse-card>' +
       '<collapse-card></collapse-card>' +
       '<collapse-card></collapse-card>'+

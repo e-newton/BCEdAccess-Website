@@ -150,10 +150,11 @@ export class PageService {
 
   public async changeID(oldID: string, newID: string): Promise<void> {
     const page: Page = await this.getPage(oldID);
+    const children = page.children;
     page.id = newID;
     page.children = [];
     await this.savePage(page);
-    page.children?.forEach((child) => {
+    children?.forEach((child) => {
       this.changeParent(child.ref, newID);
     });
     await this.deletePage(oldID, true);

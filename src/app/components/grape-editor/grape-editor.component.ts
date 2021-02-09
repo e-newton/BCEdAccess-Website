@@ -17,6 +17,7 @@ import {PageService} from '../../services/page.service';
 import {FormControl} from '@angular/forms';
 import {Page} from '../../model/page';
 import * as juice from 'juice';
+import {PageChild} from '../../model/page-child';
 
 @Component({
   selector: 'app-grape-editor',
@@ -47,7 +48,7 @@ export class GrapeEditorComponent implements OnInit, AfterViewInit {
       // Size of the editor
       height: '700px',
       width: '100%',
-      inlineCss: 1,
+      avoidInlineStyle: true,
       // Disable the storage manager for the moment
       storageManager: false,
       // Avoid any default panel
@@ -117,12 +118,10 @@ export class GrapeEditorComponent implements OnInit, AfterViewInit {
 
     this.editor.on('component:add', () => {
       this.printHTML();
-      this.printCSS();
       this.editor.refresh();
     });
     this.editor.on('component:update', () => {
       this.printHTML();
-      this.printCSS();
       this.editor.refresh();
     });
 
@@ -175,20 +174,42 @@ export class GrapeEditorComponent implements OnInit, AfterViewInit {
 
   }
 
+  async save(): Promise<void> {
+    if (this.parentID) {
+      const newID = this.parentID + '\\' + this.urlFC.value;
+      const page = new Page(this.parentID, this.titleFC.value, this.getHTML(), true, newID);
+      await this.ps.savePage(page);
+      const parent = await this.ps.getPage(this.parentID);
+      parent.addChild(new PageChild(newID, this.titleFC.value));
+      await this.ps.savePage(parent);
+    } else {
+      throw new Error('Not Implemented Yet Dummy');
+
+    }
+  }
+
+  async createPage(): Promise<Page> {
+    if (this.page) {
+      this.page.id = this.id;
+      this.page.title = this.titleFC.value;
+      this.page.body = this.getHTML();
+      return this.page;
+    }
+    else {
+      return new Page(this.parentID, this.titleFC.value, this.getHTML(), true, this.id);
+    }
+  }
+
   printHTML(): void {
-    console.log(juice(this.editor.getHtml() + `<style>${this.editor.getCss()}</style>`));
+    console.log(this.editor.getHtml());
   }
 
   getHTML(): string {
-    return juice(this.editor.getHtml() + `<style>${this.editor.getCss()}</style>`);
+    return  `<style>${this.editor.getCss()}</style>` + this.editor.getHtml();
   }
 
-  printCSS(): void {
-    // console.log(this.editor.getCss());
-  }
 
   titleUpdate(): void {
-    console.log('title:', this.titleFC.value);
     let value = this.titleFC.value.toString().toLowerCase().trim().replaceAll(' ', '-');
     value = value.replaceAll(/[^a-z^A-Z^0-9_-]+/gi, '');
     this.urlFC.setValue(value);

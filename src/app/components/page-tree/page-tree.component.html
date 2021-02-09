@@ -30,7 +30,7 @@
         </div>
         <div class="col-4">
           <button class="btn btn-success mx-1 py-2  d-flex justify-content-center align-items-center"
-                  (click)="deleteBlog(blog.id)">
+                  [routerLink]="['/grape']" [queryParams]="{parent: node.data.id}">
             <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
                  xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                  width="16px" height="16px"
