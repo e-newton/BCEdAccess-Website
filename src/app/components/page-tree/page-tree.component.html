@@ -15,7 +15,10 @@
   <ng-template #treeNodeTemplate let-node let-index="index">
     <div style="border: 1px solid #1f1f1f;" class="row align-items-center justify-content-start m-2 p-2">
       <div class="col-6 align-items-center">
-        {{ node.data.name }}
+        <a (click)="navigateToLink(node.data.id)">
+          {{ node.data.name }}
+        </a>
+
       </div>
       <div class="col-6 d-flex">
         <div class="col-4">
@@ -60,7 +63,7 @@
         </div>
         <div class="col-4">
           <button class="btn btn-danger mx-1 py-2  d-flex justify-content-center align-items-center"
-                  (click)="deleteBlog(blog.id)">
+                  (click)="deletePage(node.data.id)">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash"
                  viewBox="0 0 16 16">
               <path

@@ -32,6 +32,7 @@ export class GrapeEditorComponent implements OnInit, AfterViewInit {
   page: Page;
   titleFC = new FormControl('');
   urlFC = new FormControl('');
+  saving = false;
 
   constructor(private activeRoute: ActivatedRoute, private ps: PageService) {
   }
@@ -175,6 +176,7 @@ export class GrapeEditorComponent implements OnInit, AfterViewInit {
   }
 
   async save(): Promise<void> {
+    this.saving = true;
     if (this.parentID) {
       const newID = this.parentID + '\\' + this.urlFC.value;
       const page = new Page(this.parentID, this.titleFC.value, this.getHTML(), true, newID);
@@ -193,6 +195,7 @@ export class GrapeEditorComponent implements OnInit, AfterViewInit {
       this.page.body = this.getHTML();
       await this.ps.savePage(this.page);
     }
+    this.saving = false;
   }
 
   async createPage(): Promise<Page> {

@@ -3,6 +3,7 @@ import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import {ITreeOptions, ITreeState} from '@circlon/angular-tree-component';
 import { v4 } from 'uuid';
 import {PageService} from '../../services/page.service';
+import {Router} from '@angular/router';
 
 interface Node {
   id: string;
@@ -35,7 +36,7 @@ export class PageTreeComponent {
   nodes = [];
   ids = [];
   loading = true;
-  constructor(private ps: PageService) {
+  constructor(private ps: PageService, private router: Router) {
     this.ps.getTree().then((tree) => {
       this.nodes = tree;
       this.loading = false;
@@ -65,6 +66,27 @@ export class PageTreeComponent {
 
   print(event: any) {
     console.log('AH');
+  }
+
+  deletePage(pageID): void {
+    this.loading = true;
+    this.ps.deletePage(pageID).then(async () => {
+      this.nodes = await this.ps.getTree();
+      this.ids = await this.ps.getAllPageIds();
+      this.loading = false;
+    });
+  }
+
+  getNavLink(pageID: string): string[] {
+    return ['/'].concat(pageID.split('\\'));
+  }
+
+  idToURL(pageID: string): string {
+    return encodeURI(pageID.split('\\').join('/'));
+  }
+
+  async navigateToLink(pageID: string): Promise<void> {
+    void await this.router.navigate(['/'].concat(pageID.split('\\')));
   }
 
 
