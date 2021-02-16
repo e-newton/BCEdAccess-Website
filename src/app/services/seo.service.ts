@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import {Meta} from '@angular/platform-browser';
 
 export type Tags = {
-  title: string,
-  description: string,
-  image: string,
-  slug: string,
+  title?: string,
+  description?: string,
+  image?: string,
+  slug?: string,
 };
 
 @Injectable({
@@ -19,7 +19,7 @@ export class SeoService {
     // default values
     config = {
       title: 'BCEdAccess',
-      description: 'My SEO friendly Angular Component',
+      description: 'Action for Equitable Access to Education',
       image: 'https://firebasestorage.googleapis.com/v0/b/bcedaccess-website.appspot.com/o/images%2Fbcedaccess_logo.png?alt=media&token=d6c1b4d0-412e-4149-bc7b-70f5cd07a362',
       slug: '',
       ...config
