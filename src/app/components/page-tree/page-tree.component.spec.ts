@@ -1,26 +1,26 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GrapeEditorComponent } from './grape-editor.component';
+import { PageTreeComponent } from './page-tree.component';
 import {ActivatedRoute, RouterModule} from '@angular/router';
+import {PageService} from '../../services/page.service';
 import {AngularFireModule} from '@angular/fire';
 import {environment} from '../../app.module';
-import {PageService} from '../../services/page.service';
 
-describe('GrapeEditorComponent', () => {
-  let component: GrapeEditorComponent;
-  let fixture: ComponentFixture<GrapeEditorComponent>;
+describe('PageTreeComponent', () => {
+  let component: PageTreeComponent;
+  let fixture: ComponentFixture<PageTreeComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [RouterModule.forRoot([]),
         AngularFireModule.initializeApp(environment.firebase)],
-      declarations: [ GrapeEditorComponent ]
+      declarations: [ PageTreeComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(GrapeEditorComponent);
+    fixture = TestBed.createComponent(PageTreeComponent);
     TestBed.inject(ActivatedRoute);
     TestBed.inject(PageService);
     component = fixture.componentInstance;

@@ -4,6 +4,7 @@ import 'grapesjs/dist/css/grapes.min.css';
 import grapesjs from 'grapesjs';
 import 'grapesjs-blocks-bootstrap4';
 import 'grapesjs-preset-webpage';
+import 'grapesjs-preset-newsletter';
 import './bootstrap-fixed-columns';
 import './bootstrap-responsive-columns';
 import './bootstrap-lists';
@@ -11,19 +12,34 @@ import './bootstrap-text';
 import './bootstrap-collapse';
 import * as csm from './customStyleManager';
 import '../../../assets/canvas-styling.css';
+import {ActivatedRoute} from '@angular/router';
+import {PageService} from '../../services/page.service';
+import {FormControl} from '@angular/forms';
+import {Page} from '../../model/page';
+import * as juice from 'juice';
+import {PageChild} from '../../model/page-child';
 
 @Component({
   selector: 'app-grape-editor',
   templateUrl: './grape-editor.component.html',
-  styleUrls: ['./grape-editor.component.css',]
+  styleUrls: ['./grape-editor.component.css', ]
 })
 export class GrapeEditorComponent implements OnInit, AfterViewInit {
   editor;
+  parentID: string;
+  id: string;
+  initialID = '';
+  page: Page;
+  titleFC = new FormControl('');
+  urlFC = new FormControl('');
+  saving = false;
 
-  constructor() {
+  constructor(private activeRoute: ActivatedRoute, private ps: PageService) {
   }
 
   ngOnInit(): void {
+    // const params = await this.activeRoute.params.toPromise();
+    // console.log('params', params);
     this.editor = grapesjs.init({
       // Indicate where to init the editor. You can also pass an HTMLElement
       container: '#gjs',
@@ -33,6 +49,7 @@ export class GrapeEditorComponent implements OnInit, AfterViewInit {
       // Size of the editor
       height: '700px',
       width: '100%',
+      avoidInlineStyle: true,
       // Disable the storage manager for the moment
       storageManager: false,
       // Avoid any default panel
@@ -40,7 +57,8 @@ export class GrapeEditorComponent implements OnInit, AfterViewInit {
       styleManager: {
         clearProperties: true,
       },
-      plugins: ['bootstrap-collapse', 'bootstrap-responsive-columns', 'bootstrap-fixed-columns', 'gjs-preset-webpage', 'bootstrap-lists', 'bootstrap-text'],
+      plugins: ['bootstrap-collapse', 'bootstrap-responsive-columns', 'bootstrap-fixed-columns', 'gjs-preset-webpage',
+                'bootstrap-lists', 'bootstrap-text'],
 
       // plugins: ['gjs-preset-webpage', 'grapesjs-blocks-bootstrap4'],
       canvas: {
@@ -101,12 +119,10 @@ export class GrapeEditorComponent implements OnInit, AfterViewInit {
 
     this.editor.on('component:add', () => {
       this.printHTML();
-      this.printCSS();
       this.editor.refresh();
     });
     this.editor.on('component:update', () => {
       this.printHTML();
-      this.printCSS();
       this.editor.refresh();
     });
 
@@ -138,21 +154,78 @@ export class GrapeEditorComponent implements OnInit, AfterViewInit {
     styleManager.render();
     this.editor.runCommand('open-tm');
     this.editor.BlockManager.getAll().forEach(block => {
-      console.log(block);
       if (block && block.attributes && block.attributes.category === 'Forms') {
-        console.log(block);
         this.editor.BlockManager.remove(block.id);
       }
     });
+    this.parentID = this.activeRoute.snapshot.queryParams.parent;
+    this.id = this.activeRoute.snapshot.queryParams.id;
+    // If we are already on a page, load that HTML.
+    if (this.id) {
+      this.ps.getPage(this.id).then((page) => {
+        this.page = page;
+        this.editor.setComponents(page.body);
+        this.titleFC.setValue(page.title);
+        this.initialID = page.id;
+        console.log('initial id', this.page);
+        this.urlFC.setValue(this.initialID.replace(this.page.parent, '').replace('\\', ''));
+        this.editor.store();
+      });
+    }
+
+  }
+
+  async save(): Promise<void> {
+    this.saving = true;
+    this.page = await this.createPage();
+    if (this.parentID) {
+      const newID = this.parentID + '\\' + this.urlFC.value;
+      const page = new Page(this.parentID, this.titleFC.value, this.getHTML(), true, newID, true);
+      await this.ps.savePage(page);
+      const parent = await this.ps.getPage(this.parentID);
+      parent.addChild(new PageChild(newID, this.titleFC.value));
+      await this.ps.savePage(parent);
+    } else if (this.initialID !== this.page.parent + '\\' + this.urlFC.value) {
+      if (!this.parentID) {
+        this.page.body = this.getHTML();
+        await this.ps.savePage(this.page);
+      } else{
+        console.log('init', this.initialID, this.urlFC.value, this.page);
+        const newID = this.page.parent + '\\' + this.urlFC.value;
+        this.page.body = this.getHTML();
+        this.page.title = this.titleFC.value;
+        await this.ps.savePage(this.page);
+        await this.ps.changeID(this.initialID, newID);
+      }
+    }
+    this.saving = false;
+  }
+
+  async createPage(): Promise<Page> {
+    if (this.page) {
+      this.page.id = this.id;
+      this.page.title = this.titleFC.value;
+      this.page.body = this.getHTML();
+      return this.page;
+    }
+    else {
+      return new Page(this.parentID, this.titleFC.value, this.getHTML(), true, this.urlFC.value, true);
+    }
   }
 
   printHTML(): void {
-    // console.log(this.editor.getHtml());
     console.log(this.editor.getHtml());
   }
 
-  printCSS(): void {
-    console.log(this.editor.getCss());
+  getHTML(): string {
+    return  `<style>${this.editor.getCss()}</style>` + this.editor.getHtml();
+  }
+
+
+  titleUpdate(): void {
+    let value = this.titleFC.value.toString().toLowerCase().trim().replaceAll(' ', '-');
+    value = value.replaceAll(/[^a-z^A-Z^0-9_-]+/gi, '');
+    this.urlFC.setValue(value);
   }
 
 }

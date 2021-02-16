@@ -1,0 +1,112 @@
+import {Component, OnInit} from '@angular/core';
+import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
+import {ITreeOptions, ITreeState} from '@circlon/angular-tree-component';
+import { v4 } from 'uuid';
+import {PageService} from '../../services/page.service';
+import {Router} from '@angular/router';
+
+interface Node {
+  id: string;
+  draft: boolean;
+  children: Node[];
+}
+
+@Component({
+  selector: 'app-page-tree',
+  templateUrl: './page-tree.component.html',
+  styleUrls: ['./page-tree.component.scss', './page-tree.component.css', '../../../../node_modules/@circlon/angular-tree-component/css/angular-tree-component.css']
+})
+export class PageTreeComponent {
+
+  state: ITreeState = {
+    expandedNodeIds: {},
+    hiddenNodeIds: {},
+    activeNodeIds: {}
+  };
+
+  options: ITreeOptions = {
+    allowDrag: (node) => true,
+    getNodeClone: (node) => ({
+      ...node.data,
+      id: v4(),
+      name: `copy of ${node.data.name}`
+    }),
+    animateExpand: true,
+  };
+
+  nodes = [];
+  ids = [];
+  loading = true;
+  constructor(private ps: PageService, private router: Router) {
+    this.ps.getTree().then((tree) => {
+      this.nodes = tree;
+      this.loading = false;
+    });
+    this.ps.getAllPageIds().then(ids => {
+      this.ids = ids;
+    });
+  }
+  async onMoveNode($event): Promise<void> {
+    this.loading = true;
+    const parent = (this.ids.includes($event.to.parent.id)) ? $event.to.parent.id : '';
+    console.log(
+      'Moved',
+      $event.node.id,
+      'to',
+      parent);
+    const page = await this.ps.getPage($event.node.id);
+    if (page.parent === parent) {
+      this.loading = false;
+      return;
+    }
+    await this.ps.changeParent($event.node.id, parent);
+    this.nodes = await this.ps.getTree();
+    this.ids = await this.ps.getAllPageIds();
+    this.loading = false;
+  }
+
+  print(event: any): void {
+    console.log('AH');
+  }
+
+  publish(pageID): void {
+    this.loading = true;
+    this.ps.publishPage(pageID).then(async () => {
+      this.nodes = await this.ps.getTree();
+      this.ids = await this.ps.getAllPageIds();
+      this.loading = false;
+    });
+  }
+
+  hide(pageID): void {
+    this.loading = true;
+    this.ps.depublishPage(pageID).then(async () => {
+      this.nodes = await this.ps.getTree();
+      this.ids = await this.ps.getAllPageIds();
+      this.loading = false;
+    });
+  }
+
+  deletePage(pageID): void {
+    this.loading = true;
+    this.ps.deletePage(pageID).then(async () => {
+      this.nodes = await this.ps.getTree();
+      this.ids = await this.ps.getAllPageIds();
+      this.loading = false;
+    });
+  }
+
+  getNavLink(pageID: string): string[] {
+    return ['/'].concat(pageID.split('\\'));
+  }
+
+  idToURL(pageID: string): string {
+    return encodeURI(pageID.split('\\').join('/'));
+  }
+
+  async navigateToLink(pageID: string): Promise<void> {
+    void await this.router.navigate(['/'].concat(pageID.split('\\')));
+  }
+
+
+}

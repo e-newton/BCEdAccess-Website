@@ -1,0 +1,6 @@
+<div *ngIf="currentPage && currentPage.children">
+  <div *ngFor="let child of getDecodedChildren()">
+    <a [routerLink]="[child.ref]">{{child.title}}</a>
+  </div>
+</div>
+<div *ngIf="currentPage" [innerHTML]="currentPage.body | safeHTML"></div>
