@@ -177,23 +177,26 @@ export class GrapeEditorComponent implements OnInit, AfterViewInit {
 
   async save(): Promise<void> {
     this.saving = true;
+    this.page = await this.createPage();
     if (this.parentID) {
       const newID = this.parentID + '\\' + this.urlFC.value;
-      const page = new Page(this.parentID, this.titleFC.value, this.getHTML(), true, newID);
+      const page = new Page(this.parentID, this.titleFC.value, this.getHTML(), true, newID, true);
       await this.ps.savePage(page);
       const parent = await this.ps.getPage(this.parentID);
       parent.addChild(new PageChild(newID, this.titleFC.value));
       await this.ps.savePage(parent);
-    } else if ( this.initialID !== this.page.parent + '\\' + this.urlFC.value) {
-      console.log('init', this.initialID, this.urlFC.value, this.page);
-      const newID = this.page.parent + '\\' + this.urlFC.value;
-      this.page.body = this.getHTML();
-      this.page.title = this.titleFC.value;
-      await this.ps.savePage(this.page);
-      await this.ps.changeID(this.initialID, newID);
-    } else {
-      this.page.body = this.getHTML();
-      await this.ps.savePage(this.page);
+    } else if (this.initialID !== this.page.parent + '\\' + this.urlFC.value) {
+      if (!this.parentID) {
+        this.page.body = this.getHTML();
+        await this.ps.savePage(this.page);
+      } else{
+        console.log('init', this.initialID, this.urlFC.value, this.page);
+        const newID = this.page.parent + '\\' + this.urlFC.value;
+        this.page.body = this.getHTML();
+        this.page.title = this.titleFC.value;
+        await this.ps.savePage(this.page);
+        await this.ps.changeID(this.initialID, newID);
+      }
     }
     this.saving = false;
   }
@@ -206,7 +209,7 @@ export class GrapeEditorComponent implements OnInit, AfterViewInit {
       return this.page;
     }
     else {
-      return new Page(this.parentID, this.titleFC.value, this.getHTML(), true, this.id);
+      return new Page(this.parentID, this.titleFC.value, this.getHTML(), true, this.urlFC.value, true);
     }
   }
 

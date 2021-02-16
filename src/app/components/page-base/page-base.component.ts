@@ -48,11 +48,11 @@ export class PageBaseComponent implements OnInit {
   }
 
   addTestPage(): void {
-    const parentPage = new Page('', 'Test', '<h1>Test</h1>', true, 'test');
-    const child1Page = new Page('test', 'Child 1', '<h1>Child 1</h1>', true, 'test\\c1');
-    const child2Page = new Page('test\\c1', 'Child 2', '<h1>Child 22</h1>', true, 'test\\c1\\c2');
-    const child3Page = new Page('test\\c1\\c2', 'Sub Child 3', '<h1>child 3</h1>', true, 'test\\c1\\c2\\c3');
-    const child4Page = new Page('test\\c1\\c2', 'Sub Child 4', '<h1>child 4</h1>', true, 'test\\c1\\c2\\c4');
+    const parentPage = new Page('', 'Test', '<h1>Test</h1>', true, 'test', false);
+    const child1Page = new Page('test', 'Child 1', '<h1>Child 1</h1>', true, 'test\\c1', false);
+    const child2Page = new Page('test\\c1', 'Child 2', '<h1>Child 22</h1>', true, 'test\\c1\\c2', false);
+    const child3Page = new Page('test\\c1\\c2', 'Sub Child 3', '<h1>child 3</h1>', true, 'test\\c1\\c2\\c3', false);
+    const child4Page = new Page('test\\c1\\c2', 'Sub Child 4', '<h1>child 4</h1>', true, 'test\\c1\\c2\\c4', false);
     parentPage.addChild(new PageChild('test\\c1', 'Child 1'));
     child1Page.addChild(new PageChild('test\\c1\\c2', 'Child 2'));
     child2Page.addChild(new PageChild(child3Page.id, child3Page.title));

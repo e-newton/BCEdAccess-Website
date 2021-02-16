@@ -13,4 +13,18 @@
   background: #5DAE40;
 }
 
+.st0 {
+  fill: none;
+  stroke: #ffffff;
+  stroke-width: 20;
+  stroke-miterlimit: 10;
+}
+
+.st1 {
+  fill: none;
+  stroke: #ffffff;
+  stroke-width: 20;
+  stroke-miterlimit: 10;
+}
+
 /*# sourceMappingURL=page-tree.component.css.map */

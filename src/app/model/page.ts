@@ -7,14 +7,16 @@ export class Page {
   body: string;
   showChildren: boolean;
   id: string;
+  draft: boolean;
 
-  constructor(parent: string, title: string, body: string, showChildren: boolean, id: string) {
+  constructor(parent: string, title: string, body: string, showChildren: boolean, id: string, draft: boolean) {
     this.parent = parent;
     this.title = title;
     this.body = body;
     this.showChildren = showChildren;
     this.id = id;
     this.children = [];
+    this.draft = draft;
   }
 
   addChild(child: PageChild): void {

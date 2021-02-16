@@ -7,6 +7,7 @@ import {Router} from '@angular/router';
 
 interface Node {
   id: string;
+  draft: boolean;
   children: Node[];
 }
 
@@ -64,8 +65,26 @@ export class PageTreeComponent {
     this.loading = false;
   }
 
-  print(event: any) {
+  print(event: any): void {
     console.log('AH');
+  }
+
+  publish(pageID): void {
+    this.loading = true;
+    this.ps.publishPage(pageID).then(async () => {
+      this.nodes = await this.ps.getTree();
+      this.ids = await this.ps.getAllPageIds();
+      this.loading = false;
+    });
+  }
+
+  hide(pageID): void {
+    this.loading = true;
+    this.ps.depublishPage(pageID).then(async () => {
+      this.nodes = await this.ps.getTree();
+      this.ids = await this.ps.getAllPageIds();
+      this.loading = false;
+    });
   }
 
   deletePage(pageID): void {

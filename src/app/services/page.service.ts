@@ -11,6 +11,7 @@ interface FireStorePage {
   body: string;
   showChildren: boolean;
   id: string;
+  draft: boolean;
 }
 interface FireStoreChild {
   ref: string;
@@ -18,6 +19,7 @@ interface FireStoreChild {
 interface Node{
   name: string;
   id: string;
+  draft: boolean;
   children?: Node[];
 }
 
@@ -41,7 +43,20 @@ export class PageService {
       parent: page.parent,
       children: this.generateChildrenObject(page),
       showChildren: page.showChildren,
+      draft: page.draft
     });
+  }
+
+  public async publishPage(pageID: string): Promise<void> {
+    const page = await this.getPage(pageID);
+    page.draft = false;
+    await this.savePage(page);
+  }
+
+  public async depublishPage(pageID: string): Promise<void> {
+    const page = await this.getPage(pageID);
+    page.draft = true;
+    await this.savePage(page);
   }
 
 
@@ -51,7 +66,7 @@ export class PageService {
 
     const getChildren = async (id: string): Promise<Node> => {
       const page = await this.getPage(id);
-      const node: Node = {id: page.id, name: page.title};
+      const node: Node = {id: page.id, name: page.title, draft: page.draft};
       if (page.children){
         node.children = [];
         for (const child of page.children) {
@@ -249,12 +264,8 @@ export class PageService {
 
   private generateChildrenObject(page: Page): any {
     const rv: any = {};
-    page.children.forEach((child) => {
-      let id = String(PageService.randomNumber());
-      while (Object.keys(rv).includes(id)){
-        id = String(PageService.randomNumber());
-      }
-      rv[String(id)] = {ref: child.ref, title: child.title};
+    page.children.forEach((child, index) => {
+      rv[String(index)] = {ref: child.ref, title: child.title};
     });
     console.log(rv);
     return rv;
@@ -268,7 +279,7 @@ export class PageService {
       throw new Error(`This page does not exist: ${pageId}`);
     }
     const pageData = docData.data() as FireStorePage;
-    const page: Page = new Page(pageData.parent, pageData.title, pageData.body, pageData.showChildren, docData.id);
+    const page: Page = new Page(pageData.parent, pageData.title, pageData.body, pageData.showChildren, docData.id, pageData.draft);
     console.log('PAGE DATA', pageData);
     if (pageData.children){
       for (const i of Object.values<any>(pageData.children)) {
