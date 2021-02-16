@@ -7,7 +7,7 @@ import * as cors from 'cors';
 // // https://firebase.google.com/docs/functions/typescript
 const viewDecrementValue = 10;
 const app = express();
-app.use(cors({ origin: true }));
+app.use(cors());
 admin.initializeApp();
 
 const mailTransport = mailer.createTransport({
@@ -28,6 +28,10 @@ app.post('/blogs/', async (req, res) => {
   await snapshot.update({views: views + 1});
   res.send({id, views: views + 1});
 
+});
+
+app.post('/pagefiles/',  async (req, res) => {
+  functions.logger.info('Page File', req.body);
 });
 
 export const httpRequests = functions.https.onRequest(app);
