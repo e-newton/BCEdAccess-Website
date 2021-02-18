@@ -11,6 +11,7 @@ import {Observable, of} from 'rxjs';
 import {Blog} from '../../model/blog';
 import {AngularFireModule} from '@angular/fire';
 import {environment} from '../../app.module';
+import {SeoService} from '../../services/seo.service';
 
 
 
@@ -22,6 +23,7 @@ describe('BlogViewComponent', () => {
   let blogService: BlogService;
   let router: Router;
   let activedRouter: ActivatedRoute;
+  let seo: SeoService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -48,6 +50,7 @@ describe('BlogViewComponent', () => {
     httpTestingController = TestBed.inject(HttpTestingController);
     router = TestBed.inject(Router);
     activedRouter = TestBed.inject(ActivatedRoute);
+    seo = TestBed.inject(SeoService);
   });
 
 
@@ -60,7 +63,7 @@ describe('BlogViewComponent', () => {
   it('should load when going to regular blog', fakeAsync(() => {
     const blogSpy = spyOn(blogService, 'getSingleBlog')
       .and.returnValue(Promise.resolve([new Blog(123, 'title', 'author', 'body', 42, false)]));
-    component = new BlogViewComponent(activedRouter, blogService, router);
+    component = new BlogViewComponent(activedRouter, blogService, router, seo);
     component.ngOnInit();
     tick(100);
     expect(blogSpy).toHaveBeenCalledTimes(1);
