@@ -13,7 +13,7 @@ export type Tags = {
 })
 export class SeoService {
 
-  constructor(private meta: Meta) { }
+  constructor(public meta: Meta) { }
 
   public generateTags(config: Tags): void {
     // default values
