@@ -18,6 +18,8 @@ import {FormControl} from '@angular/forms';
 import {Page} from '../../model/page';
 import * as juice from 'juice';
 import {PageChild} from '../../model/page-child';
+import {AngularFireStorage} from '@angular/fire/storage';
+import { v4 as uuid } from 'uuid';
 
 @Component({
   selector: 'app-grape-editor',
@@ -34,12 +36,13 @@ export class GrapeEditorComponent implements OnInit, AfterViewInit {
   urlFC = new FormControl('');
   saving = false;
 
-  constructor(private activeRoute: ActivatedRoute, private ps: PageService) {
+  constructor(private activeRoute: ActivatedRoute, private ps: PageService, public as: AngularFireStorage) {
   }
 
-  ngOnInit(): void {
+  ngOnInit(): void{
     // const params = await this.activeRoute.params.toPromise();
     // console.log('params', params);
+    const initAssets = [];
     this.editor = grapesjs.init({
       // Indicate where to init the editor. You can also pass an HTMLElement
       container: '#gjs',
@@ -56,6 +59,32 @@ export class GrapeEditorComponent implements OnInit, AfterViewInit {
       panels: {defaults: []},
       styleManager: {
         clearProperties: true,
+      },
+      assetManager: {
+        assets: initAssets,
+
+        uploadFile: async (e) => {
+          const files: FileList = e.dataTransfer ? e.dataTransfer.files : e.target.files;
+          for (let i = 0; i < files.length; i++) {
+            const file: File = files.item(i);
+            const storageRef = await this.as.ref(`pages/${uuid()}`);
+            await storageRef.put(file);
+            const dl = await storageRef.getDownloadURL().toPromise();
+            console.log(this.editor.AssetManager);
+            this.editor.AssetManager.add({
+              src: dl,
+              type: 'image',
+              height: 100,
+              width: 200,
+          });
+            return {data: [{
+                src: dl,
+                type: 'image',
+                height: 100,
+                width: 200,
+              }]};
+          }
+        }
       },
       plugins: ['bootstrap-collapse', 'bootstrap-responsive-columns', 'bootstrap-fixed-columns', 'gjs-preset-webpage',
                 'bootstrap-lists', 'bootstrap-text'],
@@ -74,6 +103,17 @@ export class GrapeEditorComponent implements OnInit, AfterViewInit {
       },
 
       customStyleManager: csm.default,
+    });
+    this.as.ref(`pages/`).listAll().forEach(async (l) => {
+      for (const f of l.items) {
+        const dl = await f.getDownloadURL();
+        this.editor.AssetManager.add({
+          src: dl,
+          type: 'image',
+          height: 100,
+          width: 200,
+        });
+      }
     });
     this.editor.BlockManager.add('link-button', {
       category: 'fuc',
@@ -124,6 +164,9 @@ export class GrapeEditorComponent implements OnInit, AfterViewInit {
     this.editor.on('component:update', () => {
       this.printHTML();
       this.editor.refresh();
+    });
+    this.editor.on('asset:upload:end', () => {
+    console.log('upload')
     });
 
     console.log('editor', this.editor);
