@@ -1,0 +1,55 @@
+#open-button {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 100%;
+  width: 50px;
+  background-color: white;
+  cursor: pointer;
+  box-shadow: #1f1f1f 5px 4px 10px;
+}
+#menu {
+  position: fixed;
+  top: 50px;
+  width: 0;
+  height: 500px;
+  transition: 0.4s;
+  z-index: 50;
+  background-color: white;
+  box-shadow: #1f1f1f 5px 4px 10px;
+
+}
+
+.open-button-container{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.bar1, .bar2, .bar3 {
+  width: 30px;
+  height: 4px;
+  background-color: #333;
+  margin-top: 6px;
+  transition: 0.4s;
+}
+
+/* Rotate first bar */
+.change .bar1 {
+  -webkit-transform: rotate(-45deg) translate(-7px, 6px) ;
+  transform: rotate(-45deg) translate(-7px, 6px) ;
+}
+
+/* Fade out the second bar */
+.change .bar2 {
+  opacity: 0;
+}
+
+/* Rotate last bar */
+.change .bar3 {
+  -webkit-transform: rotate(45deg) translate(-8px, -8px) ;
+  transform: rotate(45deg) translate(-8px, -8px) ;
+}
