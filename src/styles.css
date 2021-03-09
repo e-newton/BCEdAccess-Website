@@ -2,12 +2,12 @@
 @import '~@circlon/angular-tree-component/css/angular-tree-component.css';
 
 * {
-  font-family: "Futura", "urw-form", sans-serif !important;
+  font-family: Helvetica, "Futura", "urw-form", sans-serif !important;
 }
 
 body {
   color: #F5F3F5;
-  font-family: "futura-pt", "urw-form", sans-serif;
+  font-family: Helvetica, "futura-pt", "urw-form", sans-serif;
 }
 /* Let's highlight canvas boundaries */
 #gjs {

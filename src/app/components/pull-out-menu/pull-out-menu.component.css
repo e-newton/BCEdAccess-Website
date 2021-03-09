@@ -12,16 +12,39 @@
   position: fixed;
   top: 50px;
   width: 0;
+  left: 0;
   height: 500px;
   transition: 0.4s;
   z-index: 50;
   background-color: white;
   box-shadow: #1f1f1f 5px 4px 10px;
-
 }
+
+#widgets{
+  transition: display 0s, opacity 0.4s;
+  overflow-x: hidden;
+  white-space: nowrap;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.hidden{
+  display: none;
+}
+
+.visuallyhidden{
+  opacity: 0;
+}
+
+#widgets * {
+}
+
 
 .open-button-container{
   width: 100%;
+  margin-top: 35px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -30,17 +53,19 @@
 }
 
 .bar1, .bar2, .bar3 {
-  width: 30px;
-  height: 4px;
+  width: 22px;
+  height: 3.5px;
+  padding: 0;
   background-color: #333;
-  margin-top: 6px;
+  margin-top: 3px;
   transition: 0.4s;
+  border-radius: 15px;
 }
 
 /* Rotate first bar */
 .change .bar1 {
-  -webkit-transform: rotate(-45deg) translate(-7px, 6px) ;
-  transform: rotate(-45deg) translate(-7px, 6px) ;
+  -webkit-transform: translate(-3px, 7px) rotate(-45deg);
+  transform: translate(-3px, 7px) rotate(-45deg);
 }
 
 /* Fade out the second bar */
@@ -50,6 +75,6 @@
 
 /* Rotate last bar */
 .change .bar3 {
-  -webkit-transform: rotate(45deg) translate(-8px, -8px) ;
-  transform: rotate(45deg) translate(-8px, -8px) ;
+  -webkit-transform: translate(-3px, -6px) rotate(45deg);
+  transform: translate(-3px, -6px) rotate(45deg);
 }

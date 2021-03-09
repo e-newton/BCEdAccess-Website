@@ -10,6 +10,8 @@ export class PullOutMenuComponent implements OnInit {
 
   @ViewChild('openbutton') viewButton: ElementRef;
   @ViewChild('menu') menu: ElementRef;
+  @ViewChild('widgets') widgets: ElementRef;
+  i = 0;
   opened = false;
   constructor() { }
 
@@ -23,6 +25,7 @@ export class PullOutMenuComponent implements OnInit {
       this.menu.nativeElement.style.width = '250px';
     }
     this.opened = !this.opened;
+
     this.changeMenuButton();
   }
 
