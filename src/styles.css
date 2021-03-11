@@ -9,6 +9,10 @@ body {
   color: #F5F3F5;
   font-family: Helvetica, "futura-pt", "urw-form", sans-serif;
 }
+
+html{
+  overflow-x: hidden;
+}
 /* Let's highlight canvas boundaries */
 #gjs {
   border: 3px solid #444;

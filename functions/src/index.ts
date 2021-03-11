@@ -10,9 +10,84 @@ import fetch from 'node-fetch';
 // // https://firebase.google.com/docs/functions/typescript
 const viewDecrementValue = 10;
 const app = express();
+const siteData: SiteData = {pages : [], blogs : []};
 
 app.use(cors());
 admin.initializeApp();
+refreshSiteData();
+
+interface SiteData {
+  pages: {title: string, body: string, id: string}[];
+  blogs: {title: string, body: string, id: string}[];
+}
+
+const searchScoring = {
+  pageTitle: 100,
+  blogTitle: 50,
+  pageBody: 10,
+  blogBody: 1,
+};
+
+interface FireStorePage {
+  parent: string;
+  children: any;
+  title: string;
+  body: string;
+  showChildren: boolean;
+  id: string;
+  draft: boolean;
+}
+
+interface BlogFSObject {
+  date: Date;
+  title: string;
+  author: string;
+  body: string;
+  views: number;
+  featured: boolean;
+  draft: boolean;
+}
+
+interface SearchResult {
+  type: 'blog' | 'page';
+  score: number;
+  id: string;
+  title: string;
+}
+
+
+
+async function refreshSiteData(): Promise<void> {
+  const pages = [];
+  const blogs = [];
+  const pageDocsList = await admin.firestore().collection('pages').listDocuments();
+  for (const page of pageDocsList) {
+    const pageSnap = await page.get();
+    const data = await pageSnap.data() as FireStorePage;
+    if (!data.draft){
+      pages.push({
+        title: data.title,
+        body: data.body,
+        id:  pageSnap.id,
+      });
+    }
+  }
+
+  const blogDocsList = await admin.firestore().collection('blogs').listDocuments();
+  for (const blog of blogDocsList) {
+    const blogSnap = await blog.get();
+    const data = await blogSnap.data() as BlogFSObject;
+    if (!data.draft){
+      blogs.push({
+        title: data.title,
+        body: data.body,
+        id: blogSnap.id,
+      });
+    }
+  }
+  siteData.pages = pages;
+  siteData.blogs = blogs;
+}
 
 const mailTransport = mailer.createTransport({
   host: functions.config().email.server,
@@ -35,6 +110,59 @@ app.post('/blogs/', async (req, res) => {
   await snapshot.update({views: views + 1});
   res.send({id, views: views + 1});
 
+});
+
+app.get('/search/:search/:limit', async (req, res) => {
+  let search: string = req.params.search;
+  let limit: number;
+  try {
+    limit = parseInt(req.params.limit, 10);
+  } catch (e) {
+    res.status(400).send({err: 'Limit Malformed'});
+    return;
+  }
+  if (!limit){
+    res.status(400).send({err: 'Limit Malformed'});
+    return;
+  }
+  if (!search){
+    res.status(400).send({err: 'Empty Search Term'});
+    return;
+  }
+  search = search.toLowerCase();
+
+  const rv: SearchResult[] = [];
+  siteData.blogs.forEach(blog => {
+    const score =  searchScoring.blogTitle * (blog.title.toLowerCase().match(new RegExp(search, 'g')) || []).length +
+                    searchScoring.blogBody * (blog.body.toLowerCase().match(new RegExp(search, 'g')) || []).length;
+    if (score > 0) {
+      rv.push({
+        type: 'blog',
+        score,
+        id: blog.id,
+        title: blog.title,
+      });
+    }
+  });
+
+  siteData.pages.forEach(page => {
+    const score =  searchScoring.pageTitle * (page.title.toLowerCase().match(new RegExp(search, 'g')) || []).length +
+                    searchScoring.pageBody * (page.body.toLowerCase().match(new RegExp(search, 'g')) || []).length;
+    if (score > 0) {
+      rv.push({
+        type: 'page',
+        score,
+        id: page.id,
+        title: page.title,
+      });
+    }
+  });
+
+  rv.sort((a, b) => {
+    return b.score - a.score;
+  });
+
+  res.status(200).send({search, limit, results: rv});
 });
 
 app.post('/pagefiles/',  async (req, res) => {

@@ -12,6 +12,7 @@ import {GrapeEditorComponent} from './components/grape-editor/grape-editor.compo
 import {PageBaseComponent} from './components/page-base/page-base.component';
 import {PageViewComponent} from './components/page-view/page-view.component';
 import {PageTreeComponent} from './components/page-tree/page-tree.component';
+import {SearchResultsComponent} from './components/search-results/search-results.component';
 
 export const routes: Routes = [
   {path: 'blog/editor/:id', component: BlogEditorComponent, canActivate: [CanActivateViaAuthGuard]},
@@ -23,6 +24,7 @@ export const routes: Routes = [
   {path: 'dashboard', component: DashboardComponent, canActivate: [CanActivateViaAuthGuard]},
   {path: 'acceptinvite', component: AcceptInviteComponent},
   {path: 'grape', component: GrapeEditorComponent},
+  {path: 'search/:search/:limit', component: SearchResultsComponent},
   {path: '', component: HomePageComponent},
   {path: '**', component: PageBaseComponent, children: [
       {path: '**', component: PageBaseComponent}

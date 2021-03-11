@@ -36,6 +36,8 @@ import {PageTreeComponent} from './components/page-tree/page-tree.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {TreeModule} from '@circlon/angular-tree-component';
 import { PullOutMenuComponent } from './components/pull-out-menu/pull-out-menu.component';
+import { SearchBarComponent } from './components/search-bar/search-bar.component';
+import { SearchResultsComponent } from './components/search-results/search-results.component';
 
 export const environment = {
   production : false,
@@ -77,6 +79,8 @@ export const environment = {
     PageViewComponent,
     PageTreeComponent,
     PullOutMenuComponent,
+    SearchBarComponent,
+    SearchResultsComponent,
   ],
   imports: [
     BrowserModule,
