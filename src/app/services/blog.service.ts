@@ -13,6 +13,7 @@ interface BlogFSObject {
   views: number;
   featured: boolean;
   draft: boolean;
+  coverImage: string;
 }
 
 @Injectable({
@@ -34,7 +35,7 @@ export class BlogService {
     const blogs = [];
     snapshot.forEach(doc => {
       const data = doc.data() as BlogFSObject;
-      blogs.push(new Blog(Number(doc.id), data.title, data.author, data.body, data.views, data.draft, data.date, data.featured));
+      blogs.push(new Blog(doc.id, data.title, data.author, data.body, data.views, data.draft, data.date, data.featured, data.coverImage));
     });
     return blogs;
 
@@ -45,7 +46,7 @@ export class BlogService {
     const blogs = [];
     snapshot.forEach(doc => {
       const data = doc.data() as BlogFSObject;
-      blogs.push(new Blog(Number(doc.id), data.title, data.author, data.body, data.views, data.draft, data.date, data.featured));
+      blogs.push(new Blog(doc.id, data.title, data.author, data.body, data.views, data.draft, data.date, data.featured));
     });
     return blogs;
   }
@@ -55,17 +56,18 @@ export class BlogService {
     const blogs = [];
     snapshot.forEach(doc => {
       const data = doc.data() as BlogFSObject;
-      blogs.push(new Blog(Number(doc.id), data.title, data.author, data.body, data.views, data.draft, data.date, data.featured));
+      blogs.push(new Blog(doc.id, data.title, data.author, data.body, data.views, data.draft, data.date, data.featured));
     });
     return blogs;
   }
 
   async getSingleBlog(id: string, addViews: boolean = false): Promise<any> {
     const snapshot = await this.firestore.collection('blogs').doc(id).get().toPromise();
+    console.log(id)
     if (snapshot.exists){
       const doc = snapshot;
       const data = doc.data() as BlogFSObject;
-      return [new Blog(Number(doc.id), data.title, data.author, data.body, data.views, data.draft, data.date, data.featured)];
+      return [new Blog(doc.id, data.title, data.author, data.body, data.views, data.draft, data.date, data.featured, data.coverImage)];
     } else {
       return [];
     }
@@ -80,6 +82,7 @@ export class BlogService {
       date: blog.date,
       featured: blog.featured,
       draft: blog.draft,
+      coverImage: blog.coverImage,
     }).then((value => {
       return true;
     })).catch((err) => {
@@ -102,6 +105,7 @@ export class BlogService {
       date: blog.date,
       featured: blog.featured,
       draft: blog.draft,
+      coverImage: blog.coverImage,
     }).then((value => {
       return true;
     })).catch((err) => {

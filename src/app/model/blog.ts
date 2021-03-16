@@ -1,5 +1,5 @@
 export class Blog {
-  id: number;
+  id: string|number;
   title: string;
   author: string;
   body: string;
@@ -7,14 +7,17 @@ export class Blog {
   date: Date;
   featured: boolean;
   draft: boolean;
+  coverImage: string;
 
-  constructor(id: number, title: string, author: string, body: string, views: number, draft: boolean, date?: Date, featured?: boolean) {
+  constructor(id: string, title: string, author: string, body: string, views: number,
+              draft: boolean, date?: Date, featured?: boolean, coverImage?: string) {
     this.id = id;
     this.title = title;
     this.author = author;
     this.body = body;
     this.views = views;
     this.draft = draft;
+    this.coverImage = coverImage;
     if (date){
       this.date = date;
     } else{

@@ -74,12 +74,13 @@ export class BlogEditorComponent implements OnInit, AfterViewInit, OnDestroy {
         'tableCellProperties',
         'tableProperties'
       ]
-    }};
+    }
+  };
   editor = CustomEditor;
   // custom = CustomEditor;
-  @ViewChild( 'editorComponent' ) editorComponent: CKEditorComponent;
+  @ViewChild('editorComponent') editorComponent: CKEditorComponent;
   loadedBlog: Blog;
-  id: number;
+  id: any;
   title = '';
   author = '';
   body = '';
@@ -92,21 +93,22 @@ export class BlogEditorComponent implements OnInit, AfterViewInit, OnDestroy {
   authorFC = new FormControl('');
   editing = false;
   images = [];
+  coverImageURL = '';
 
   constructor(private blogService: BlogService, public activatedRouter: ActivatedRoute, public route: Router,
               public as: AngularFireStorage, public fsic: FirebaseStorageImageCacheService) {
-    if (this.activatedRouter.snapshot.paramMap.get('id')){
-      this.id = Number(this.activatedRouter.snapshot.paramMap.get('id'));
+    if (this.activatedRouter.snapshot.paramMap.get('id')) {
+      this.id = (this.activatedRouter.snapshot.paramMap.get('id'));
     } else {
-      this.generateID().then((n) => this.id = n);
+      this.generateID().then((n) => this.id = String(n));
     }
 
   }
 
-  onEditorChange( { editor }: ChangeEvent ): void {
+  onEditorChange({editor}: ChangeEvent): void {
     // const data = editor.getData();
     const data = this.editorComponent.editorInstance.getData();
-    console.log( data );
+    console.log(data);
     this.editorComponent.data = data;
 
   }
@@ -132,7 +134,7 @@ export class BlogEditorComponent implements OnInit, AfterViewInit, OnDestroy {
       this.images = [];
       return;
     }
-    for (let i = 0; i < imgs.length; i++){
+    for (let i = 0; i < imgs.length; i++) {
       const index = imgs[i].lastIndexOf('%2F');
       imgs[i] = imgs[i].slice(index);
       imgs[i] = decodeURI(imgs[i].replace('%2F', ''));
@@ -150,10 +152,9 @@ export class BlogEditorComponent implements OnInit, AfterViewInit, OnDestroy {
     this.blogService.getSingleBlog(String(this.id)).then((rows) => {
       const blog: Blog = rows[0];
       if (this.editorComponent.editorInstance) {
-        this.editorComponent.editorInstance.plugins.get( 'FileRepository' ).createUploadAdapter = (loader) => {
+        this.editorComponent.editorInstance.plugins.get('FileRepository').createUploadAdapter = (loader) => {
           const adapter = new FirebaseStorageUploadAdapter(loader);
           adapter.as = this.as;
-          adapter.id = this.id;
           return adapter;
         };
       }
@@ -170,9 +171,10 @@ export class BlogEditorComponent implements OnInit, AfterViewInit, OnDestroy {
       this.date = blog.date;
       this.featured = blog.featured;
       this.draft = blog.draft;
+      this.coverImageURL = blog.coverImage;
 
       // This is to make unit testing work. I don't like it and neither should you.
-      if (this.editorComponent.editorInstance){
+      if (this.editorComponent.editorInstance) {
         this.editorComponent.editorInstance.setData(blog.body);
 
       }
@@ -182,10 +184,6 @@ export class BlogEditorComponent implements OnInit, AfterViewInit, OnDestroy {
     });
 
   }
-
-
-
-
 
 
   random(low: number, high: number): number {
@@ -203,36 +201,39 @@ export class BlogEditorComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onSubmit(): void {
-      this.title = this.titleFC.value;
-      this.author = this.authorFC.value;
-      if (this.editing){
-        this.blogService.updateBlog(this.createBlog()).then((res) => {
-          if (res) {
-            this.backendResponse = 'Blog successfully posted!';
-          } else {
-            this.backendResponse = 'An error has occurred';
-          }
-        });
-      } else{
-        this.blogService.postBlog(this.createBlog()).then((res) => {
-          if (res) {
-            this.backendResponse = 'Blog successfully posted!';
-          } else {
-            this.backendResponse = 'An error has occurred';
-          }
-        });
-      }
-      if (this.draft){
-        this.route.navigate(['./dashboard']);
-      } else {
-        this.route.navigate(['./blog']);
-      }
+    this.title = this.titleFC.value;
+    this.id = this.titleFC.value.toString().toLowerCase().trim().replaceAll(' ', '-');
+    this.id = this.id.replaceAll(/[^a-z^A-Z^0-9_-]+/gi, '');
+    this.author = this.authorFC.value;
+    if (this.editing) {
+      this.blogService.updateBlog(this.createBlog()).then((res) => {
+        if (res) {
+          this.backendResponse = 'Blog successfully posted!';
+        } else {
+          this.backendResponse = 'An error has occurred';
+        }
+      });
+    } else {
+      this.blogService.postBlog(this.createBlog()).then((res) => {
+        if (res) {
+          this.backendResponse = 'Blog successfully posted!';
+        } else {
+          this.backendResponse = 'An error has occurred';
+        }
+      });
+    }
+    if (this.draft) {
+      this.route.navigate(['./dashboard']);
+    } else {
+      this.route.navigate(['./blog']);
+    }
 
 
   }
 
   createBlog(): Blog {
-    return new Blog(this.id, this.title, this.author, this.editorComponent.data, this.views, this.draft, this.date, this.featured);
+    return new Blog(this.id, this.title, this.author, this.editorComponent.data,
+      this.views, this.draft, this.date, this.featured, this.coverImageURL);
   }
 
   async ngOnDestroy(): Promise<void> {
@@ -242,11 +243,12 @@ export class BlogEditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
   uploadCoverImage($event: InputEvent): void {
     const files: FileList = ($event.target as HTMLInputElement & EventTarget).files;
-    if (!files){
+    if (!files) {
       return;
     }
     const file: File = files[0];
-    this.fsic.uploadBlogCoverImage(this.id, file).then(() => {
+    this.fsic.uploadBlogCoverImage(this.id, file).then((url) => {
+      this.coverImageURL = url;
       console.log('file uploaded');
     });
 
