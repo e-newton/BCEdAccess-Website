@@ -35,6 +35,7 @@ import { PageViewComponent } from './components/page-view/page-view.component';
 import {PageTreeComponent} from './components/page-tree/page-tree.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {TreeModule} from '@circlon/angular-tree-component';
+import { EventEditorComponent } from './components/event-editor/event-editor.component';
 
 export const environment = {
   production : false,
@@ -75,6 +76,7 @@ export const environment = {
     PageBaseComponent,
     PageViewComponent,
     PageTreeComponent,
+    EventEditorComponent,
   ],
   imports: [
     BrowserModule,
