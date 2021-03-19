@@ -1,0 +1,59 @@
+<p>event-editor works!</p>
+<form class="w-50">
+  <p>Cover Image</p>
+  <p *ngIf="imageError" class="text-danger">{{this.imageError}}</p>
+  <input id="fileUpload" type="file" accept="image/*" (change) = "uploadCoverImage($event)">
+</form>
+<br>
+<mat-form-field class="w-50">
+  <mat-label>Event Title</mat-label>
+  <input matInput [formControl]="titleFC">
+</mat-form-field>
+<br>
+<mat-form-field class="example-form-field" appearance="fill">
+  <mat-label>Event Date</mat-label>
+  <mat-date-range-input
+    [formGroup]="dateFC"
+    [rangePicker]="campaignOnePicker"
+    [comparisonStart]=""
+    [comparisonEnd]="">
+    <input matStartDate placeholder="Start date" formControlName="start" (dateInput)="change($event)">
+    <input matEndDate placeholder="End date" formControlName="end" (dateInput)="change($event)">
+  </mat-date-range-input>
+  <mat-datepicker-toggle matSuffix [for]="campaignOnePicker"></mat-datepicker-toggle>
+  <mat-date-range-picker #campaignOnePicker></mat-date-range-picker>
+</mat-form-field>
+<br>
+<mat-form-field class="w-50">
+  <mat-label>Event Description</mat-label>
+  <textarea matInput  [formControl]="descriptionFC" [rows]="6" [mat-autosize]="true" style="white-space: pre-wrap"></textarea>
+</mat-form-field>
+<br>
+<mat-form-field class="w-50">
+  <mat-label>Ticket Link</mat-label>
+  <input matInput [formControl]="linkFC">
+</mat-form-field>
+
+<p>Schedule</p>
+<div *ngFor="let fg of scheduleFC; index as i" class="border d-flex flex-column w-50 my-1">
+
+  <mat-form-field appearance="fill">
+    <mat-label>Choose a date</mat-label>
+    <input matInput [matDatepicker]="picker" [formControl]="fg.get('date')">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker ></mat-datepicker>
+  </mat-form-field>
+  <div class="toggle-example d-flex align-items-center" style="padding-bottom: 1.34375em;">
+    <input [ngxTimepicker]="toggleTimepicker" [disableClick]="false" placeholder="Time" class="w-100" [formControl]="fg.get('time')">
+    <ngx-material-timepicker-toggle [for]="toggleTimepicker"></ngx-material-timepicker-toggle>
+    <ngx-material-timepicker #toggleTimepicker></ngx-material-timepicker>
+  </div>
+  <mat-form-field class="">
+    <mat-label>Description</mat-label>
+    <input matInput [formGroup]="fg" [formControl]="fg.get('description')">
+  </mat-form-field>
+</div>
+<button (click)="addScheduleItem()">Add Schedule Item</button>
+<p *ngIf="postError" class="text-danger">{{postError}}</p>
+<br>
+<button (click)="publish()" class="btn btn-info my-3">Publish</button>

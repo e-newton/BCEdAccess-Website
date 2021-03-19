@@ -12,6 +12,9 @@ import {GrapeEditorComponent} from './components/grape-editor/grape-editor.compo
 import {PageBaseComponent} from './components/page-base/page-base.component';
 import {PageViewComponent} from './components/page-view/page-view.component';
 import {PageTreeComponent} from './components/page-tree/page-tree.component';
+import {EventEditorComponent} from './components/event-editor/event-editor.component';
+import {EventListComponent} from './components/event-list/event-list.component';
+import {EventViewComponent} from './components/event-view/event-view.component';
 
 export const routes: Routes = [
   {path: 'blog/editor/:id', component: BlogEditorComponent, canActivate: [CanActivateViaAuthGuard]},
@@ -22,6 +25,11 @@ export const routes: Routes = [
   {path: 'tree', component: PageTreeComponent},
   {path: 'dashboard', component: DashboardComponent, canActivate: [CanActivateViaAuthGuard]},
   {path: 'acceptinvite', component: AcceptInviteComponent},
+  {path: 'grape', component: GrapeEditorComponent},
+  {path: 'events/:id/editor', component: EventEditorComponent},
+  {path: 'events/editor', component: EventEditorComponent},
+  {path: 'events/:id', component: EventViewComponent},
+  {path: 'events', component: EventListComponent},
   {path: 'grape', component: GrapeEditorComponent},
   {path: '', component: HomePageComponent},
   {path: '**', component: PageBaseComponent, children: [

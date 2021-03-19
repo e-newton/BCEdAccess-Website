@@ -26,6 +26,12 @@ export class FirebaseStorageImageCacheService {
 
   }
 
+  async uploadEventCoverImage(id: string, file: File): Promise<string> {
+    const storageRef = await this.as.ref(`events/${id}/${file.name}`);
+    await storageRef.put(file);
+    return await storageRef.getDownloadURL().toPromise();
+  }
+
   async uploadBlogCoverImage(id: string|number, file: File): Promise<void> {
     const files = await this.as.ref(`blogs/${id}/`).listAll().toPromise();
     for (const file1 of files.items) {

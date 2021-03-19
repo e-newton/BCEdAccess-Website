@@ -35,6 +35,15 @@ import { PageViewComponent } from './components/page-view/page-view.component';
 import {PageTreeComponent} from './components/page-tree/page-tree.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {TreeModule} from '@circlon/angular-tree-component';
+import { EventEditorComponent } from './components/event-editor/event-editor.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatNativeDateModule} from '@angular/material/core';
+import {MatInputModule} from '@angular/material/input';
+import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
+import { EventListComponent } from './components/event-list/event-list.component';
+import { EventViewComponent } from './components/event-view/event-view.component';
 
 export const environment = {
   production : false,
@@ -75,6 +84,9 @@ export const environment = {
     PageBaseComponent,
     PageViewComponent,
     PageTreeComponent,
+    EventEditorComponent,
+    EventListComponent,
+    EventViewComponent,
   ],
   imports: [
     BrowserModule,
@@ -87,7 +99,13 @@ export const environment = {
     CKEditorModule,
     RouterModule,
     DragDropModule,
-    TreeModule
+    TreeModule,
+    BrowserAnimationsModule,
+    MatFormFieldModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatInputModule,
+    NgxMaterialTimepickerModule
   ],
   exports: [
     HeaderComponent,
