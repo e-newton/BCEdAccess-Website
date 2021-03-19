@@ -1,0 +1,31 @@
+<div *ngIf="event" class="container-xl">
+  <div class="row">
+    <div class="col-12">
+      <div class="img-fluid">
+        <img [src]="event.coverImage" alt="Event Cover Image" style="width: 100%; height: auto;">
+      </div>
+    </div>
+  </div>
+  <div class = "row justify-content-center">
+    <div class="col">
+      <h1>{{event.title}}</h1>
+    </div>
+  </div>
+  <div class = "row justify-content-center">
+    <div class="col">
+      <p>{{event.startDate.toDate().toDateString()}} - {{event.endDate.toDate().toDateString()}}</p>
+    </div>
+  </div>
+  <div class = "row justify-content-center">
+    <div class="col">
+      <span><p>Tickets: <a [href]="event.ticketLink">Here</a> </p></span>
+    </div>
+  </div>
+  <div class = "row justify-content-center">
+    <div class="col-8">
+      <p style="white-space: pre-wrap;">{{event.description}}</p>
+    </div>
+  </div>
+
+</div>
+
