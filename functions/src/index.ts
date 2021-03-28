@@ -4,6 +4,7 @@ import * as admin from 'firebase-admin';
 import * as express from 'express';
 import * as cors from 'cors';
 import * as url from 'url';
+import * as puppeteer from 'puppeteer';
 import fetch from 'node-fetch';
 // const fetch = require('node-fetch');
 // // Start writing Firebase Functions
@@ -14,7 +15,9 @@ const siteData: SiteData = {pages : [], blogs : []};
 
 app.use(cors());
 admin.initializeApp();
-refreshSiteData();
+refreshSiteData().then(() => {
+  functions.logger.info('Initial Refresh');
+});
 
 interface SiteData {
   pages: {title: string, body: string, id: string}[];
@@ -27,6 +30,12 @@ const searchScoring = {
   pageBody: 10,
   blogBody: 1,
 };
+
+// interface PageNode {
+//   url: string;
+//   title: string;
+//   children?: PageNode[];
+// }
 
 interface FireStorePage {
   parent: string;
@@ -54,7 +63,6 @@ interface SearchResult {
   id: string;
   title: string;
 }
-
 
 
 async function refreshSiteData(): Promise<void> {
@@ -87,6 +95,7 @@ async function refreshSiteData(): Promise<void> {
   }
   siteData.pages = pages;
   siteData.blogs = blogs;
+  functions.logger.info('Site Refreshed');
 }
 
 const mailTransport = mailer.createTransport({
@@ -99,7 +108,7 @@ const mailTransport = mailer.createTransport({
 });
 
 const appURL = 'bcedaccess-website.web.app';
-const renderURL = 'https://rendertron-305123.wl.r.appspot.com/render';
+// const renderURL = 'https://rendertron-305123.wl.r.appspot.com/render';
 
 app.post('/blogs/', async (req, res) => {
   functions.logger.info('Blog View', req.body.id);
@@ -130,6 +139,8 @@ app.get('/search/:search/:limit', async (req, res) => {
     return;
   }
   search = search.toLowerCase();
+  functions.logger.info('Search for: ', search);
+  console.log('Search for: ', search);
 
   const rv: SearchResult[] = [];
   siteData.blogs.forEach(blog => {
@@ -205,18 +216,26 @@ function detectBot(userAgent: any): boolean {
   return false;
 }
 
+async function getSEOContent(botURL: string): Promise<string> {
+  const browser = await puppeteer.launch();
+  const page = await browser.newPage();
+  await page.goto(botURL , {waitUntil: 'networkidle2'});
+  const content = await page.content();
+  await browser.close();
+  return content;
+}
+
 app.get('*', (req, res) => {
   const isBot = detectBot(req.headers['user-agent']);
 
   if (isBot) {
     const botURL = generateUrl(req);
-    functions.logger.info('url being fetched', `${renderURL}/${botURL}`);
-    fetch(`${renderURL}/${botURL}`)
-      .then((r: any) => r.text())
-      .then((body: any) => {
+    functions.logger.info('url being fetched', `${botURL}`);
+    getSEOContent(botURL)
+      .then((content) => {
         res.set('Cache-Control', 'public, max-age=300, s-maxage=600');
         res.set('Vary', 'User-Agent');
-        res.send(body.toString());
+        res.send(content);
       });
   } else{
     fetch(`https://${appURL}`)
@@ -228,8 +247,16 @@ app.get('*', (req, res) => {
 
 });
 
-exports.app = functions.https.onRequest(app);
+exports.app = functions .runWith({
+  timeoutSeconds: 120,
+  memory: '2GB',
+}).https.onRequest(app);
 
+export const scheduledRefresh = functions.pubsub.schedule('every 2 hours').onRun((context) => {
+  refreshSiteData().then(() => {
+    functions.logger.info('Scheduled Site Refreshed Complete At', context.timestamp);
+  });
+});
 
 export const decrementBlogViews = functions.pubsub.schedule('30 5 * * *').onRun((context) => {
   functions.logger.info('Decrementing Blog Views at ', context.timestamp, viewDecrementValue);
@@ -237,8 +264,8 @@ export const decrementBlogViews = functions.pubsub.schedule('30 5 * * *').onRun(
     snapshot.forEach((blog) => {
       const views: number = blog.data().views;
       admin.firestore().doc(`blogs/${blog.id}`).update({views: Math.max(0, views - viewDecrementValue)}).then(() => {
-        functions.logger.info(blog.id, ' views decremented');
-        return null;
+          functions.logger.info(blog.id, ' views decremented');
+          return null;
       });
       return null;
     });

@@ -1,13 +1,43 @@
 /* You can add global styles to this file, and also import other style files */
 @import '~@circlon/angular-tree-component/css/angular-tree-component.css';
+:root{
+  --background-base: #F2F2F2;
+  --red-light: #d99387;
+  --red-dark: #c14430;
+  --text-colour: black;
+  --text-colour-contrast: white;
+}
+.donate-button{
+  position: relative;
+  top: 100%;
+  margin-top: -100%;
+  border-color: transparent;
+  border-radius: 15px;
+  color: var(--text-colour-contrast);
+  padding-right: 5%;
+  padding-left: 5%;
+  font-weight: bold;
+  background-color: var(--red-dark);
 
-* {
+}
+html body {
+background-color: var(--background-base);
+}
+
+.helv {
   font-family: Helvetica, "Futura", "urw-form", sans-serif !important;
+}
+
+.arial {
+  font-family: Arial, "Futura", "urw-form", sans-serif !important;
+}
+
+.dyslex {
+  font-family: "Futura", "urw-form", sans-serif !important;
 }
 
 body {
   color: #F5F3F5;
-  font-family: Helvetica, "futura-pt", "urw-form", sans-serif;
 }
 
 html{

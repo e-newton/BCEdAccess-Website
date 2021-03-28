@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import {Style} from '@angular/cli/lib/config/schema';
+import {PullOutStyleService} from './services/pull-out-style.service';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +9,7 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'BCEdAccess-Website';
+  constructor(public style: PullOutStyleService){
+
+  }
 }

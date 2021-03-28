@@ -31,15 +31,47 @@
 
 </div>
 
-<div style="flex-direction: column; position: relative; background: indianred; margin-left: 15%; padding: 15px; display: flex; align-items: center; justify-content: start">
-  <p class="m-2" style="width: 85%">
-    We champion and support children and youth who have disabilities and who are complex learners to reach their full
-    potential in BC education, and in all aspects of their lives. This is achieved through supporting families, sharing
-    information, providing education to families, allies, professionals and students, providing community engagement and
-    awareness, and other activities to promote equitable access to education and inclusion for all.
-  </p>
+<div class="container-xl my-5">
+
+  <div class="row justify-content-center">
+    <div class="col col-10 p-3 px-5" style="background: indianred">
+      <a [routerLink]="['blog']">
+        <button class="donate-button">DONATE TODAY</button>
+      </a>
+
+      <p class="" >
+        We champion and support children and youth who have disabilities and who are complex learners to reach their
+        full
+        potential in BC education, and in all aspects of their lives. This is achieved through supporting families,
+        sharing
+        information, providing education to families, allies, professionals and students, providing community engagement
+        and
+        awareness, and other activities to promote equitable access to education and inclusion for all.
+      </p>
+    </div>
+  </div>
 </div>
 
+<div class="container-xl my-5">
+
+  <div class="row justify-content-around row-cols-1">
+
+    <div [routerLink]="'blog'" class="col-10 col-md-4 d-flex flex-column text-center p-4" style="background: grey; height: 300px; cursor: pointer">
+      <div class="h-50" style="background: url('assets/bcedaccess_logo.png'); background-position: 50% 50%; background-size: cover">
+      </div>
+      <h3>Title</h3>
+      <p>why why why why why why why why why why why why why why why why why why why why why why why why why why why </p>
+
+    </div>
+    <div [routerLink]="'events'" class="col-10 col-md-4 d-flex flex-column text-center p-4" style="background: grey; height: 300px; cursor: pointer">
+      <div class="h-50" style="background: url('assets/bcedaccess_logo.png'); background-position: 50% 50%; background-size: cover">
+      </div>
+      <h3>Title</h3>
+      <p>why why why why why why why why why why why why why why why why why why why why why why why why why why why </p>
+
+    </div>
+  </div>
+</div>
 
 <!--<div class="container-fluid pr-0">-->
 <!--  <div class="row justify-content-end">-->

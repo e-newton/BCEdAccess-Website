@@ -1,15 +1,23 @@
-<span #menu id = "menu">
-  <div id="open-button" >
-    <div #openbutton class = "open-button-container" (click)="openMenu()">
+<span #menu id="menu">
+  <div id="open-button">
+    <div #openbutton class="open-button-container" (click)="openMenu()">
       <div class="bar1"></div>
       <div class="bar2"></div>
       <div class="bar3"></div>
     </div>
   </div>
-  <div #widgets id="widgets">
-    <p>Change Font Size</p>
-    <span>+ -</span>
+  <div #widgets class="widgets">
+    <p class="mb-0">Change Font Size</p>
+    <div class="button-box text-center">
+      <button (click)="style.increaseFontSize()" class="btn btn-light">+</button>
+      <p class="m-0">{{style.size}}%</p>
+      <button (click)="style.decreaseFontSize()" class="btn btn-light">-</button>
+    </div>
   </div>
+
+  <div class="widgets">
+    <button #dyslexButton id="dyslexButton" class="btn btn-light" (click)="changeFont($event)">Dyslexy</button>
+    <button #helvButton id="helvButton" class="btn btn-dark" (click)="changeFont($event)">Helvetica</button></div>
 
 </span>
 

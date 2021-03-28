@@ -19,6 +19,7 @@ export class SearchResultsComponent implements OnInit {
     fetch(`https://us-central1-bcedaccess-website.cloudfunctions.net/app/search/${this.search}/${this.limit}`)
       .then(res => res.json())
       .then(res => {
+        console.log('res', res);
         this.results = res.results;
         this.results.forEach(r => {
           if (r.type === 'blog') {

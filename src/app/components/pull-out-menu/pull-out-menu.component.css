@@ -1,3 +1,11 @@
+.button-box{
+  display: flex;
+  margin: 10px;
+  width: 100%;
+  justify-content: space-around;
+  align-items: center;
+}
+
 #open-button {
   position: absolute;
   top: 0;
@@ -20,7 +28,7 @@
   box-shadow: #1f1f1f 5px 4px 10px;
 }
 
-#widgets{
+.widgets{
   transition: display 0s, opacity 0.4s;
   overflow-x: hidden;
   white-space: nowrap;
