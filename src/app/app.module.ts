@@ -38,6 +38,7 @@ import {TreeModule} from '@circlon/angular-tree-component';
 import { PullOutMenuComponent } from './components/pull-out-menu/pull-out-menu.component';
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
 import { SearchResultsComponent } from './components/search-results/search-results.component';
+import { NaviagationMenuComponent } from './components/pull-out-menu/naviagation-menu/naviagation-menu.component';
 
 export const environment = {
   production : false,
@@ -81,6 +82,7 @@ export const environment = {
     PullOutMenuComponent,
     SearchBarComponent,
     SearchResultsComponent,
+    NaviagationMenuComponent,
   ],
   imports: [
     BrowserModule,
