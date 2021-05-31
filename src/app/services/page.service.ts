@@ -16,7 +16,7 @@ interface FireStorePage {
 interface FireStoreChild {
   ref: string;
 }
-interface Node{
+export interface Node{
   name: string;
   id: string;
   draft: boolean;

@@ -1,1 +1,39 @@
-<p>naviagation-menu works!</p>
+<ng-template #nodeTemplateRef let-node>
+
+
+  <a *ngIf="!node.children?.length" href="#">{{node.name}}</a>
+  <div class = "dropdown">
+    <button *ngIf="node.children?.length" class="dropbtn">
+      {{node.name}}
+      <!--      <i class="fa fa-caret-down"></i>-->
+    </button>
+    <div *ngIf="node.children?.length" class="dropdown-content">
+      <ng-template
+        ngFor
+        [ngForOf]="node.children"
+        [ngForTemplate]="nodeTemplateRef">
+        <!--
+          NOTE: The "$implicit" property of the ngFor context is what will
+          be made available to the template ref's implicit let-node binding.
+        -->
+      </ng-template>
+    </div>
+  </div>
+
+
+</ng-template>
+<div class="topnav">
+  <ng-template
+    *ngFor = "let root of tree"
+    [ngTemplateOutlet]="nodeTemplateRef"
+    [ngTemplateOutletContext]="{ $implicit: root }">
+  </ng-template>
+</div>
+
+
+
+<!--<div class = "node">-->
+<!--  <p>AHHHH</p>-->
+
+<!--</div>-->
+<!--<p>should not be green</p>-->
